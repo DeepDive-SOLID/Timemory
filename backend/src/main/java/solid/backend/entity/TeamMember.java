@@ -16,10 +16,12 @@ public class TeamMember {
     private TeamMemberId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", nullable = false, updatable = false, insertable = false)
+    @MapsId("teamId")
+    @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false, updatable = false, insertable = false)
+    @MapsId("memberId")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 }

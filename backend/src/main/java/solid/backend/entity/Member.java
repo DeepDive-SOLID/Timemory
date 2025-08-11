@@ -22,7 +22,7 @@ public class Member {
     @Comment("회원 ID")
     private String memberId;
 
-    @Column(name = "member_profile", length = 100, nullable = false)
+    @Column(name = "member_profile", length = 100)
     @Comment("프로필 이미지")
     private String memberProfile;
 
@@ -34,11 +34,11 @@ public class Member {
     @Comment("생년월일")
     private LocalDate memberBirth;
 
-    @Column(name = "member_phone", length = 20, nullable = false)
+    @Column(name = "member_phone", length = 20)
     @Comment("전화번호")
     private String memberPhone;
 
-    @Column(name = "member_email", length = 30, nullable = false)
+    @Column(name = "member_email", length = 30)
     @Comment("이메일")
     private String memberEmail;
 
