@@ -12,13 +12,14 @@ import lombok.*;
 @Table(name = "TeamMember")
 public class TeamMember {
 
-    @Id
+    @EmbeddedId
+    private TeamMemberId id;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", nullable = false, updatable = false, insertable = false)
     private Team team;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false, updatable = false, insertable = false)
     private Member member;
 }

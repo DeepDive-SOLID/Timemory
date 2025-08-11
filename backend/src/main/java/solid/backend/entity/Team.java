@@ -19,7 +19,7 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id")
     @Comment("팀 ID")
-    private Long teamId;
+    private Integer teamId;
 
     @Column(name = "team_name", length = 100, nullable = false)
     @Comment("팀 이름")

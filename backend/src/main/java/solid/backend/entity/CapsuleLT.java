@@ -15,7 +15,7 @@ public class CapsuleLT {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cap_lt_id")
-    private Long capLtId;
+    private Integer capLtId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cap_id", nullable = false)

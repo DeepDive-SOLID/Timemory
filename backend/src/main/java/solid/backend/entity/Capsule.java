@@ -18,7 +18,7 @@ public class Capsule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cap_id")
     @Comment("캡슐 ID")
-    private Long capId;
+    private Integer capId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
