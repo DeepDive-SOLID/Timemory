@@ -31,8 +31,8 @@ export { default as pepero_day2 } from "./images/pepero_day_img2.svg";
 export { default as pepero_day3 } from "./images/pepero_day_img3.svg";
 export { default as white_day } from "./images/white_day_img.svg";
 export { default as white_day2 } from "./images/white_day_img2.svg";
-export { default as valentines_day } from "./images/valentines_day_img.svg";
-export { default as valentines_day2 } from "./images/valentines_day_img2.svg";
+export { default as valentines_day } from "./images/valentine_day_img.svg";
+export { default as valentines_day2 } from "./images/valentine_day_img2.svg";
 export { default as new_year } from "./images/new_year_img.svg";
 export { default as new_year2 } from "./images/new_year_img2.svg";
 export { default as new_year3 } from "./images/new_year_img3.svg";
@@ -44,3 +44,6 @@ export { default as group_tab } from "./icons/group_tab.svg";
 export { default as home_tab } from "./icons/home_tab.svg";
 export { default as mypage_tab } from "./icons/mypage_tab.svg";
 export { default as capsule_tab } from "./icons/capsule_tab.svg";
+
+// Input Box Line
+export { default as input_box_line } from "./images/input_box_line.svg";
