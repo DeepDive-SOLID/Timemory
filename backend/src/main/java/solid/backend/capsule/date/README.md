@@ -1,4 +1,4 @@
-### 캡슐 위치 : /api/capsule/date
+### 캡슐 날짜 : /api/capsule/date
 - controller(컨트롤러)
     - CapsuleDateController.java
 - dto(객체정보)

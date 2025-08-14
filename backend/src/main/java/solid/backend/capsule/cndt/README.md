@@ -1,4 +1,4 @@
-### 캡슐 위치 : /api/capsule/cndt
+### 캡슐 조건 : /api/capsule/cndt
 - controller(컨트롤러)
     - CapsuleCndtController.java
 - dto(객체정보)
