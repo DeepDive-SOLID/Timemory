@@ -2,6 +2,7 @@ package solid.backend.login.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,6 +36,7 @@ public class LoginServiceImpl implements LoginService {
      * @return LoginDto
      */
     @Override
+    @Transactional
     public LoginDto loginKakao(String code, HttpServletRequest request) {
 
         // 1. 엑세스 토큰 요청
@@ -172,6 +174,7 @@ public class LoginServiceImpl implements LoginService {
      * @return Boolean (중복이면 true, 아니면 false)
      */
     @Override
+    @Transactional
     public Boolean isDuplicatedNickname(LoginDto checkInfo) {
 
         // 1. 닉네임 중복 체크
