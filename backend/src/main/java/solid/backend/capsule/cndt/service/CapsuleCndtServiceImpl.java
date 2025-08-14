@@ -75,7 +75,7 @@ public class CapsuleCndtServiceImpl implements CapsuleCndtService {
         capsule.setMember(teamMember.getMember());
         capsule.setCapText(capsuleCndtDto.getCapText());
         capsule.setCapUt(LocalDateTime.now());
-        capsule.setCapEt(capsuleCndtDto.getCapEt());
+        capsule.setCapEt(LocalDateTime.now().plusYears(1));
 
         String capImg = fileManager.addFile(capsuleCndtDto.getCapImg(), "capsule");
         if (capImg != null) capsule.setCapImg(capImg);
