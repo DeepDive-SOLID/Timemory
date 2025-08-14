@@ -39,12 +39,8 @@ public class CapsuleCndtServiceImpl implements CapsuleCndtService {
 
         // 캡슐 cndt가 없으면 null로 반환
         return capsules.stream()
+                .filter(capsule -> capsule.getCapsuleCondition() != null)
                 .map(capsule -> {
-                    String capCndtCase = null;
-                    if (capsule.getCapsuleCondition() != null) {
-                        capCndtCase = capsule.getCapsuleCondition().getCapCndtCase();
-                    }
-
                     return new CapsuleListDto(
                             capsule.getCapId(),
                             capsule.getTeam().getTeamId(),
@@ -55,7 +51,7 @@ public class CapsuleCndtServiceImpl implements CapsuleCndtService {
                             capsule.getCapImg(),
                             capsule.getCapTag(),
                             capsule.getCapOpen(),
-                            capCndtCase
+                            capsule.getCapsuleCondition().getCapCndtCase()
                     );
                 })
                 .collect(Collectors.toList());
