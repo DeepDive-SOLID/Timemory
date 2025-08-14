@@ -12,7 +12,7 @@ public interface LtService {
      * @param teamId
      * @return List<LtListDto>
      */
-    List<LtListDto> getLtList(String teamId);
+    List<LtListDto> getLtList(Integer teamId);
 
     /**
      * 설명 : 캡슐 위치 정보 추가

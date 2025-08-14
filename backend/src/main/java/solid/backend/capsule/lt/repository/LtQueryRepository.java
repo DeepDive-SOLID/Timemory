@@ -22,7 +22,7 @@ public class LtQueryRepository {
      * @param teamId
      * @return List<LtListDto>
      */
-    public List<LtListDto> getLtList(String teamId) {
+    public List<LtListDto> getLtList(Integer teamId) {
 
         QCapsule capsule = QCapsule.capsule;
         QCapsuleLT capsuleLt = QCapsuleLT.capsuleLT;
@@ -44,7 +44,7 @@ public class LtQueryRepository {
                 ))
                 .from(capsule)
                 .join(capsuleLt).on(capsule.capId.eq(capsuleLt.capsule.capId))
-                .where(capsule.team.teamId.eq(Integer.valueOf(teamId)))
+                .where(capsule.team.teamId.eq(teamId))
                 .fetch();
     }
 }

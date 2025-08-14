@@ -36,7 +36,7 @@ public class LtServiceImpl implements LtService {
      * @return List<LtListDto>
      */
     @Override
-    public List<LtListDto> getLtList(String teamId) {
+    public List<LtListDto> getLtList(Integer teamId) {
         return ltQueryRepository.getLtList(teamId).stream()
                 .peek(dto -> {
                     if (dto.getCapImg() != null) {

@@ -25,7 +25,7 @@ public class LtController {
      */
     @ResponseBody
     @PostMapping("/getLtList")
-    public List<LtListDto> getLtList(@RequestBody String teamId) {
+    public List<LtListDto> getLtList(@RequestBody Integer teamId) {
         return ltService.getLtList(teamId);
     }
 

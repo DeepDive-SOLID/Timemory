@@ -14,7 +14,7 @@
 [조회]
 - HTTP method : POST  
 - HTTP request URL : /api/capsule/lt/getLtList  
-- param : teamId(String)  
+- param : teamId(Integer)  
 - return : ResponseEntity<LtListDto>
 
 [추가]
