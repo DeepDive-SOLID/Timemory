@@ -35,6 +35,8 @@ public class CapsuleDateServiceImpl implements CapsuleDateService {
         List<Capsule> capsules = capsuleRepository.findByTeamTeamId(teamId);
 
         return capsules.stream()
+                .filter(capsule -> capsule.getCapsuleCondition() == null)
+                .filter(capsule -> capsule.getCapsuleLocation() == null)
                 .map(capsule -> new CapsuleListDto(
                         capsule.getCapId(),
                         capsule.getTeam().getTeamId(),
