@@ -1,4 +1,4 @@
-# WebIDE
+# TIMEMOEY CAPSULE
 
 # 프로젝트 디렉토리 구조
 src/main/java/solid/backend
