@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f0f0f0;
+  font-family: "Pretendard", sans-serif;
+}
+
+.statusBar {
+  height: 44px; /* iOS 상태바 높이 */
+  background-color: #fffdf7;
+}
+
+.groupList {
+  flex: 1;
+  padding: 20px;
+  background-color: #fffdf7;
+  overflow-y: auto;
+}

@@ -12,6 +12,12 @@ export { default as lightbulb } from "./icons/lightbulb.svg";
 export { default as lock } from "./icons/lock.svg";
 export { default as map_pin } from "./icons/map_pin.svg";
 export { default as option } from "./icons/option.svg";
+export { default as plus_circle } from "./icons/plus_circle.svg";
+export { default as x_circle } from "./icons/x_circle.svg";
+export { default as dots_three } from "./icons/dots_three.svg";
+export { default as rectangle_radius_0 } from "./icons/rectangle_radius_0.svg";
+export { default as rectangle_radius_10 } from "./icons/rectangle_radius_10.svg";
+export { default as rectangle_large } from "./icons/rectangle_large.svg";
 
 // Images
 export { default as capsule_img } from "./images/capsule_img.svg";
@@ -31,8 +37,8 @@ export { default as pepero_day2 } from "./images/pepero_day_img2.svg";
 export { default as pepero_day3 } from "./images/pepero_day_img3.svg";
 export { default as white_day } from "./images/white_day_img.svg";
 export { default as white_day2 } from "./images/white_day_img2.svg";
-export { default as valentines_day } from "./images/valentines_day_img.svg";
-export { default as valentines_day2 } from "./images/valentines_day_img2.svg";
+export { default as valentine_day } from "./images/valentine_day_img.svg";
+export { default as valentine_day2 } from "./images/valentine_day_img2.svg";
 export { default as new_year } from "./images/new_year_img.svg";
 export { default as new_year2 } from "./images/new_year_img2.svg";
 export { default as new_year3 } from "./images/new_year_img3.svg";
