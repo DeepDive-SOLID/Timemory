@@ -1,0 +1,68 @@
+.QuizContainer {
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 20px max(24px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  background: transparent;
+}
+
+.QuizTitleStrong {
+  color: #5497ff;
+  font-family: "Pretendard Variable";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.875rem;
+  letter-spacing: -0.03rem;
+}
+
+.QuizTitle {
+  width: 100%;
+  margin: 6px 0 4px;
+  color: #2f2a1e;
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.875rem;
+  letter-spacing: -0.0275rem;
+  text-align: left;
+}
+
+.QuizImg {
+  width: min(62vw, 240px);
+  height: auto;
+  display: block;
+  margin: 8px auto 6px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.QuizBtn {
+  display: flex;
+  width: 100%;
+  height: 52px;
+  border-radius: 0.625rem;
+  background: #5497ff;
+  color: #f4faff;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.6875rem;
+  letter-spacing: -0.025rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
