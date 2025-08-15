@@ -48,3 +48,7 @@ export { default as mypage_active } from "./icons/mypage_active.svg";
 export { default as home_active } from "./icons/home_active.svg";
 export { default as group_active } from "./icons/group_active.svg";
 export { default as capsule_active } from "./icons/capsule_active.svg";
+
+// Input Box Image
+export { default as inputbox_lg } from "./images/input_box_lg.svg";
+export { default as inputbox_sm } from "./images/input_box_sm.svg";
