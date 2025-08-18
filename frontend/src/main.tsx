@@ -4,6 +4,7 @@ import "./styles/index.scss";
 import App from "./App.tsx";
 import Login from "./pages/Login.tsx";
 import Home from "./pages/Home.tsx";
+import Quiz from "./pages/Quiz.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <Home />,
+      },
+      {
+        path: "quiz",
+        element: <Quiz />,
       },
     ],
   },
