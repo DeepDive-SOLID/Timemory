@@ -65,9 +65,11 @@ const QuizLocation = () => {
 
   const [address, setAddress] = useState("");
   const [detail, setDetail] = useState("");
-
+  const [momentText, setMomentText] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagText, setTagText] = useState("");
+  const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
 
@@ -78,14 +80,27 @@ const QuizLocation = () => {
     setAddress("경기 성남시 분당구 판교역로 166 카카오");
   };
 
-  const handleNext = () => {
-    if (step === 0 && address.trim() === "") return;
+  const validateCurrent = () => {
+    if (step === 0 && !address.trim()) return "주소를 입력해주세요.";
+    if (step === 1 && !momentText.trim()) return "기억을 작성해주세요.";
+    if (step === 2 && tags.length === 0)
+      return "키워드를 한 개 이상 추가해주세요.";
+    return null;
+  };
 
+  const handleNext = () => {
     if (step < quizData.length - 1) {
+      const msg = validateCurrent();
+      if (msg) {
+        setForceWarnStep(step);
+        return;
+      }
+      setForceWarnStep(null);
       setStep((prev) => prev + 1);
-    } else {
-      console.log("퀴즈 완료!");
+      return;
     }
+
+    // TODO: 제출 로직 추가
   };
 
   return (
@@ -110,6 +125,7 @@ const QuizLocation = () => {
                 input={current.input}
                 warning={current.warning}
                 required
+                forceShowWarning={forceWarnStep === step}
               />
 
               <InputBox
@@ -130,17 +146,30 @@ const QuizLocation = () => {
               tags={tags}
               value={tagText}
               onChangeText={setTagText}
-              onAddTag={addTag}
-              maxTagLen={current.maxTagLen}
+              onAddTag={(t) => {
+                addTag(t);
+                setTagText("");
+              }}
+              maxTagLen={20}
               required
+              forceShowWarning={forceWarnStep === step}
+            />
+          ) : current.type === "file" ? (
+            <InputBox
+              type="file"
+              warning={current.warning}
+              onFileChange={(e) => setFile(e.target.files?.[0] ?? null)}
             />
           ) : (
             <InputBox
-              type={current.type}
+              type="text"
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
               required
+              value={momentText}
+              onChangeText={setMomentText}
+              forceShowWarning={forceWarnStep === step}
             />
           )
         }

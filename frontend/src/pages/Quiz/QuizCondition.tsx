@@ -9,6 +9,9 @@ import {
 import InputBox from "../../components/UI/InputBox";
 import StatusBar from "../../components/APP/StatusBar";
 import { useState } from "react";
+import type { CapsuleCndtDto } from "../../types/capsule";
+import { CapsuleCndtCreateApi } from "../../api/CapsuleApi";
+import { toLocalDateTimeString } from "../../utils/datetime";
 
 const quizData = [
   {
@@ -68,17 +71,55 @@ const quizData = [
 
 const QuizCondition = () => {
   const [step, setStep] = useState(0);
+  const [reason, setReason] = useState("");
+  const [momentText, setMomentText] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagText, setTagText] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
 
-  const handleNext = () => {
+  const handleTextChange = (v: string) => {
+    if (step === 0) setReason(v);
+    else if (step === 1) setMomentText(v);
+  };
+
+  const validateCurrent = () => {
+    if (step === 0 && !reason.trim()) return "이유를 입력해주세요.";
+    if (step === 1 && !momentText.trim()) return "기억을 입력해주세요.";
+    if (step === 2 && tags.length === 0)
+      return "키워드를 한 개 이상 추가해주세요.";
+    return null;
+  };
+
+  const handleNext = async () => {
     if (step < quizData.length - 1) {
+      const msg = validateCurrent();
+      if (msg) {
+        setForceWarnStep(step);
+        return;
+      }
+      setForceWarnStep(null);
       setStep((prev) => prev + 1);
-    } else {
-      console.log("퀴즈 완료!");
-      // 여기서 제출 로직 or 다음 페이지 이동
+      return;
+    }
+    try {
+      const dto: CapsuleCndtDto = {
+        teamId: 1, // TODO: 실제 팀 ID 연결
+        memberId: "test", // TODO: 로그인한 사용자 ID 연결
+        capText: `${reason}\n${momentText}`.trim(),
+        capEt: toLocalDateTimeString(new Date()),
+        capImg: file as File,
+        capTag: tags.join(","),
+        capCndtCase: reason,
+      };
+
+      const res = await CapsuleCndtCreateApi(dto);
+      alert("캡슐 생성 성공: " + res);
+    } catch (err) {
+      alert("캡슐 생성 실패");
+      console.error(err);
     }
   };
 
@@ -101,16 +142,29 @@ const QuizCondition = () => {
               tags={tags}
               value={tagText}
               onChangeText={setTagText}
-              onAddTag={addTag}
-              maxTagLen={current.maxTagLen}
+              onAddTag={(t) => {
+                addTag(t);
+                setTagText("");
+              }}
+              maxTagLen={20}
+              forceShowWarning={forceWarnStep === step}
+            />
+          ) : current.type === "file" ? (
+            <InputBox
+              type="file"
+              warning={current.warning}
+              onFileChange={(e) => setFile(e.target.files?.[0] ?? null)}
             />
           ) : (
             <InputBox
-              type={current.type}
+              type="text"
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
               required
+              value={step === 0 ? reason : momentText}
+              onChangeText={handleTextChange}
+              forceShowWarning={forceWarnStep === step}
             />
           )
         }

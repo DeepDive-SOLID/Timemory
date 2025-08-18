@@ -5,6 +5,9 @@ import InputBox from "../../components/UI/InputBox";
 import StatusBar from "../../components/APP/StatusBar";
 import { useState } from "react";
 import Calendar from "../../components/UI/Calendar";
+import type { CapsuleDateDto } from "../../types/capsule";
+import { CapsuleDateCreateApi } from "../../api/CapsuleApi";
+import { toLocalDateTimeString, formatMD } from "../../utils/datetime";
 
 const quizData = [
   {
@@ -29,7 +32,7 @@ const quizData = [
     ),
     image: cloud_img,
     input: "순간을 기억하며 작성해주세요.",
-    warning: "자동으로 AI 검열해줘요 !",
+    warning: "기억을 작성해주세요.",
     svgBox: "lg" as const,
   },
   {
@@ -62,22 +65,55 @@ const quizData = [
 const QuizDate = () => {
   const [step, setStep] = useState(0);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
+  const [momentText, setMomentText] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagText, setTagText] = useState("");
+  const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
+
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
 
   const current = quizData[step];
 
-  const formatMD = (d: Date | null) =>
-    d ? `${d.getMonth() + 1}/${d.getDate()}` : "";
+  const validateCurrent = () => {
+    if (step === 0 && !selectedDate) return "날짜를 선택해주세요.";
+    if (step === 1 && !momentText.trim()) return "기억을 입력해주세요.";
+    if (step === 2 && tags.length === 0)
+      return "키워드를 한 개 이상 추가해주세요.";
+    return null;
+  };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < quizData.length - 1) {
+      const msg = validateCurrent();
+      if (msg) {
+        setForceWarnStep(step);
+        return;
+      }
+      setForceWarnStep(null);
       setStep((prev) => prev + 1);
-    } else {
-      console.log("퀴즈 완료!");
-      // 제출 로직 or 다음 페이지 이동
+      return;
+    }
+
+    try {
+      if (!selectedDate) {
+        alert("날짜를 선택해주세요.");
+        return;
+      }
+
+      const dto: CapsuleDateDto = {
+        teamId: 1, // 실제 팀 ID로 교체
+        memberId: "test", // 로그인 사용자 ID로 교체
+        capText: momentText.trim(),
+        capEt: toLocalDateTimeString(selectedDate),
+        capImg: file as File,
+        capTag: tags.join(","),
+      };
+      const res = await CapsuleDateCreateApi(dto);
+      alert("날짜 캡슐 생성 성공: " + res);
+    } catch (e) {
+      console.error(e);
+      alert("날짜 캡슐 생성 실패");
     }
   };
 
@@ -101,6 +137,7 @@ const QuizDate = () => {
                 displayValue={formatMD(selectedDate)}
                 displayPlaceholder="날짜를 선택하세요"
                 required
+                forceShowWarning={forceWarnStep === step}
               />
             </>
           ) : current.type === "keyword" ? (
@@ -113,16 +150,29 @@ const QuizDate = () => {
               value={tagText}
               onChangeText={setTagText}
               tags={tags}
-              onAddTag={addTag}
+              onAddTag={(t) => {
+                addTag(t);
+                setTagText("");
+              }}
               maxTagLen={20}
+              forceShowWarning={forceWarnStep === step}
+            />
+          ) : current.type === "file" ? (
+            <InputBox
+              type="file"
+              warning={current.warning}
+              onFileChange={(e) => setFile(e.target.files?.[0] ?? null)}
             />
           ) : (
             <InputBox
-              type={current.type}
+              type="text"
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
               required
+              value={momentText}
+              onChangeText={setMomentText}
+              forceShowWarning={forceWarnStep === step}
             />
           )
         }
