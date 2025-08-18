@@ -12,6 +12,10 @@ export { default as lightbulb } from "./icons/lightbulb.svg";
 export { default as lock } from "./icons/lock.svg";
 export { default as map_pin } from "./icons/map_pin.svg";
 export { default as option } from "./icons/option.svg";
+export { default as xcircle } from "./icons/XCircle.svg";
+export { default as map_pin_white } from "./icons/map_pin_white.svg";
+export { default as lightbulb_white } from "./icons/lightbulb_white.svg";
+export { default as calendar_white } from "./icons/calendar_white.svg";
 
 // Images
 export { default as capsule_img } from "./images/capsule_img.svg";
