@@ -13,6 +13,7 @@ import solid.backend.team.dto.TeamRequestDto;
 import solid.backend.team.dto.TeamResponseDto;
 import solid.backend.team.service.TeamService;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -30,13 +31,15 @@ public class TeamController {
      * 새로운 팀 생성 및 멤버 초대
      * 생성자는 자동으로 팀 멤버로 추가됨
      * @param requestDto 팀 생성 요청 정보 (팀명, 초대할 닉네임 리스트)
-     * @param creatorId 팀 생성자의 카카오 회원 ID (헤더)
+     * @param principal JWT 인증 정보
      * @return 생성된 팀 상세 정보
      */
     @PostMapping
     public ResponseEntity<TeamResponseDto> createTeam(
             @RequestBody TeamCreateRequestDto requestDto,
-            @RequestHeader("X-Member-Id") String creatorId) {
+            Principal principal) {
+        // JWT에서 사용자 ID 추출 (카카오 ID)
+        String creatorId = principal.getName();
         TeamResponseDto response = teamService.createTeam(requestDto, creatorId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -79,14 +82,17 @@ public class TeamController {
      * - 팀 멤버가 0명이 되면 팀 자동 삭제
      * @param teamId 팀 ID
      * @param memberId 탈퇴할 회원 ID
-     * @param requesterId 요청자 ID (헤더)
+     * @param principal JWT 인증 정보
      * @return 204 No Content
      */
     @DeleteMapping("/{teamId}/members/{memberId}")
     public ResponseEntity<Void> leaveTeam(
             @PathVariable("teamId") Integer teamId,
             @PathVariable("memberId") String memberId,
-            @RequestHeader("X-Member-Id") String requesterId) {
+            Principal principal) {
+        
+        // JWT에서 인증된 사용자 ID 추출
+        String requesterId = principal.getName();
         
         teamService.leaveTeam(teamId, memberId, requesterId);
         return ResponseEntity.noContent().build();
