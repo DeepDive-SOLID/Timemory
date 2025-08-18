@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import solid.backend.exception.CustomException;
 import solid.backend.exception.ErrorCode;
+import solid.backend.member.dto.MemberProfileDto;
 import solid.backend.team.dto.TeamCreateRequestDto;
 import solid.backend.team.dto.TeamMemberDto;
 import solid.backend.team.dto.TeamMemberRequestDto;
@@ -102,10 +103,10 @@ public class TeamController {
      * 팀에 새로운 멤버 추가 (닉네임으로)
      * @param teamId 팀 ID
      * @param requestDto 추가할 회원 정보 (닉네임)
-     * @return 201 Created
+     * @return 추가된 멤버의 프로필 정보 (닉네임, 프로필 이미지 포함)
      */
     @PostMapping("/{teamId}/members")
-    public ResponseEntity<Void> addTeamMember(
+    public ResponseEntity<MemberProfileDto> addTeamMember(
             @PathVariable("teamId") Integer teamId,
             @RequestBody TeamMemberRequestDto requestDto) {
         
@@ -114,8 +115,8 @@ public class TeamController {
             throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
         }
         
-        teamService.addTeamMemberByNickname(teamId, requestDto.getNickname());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        MemberProfileDto addedMember = teamService.addTeamMemberByNickname(teamId, requestDto.getNickname());
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedMember);
     }
     
     /**

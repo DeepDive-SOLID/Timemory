@@ -154,10 +154,11 @@ public class TeamService {
      * 팀에 새로운 멤버 추가 (닉네임으로)
      * @param teamId 팀 ID
      * @param nickname 추가할 회원의 닉네임
+     * @return 추가된 멤버의 프로필 정보 (닉네임, 프로필 이미지 포함)
      * @throws CustomException 팀이나 멤버가 존재하지 않거나 이미 팀원인 경우
      */
     @Transactional
-    public void addTeamMemberByNickname(Integer teamId, String nickname) {
+    public MemberProfileDto addTeamMemberByNickname(Integer teamId, String nickname) {
         // 팀 존재 확인
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
@@ -182,6 +183,9 @@ public class TeamService {
         teamMemberRepository.save(teamMember);
         log.info("팀 멤버 추가 완료: teamId={}, nickname={}, memberId={}", 
                 teamId, nickname, member.getMemberId());
+        
+        // 추가된 멤버의 프로필 정보 반환
+        return MemberProfileDto.from(member);
     }
     
     
