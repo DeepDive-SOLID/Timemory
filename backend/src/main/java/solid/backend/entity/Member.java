@@ -22,7 +22,7 @@ public class Member {
     @Comment("회원 ID")
     private String memberId;
 
-    @Column(name = "member_profile", length = 100)
+    @Column(name = "member_profile", length = 200)
     @Comment("프로필 이미지")
     private String memberProfile;
 
