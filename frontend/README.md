@@ -27,6 +27,10 @@ src/
 │   ├── UI/           # 공통 UI 컴포넌트 (Button, Modal 등)
 │   └── Domain/       # 페이지별 전용 컴포넌트
 │
+├── contexts/         # 전역 관련 컴포넌트
+│   ├── AuthContext.ts
+│   └── AuthProvider.ts
+│
 ├── pages/            # 각 페이지 컴포넌트 (라우팅 단위)
 │   └── Login.tsx     # 파스칼 케이스로 작성
 │
