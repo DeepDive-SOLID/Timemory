@@ -3,6 +3,7 @@ import Kakao from "../components/Domain/Map/Kakao";
 import { getLtList } from "../api/MapApi";
 import useLatLng from "../hooks/useLatLng";
 import type { LtListDto } from "../types/map";
+import Back from "../components/Domain/Map/Back";
 
 const LocationCapsule = () => {
   const [data, setData] = useState<LtListDto[]>([]);
@@ -32,6 +33,7 @@ const LocationCapsule = () => {
 
   return (
     <>
+      <Back />
       <Kakao customProps={enrichedData} />
     </>
   );
