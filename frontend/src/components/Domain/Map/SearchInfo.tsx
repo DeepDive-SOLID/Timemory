@@ -3,6 +3,7 @@ import type { RootState } from "../../../store";
 import style from "../../../styles/SearchInfo.module.scss";
 import { setCheck } from "../../../store/locationSlice";
 import { useNavigate } from "react-router-dom";
+import { setSearchType } from "../../../store/searchTypeSlice";
 
 const SearchInfo = () => {
   const address = useSelector((state: RootState) => state.location.address_name);
@@ -13,6 +14,7 @@ const SearchInfo = () => {
 
   const clickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(setCheck(false));
+    dispatch(setSearchType("search"));
     if (e.currentTarget.innerText === "위치 결정") {
       // 프론트 합치면 변경
       navigate("/capsuleMap");
