@@ -1,11 +1,6 @@
 import styles from "../../styles/GroupTabs.module.scss";
 import { plus_circle } from "../../assets";
-
-interface GroupTabsProps {
-  activeTab: "my" | "open";
-  onTabChange: (tab: "my" | "open") => void;
-  onAddGroup?: () => void;
-}
+import type { GroupTabsProps } from "../../types/groupTabs";
 
 const GroupTabs = ({ activeTab, onTabChange, onAddGroup }: GroupTabsProps) => {
   return (

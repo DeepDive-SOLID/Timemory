@@ -1,13 +1,8 @@
 import { useState } from "react";
 import styles from "../../styles/GroupCard.module.scss";
-import type { Group } from "../../types/group";
 import { rectangle_radius_0, dots_three } from "../../assets";
 import GroupEdit from "../UI/GroupEdit";
-
-interface GroupCardProps {
-  group: Group;
-  isOpenGroup?: boolean;
-}
+import type { GroupCardProps } from "../../types/groupCard";
 
 const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -27,12 +22,6 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
   };
 
   const handleCloseEditModal = () => {
-    setIsEditModalOpen(false);
-  };
-
-  const handleEditGroup = (groupName: string, members: string[]) => {
-    // 그룹 수정 로직을 여기에 구현
-    console.log("그룹 수정:", { groupName, members });
     setIsEditModalOpen(false);
   };
 
@@ -89,7 +78,7 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
       <GroupEdit
         isOpen={isEditModalOpen}
         onClose={handleCloseEditModal}
-        onCreateGroup={handleEditGroup}
+        teamId={group.id}
       />
     </>
   );

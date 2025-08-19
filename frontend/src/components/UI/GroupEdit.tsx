@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../../styles/Group.module.scss";
 import {
   plus_circle,
@@ -7,53 +8,129 @@ import {
   rectangle_large,
 } from "../../assets";
 
-interface GroupProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onCreateGroup: (groupName: string, members: string[]) => void;
-}
+import {
+  getTeamById,
+  leaveTeam,
+  addTeamMember,
+  updateTeam,
+} from "../../api/groupApi";
+import { getCurrentMemberId } from "../../utils/auth";
+import ConfirmModal from "./ConfirmModal";
+import type {
+  GroupEditProps as GroupProps,
+  EditableMemberItem as Member,
+} from "../../types/groupModals";
 
-interface Member {
-  id: string;
-  name: string;
-  avatar?: string;
-  isRemovable: boolean;
-}
-
-const GroupModal = ({ isOpen, onClose, onCreateGroup }: GroupProps) => {
+const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
   const [groupName, setGroupName] = useState("");
   const [inviteInput, setInviteInput] = useState("");
-  const [members, setMembers] = useState<Member[]>([
-    { id: "1", name: "나옹", isRemovable: false },
-    { id: "2", name: "user1", isRemovable: true },
-    { id: "3", name: "user2", isRemovable: true },
-  ]);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingLeaveId, setPendingLeaveId] = useState<string | null>(null);
 
-  const handleAddMember = () => {
-    if (inviteInput.trim()) {
+  useEffect(() => {
+    const fetchTeamDetail = async () => {
+      if (!isOpen || !teamId) return;
+      try {
+        setLoading(true);
+        const data = await getTeamById(teamId);
+        const currentId = getCurrentMemberId();
+        setGroupName(data.teamName);
+        const mapped = (data.members || []).map((m) => ({
+          id: m.memberId,
+          name: m.nickname,
+          avatar: m.profileImg,
+          isRemovable: currentId ? m.memberId === currentId : false,
+        }));
+        mapped.sort((a, b) => {
+          if (a.id === currentId && b.id !== currentId) return -1;
+          if (b.id === currentId && a.id !== currentId) return 1;
+          return 0;
+        });
+        setMembers(mapped);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTeamDetail();
+  }, [isOpen, teamId]);
+
+  const handleAddMember = async () => {
+    const nickname = inviteInput.trim();
+    if (!nickname || !teamId) return;
+    try {
+      const created = await addTeamMember(teamId, nickname);
+      // 중복 방지
+      if (members.some((m) => m.id === created.memberId)) {
+        setInviteInput("");
+        return;
+      }
+      const currentId = getCurrentMemberId();
       const newMember: Member = {
-        id: Date.now().toString(),
-        name: inviteInput.trim(),
-        isRemovable: true,
+        id: created.memberId,
+        name: created.nickname,
+        avatar: created.profileImg,
+        isRemovable: currentId ? created.memberId === currentId : false,
       };
-      setMembers([...members, newMember]);
+      setMembers((prev) => [...prev, newMember]);
       setInviteInput("");
+    } catch {
+      alert("초대에 실패했어요. 닉네임을 확인해주세요.");
     }
   };
 
   const handleRemoveMember = (memberId: string) => {
-    setMembers(members.filter((member) => member.id !== memberId));
+    const currentId = getCurrentMemberId();
+    if (!currentId || memberId !== currentId || !teamId) return;
+
+    setPendingLeaveId(memberId);
+    setConfirmOpen(true);
   };
 
-  const handleCreateGroup = () => {
-    if (groupName.trim()) {
-      onCreateGroup(
-        groupName,
-        members.map((m) => m.name)
-      );
-      setGroupName("");
-      setMembers([{ id: "1", name: "나옹", isRemovable: false }]);
+  const confirmLeave = () => {
+    if (!teamId || !pendingLeaveId) return;
+    leaveTeam(teamId, pendingLeaveId)
+      .then(() => {
+        setConfirmOpen(false);
+        setPendingLeaveId(null);
+        onClose();
+        if (location.pathname === "/groups") {
+          navigate(0);
+        } else {
+          navigate("/groups", { replace: true });
+        }
+      })
+      .catch(() => {
+        setConfirmOpen(false);
+        setPendingLeaveId(null);
+        alert("탈퇴에 실패했어요. 잠시 후 다시 시도해주세요.");
+      });
+  };
+
+  const cancelLeave = () => {
+    setConfirmOpen(false);
+    setPendingLeaveId(null);
+  };
+
+  const handleUpdateTeam = async () => {
+    if (!teamId) return;
+    try {
+      setLoading(true);
+      const updated = await updateTeam(teamId, {
+        teamName: groupName.trim() || undefined,
+      });
+      // 응답으로 이름 최신화
+      setGroupName(updated.teamName);
+      // 닫고 목록 새로고침
       onClose();
+      if (location.pathname === "/groups") {
+        navigate(0);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,8 +222,15 @@ const GroupModal = ({ isOpen, onClose, onCreateGroup }: GroupProps) => {
                   {members.map((member) => (
                     <div key={member.id} className={styles.memberItem}>
                       <div className={styles.memberAvatar}>
-                        {/* 기본 아바타 이미지 */}
-                        <div className={styles.avatarPlaceholder}></div>
+                        {member.avatar ? (
+                          <img
+                            src={member.avatar}
+                            alt={member.name}
+                            className={styles.avatarImage}
+                          />
+                        ) : (
+                          <div className={styles.avatarPlaceholder}></div>
+                        )}
                       </div>
                       <span className={styles.memberName}>{member.name}</span>
                       {member.isRemovable && (
@@ -165,17 +249,28 @@ const GroupModal = ({ isOpen, onClose, onCreateGroup }: GroupProps) => {
           </div>
         </div>
 
-        {/* 그룹 생성 버튼 */}
+        {/* 그룹 수정 버튼 */}
         <div className={styles.modalFooter}>
           <button
             className={styles.createButton}
-            onClick={handleCreateGroup}
-            disabled={!groupName.trim()}
+            onClick={handleUpdateTeam}
+            disabled={!groupName.trim() || loading}
           >
-            그룹 생성
+            {loading ? "로딩 중..." : "그룹 수정"}
           </button>
         </div>
       </div>
+
+      {/* 확인 모달 */}
+      <ConfirmModal
+        isOpen={confirmOpen}
+        title="팀 탈퇴"
+        message="정말 탈퇴하시겠어요? 이 작업은 되돌릴 수 없어요."
+        confirmText="탈퇴하기"
+        cancelText="취소"
+        onConfirm={confirmLeave}
+        onCancel={cancelLeave}
+      />
     </div>
   );
 };

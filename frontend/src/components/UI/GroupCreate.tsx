@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { KeyboardEvent } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../../styles/Group.module.scss";
 import {
   plus_circle,
@@ -6,38 +8,85 @@ import {
   rectangle_radius_10,
   rectangle_large,
 } from "../../assets";
+import {
+  searchMemberByExactNickname,
+  getMemberById,
+} from "../../api/memberApi";
+import type { MemberResponseDto } from "../../types/member";
+import { getCurrentMemberId } from "../../utils/auth";
+import { createTeam } from "../../api/groupApi";
+import type { TeamCreateRequestDto } from "../../types/group";
+import type {
+  GroupCreateProps,
+  EditableMemberItem as MemberItem,
+} from "../../types/groupModals";
 
-interface GroupProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onCreateGroup: (groupName: string, members: string[]) => void;
-}
-
-interface Member {
-  id: string;
-  name: string;
-  avatar?: string;
-  isRemovable: boolean;
-}
-
-const GroupModal = ({ isOpen, onClose, onCreateGroup }: GroupProps) => {
+const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
   const [groupName, setGroupName] = useState("");
   const [inviteInput, setInviteInput] = useState("");
-  const [members, setMembers] = useState<Member[]>([
-    { id: "1", name: "나옹", isRemovable: false },
-    { id: "2", name: "user1", isRemovable: true },
-    { id: "3", name: "user2", isRemovable: true },
-  ]);
+  const [members, setMembers] = useState<MemberItem[]>([]);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleAddMember = () => {
-    if (inviteInput.trim()) {
-      const newMember: Member = {
-        id: Date.now().toString(),
-        name: inviteInput.trim(),
+  // 모달이 열릴 때 현재 로그인 사용자로 초기 멤버 세팅
+  useEffect(() => {
+    if (!isOpen) return;
+    const initializeSelf = async () => {
+      const currentId = getCurrentMemberId();
+      if (!currentId) {
+        setMembers([{ id: "me", name: "나", isRemovable: false }]);
+        setInviteInput("");
+        return;
+      }
+      try {
+        const me = await getMemberById(currentId);
+        setMembers([
+          {
+            id: me.id,
+            name: me.nickname,
+            avatar: me.profileImg,
+            isRemovable: false,
+          },
+        ]);
+      } catch {
+        // 조회 실패 시 기본 표시
+        setMembers([{ id: currentId, name: "나", isRemovable: false }]);
+      } finally {
+        setInviteInput("");
+      }
+    };
+    initializeSelf();
+  }, [isOpen]);
+
+  const handleAddMember = async () => {
+    const nickname = inviteInput.trim();
+    if (!nickname) return;
+
+    try {
+      const found: MemberResponseDto | null = await searchMemberByExactNickname(
+        nickname
+      );
+      if (!found) return;
+
+      // 중복 방지 (이미 추가된 경우 무시)
+      const alreadyExists = members.some(
+        (m) => m.id === found.id || m.name === found.nickname
+      );
+      if (alreadyExists) {
+        setInviteInput("");
+        return;
+      }
+
+      const newMember: MemberItem = {
+        id: found.id,
+        name: found.nickname,
+        avatar: found.profileImg,
         isRemovable: true,
       };
-      setMembers([...members, newMember]);
+      setMembers((prev) => [...prev, newMember]);
       setInviteInput("");
+    } catch {
+      console.error("멤버 검색 실패");
     }
   };
 
@@ -45,19 +94,55 @@ const GroupModal = ({ isOpen, onClose, onCreateGroup }: GroupProps) => {
     setMembers(members.filter((member) => member.id !== memberId));
   };
 
-  const handleCreateGroup = () => {
-    if (groupName.trim()) {
-      onCreateGroup(
-        groupName,
-        members.map((m) => m.name)
-      );
+  const handleCreateGroup = async () => {
+    const name = groupName.trim();
+    if (!name) return;
+
+    try {
+      // 인증 체크: 토큰/회원 식별자 없으면 중단
+      const currentId = getCurrentMemberId();
+      if (!currentId) {
+        alert("로그인이 필요합니다. 다시 로그인해주세요.");
+        return;
+      }
+
+      // 요청 본문: 팀명 + 초대 닉네임 목록(본인은 서버에서 자동 포함)
+      const inviteNicknames = members
+        .filter((m) => m.isRemovable) // 본인 제외
+        .map((m) => m.name);
+
+      const payload: TeamCreateRequestDto = {
+        teamName: name,
+        inviteNicknames,
+      };
+
+      await createTeam(payload);
+
+      // 성공 처리
       setGroupName("");
-      setMembers([{ id: "1", name: "나옹", isRemovable: false }]);
+      setMembers([
+        {
+          id: currentId ?? "me",
+          name: members.find((m) => !m.isRemovable)?.name || "나",
+          avatar: members.find((m) => !m.isRemovable)?.avatar,
+          isRemovable: false,
+        },
+      ]);
       onClose();
+      if (location.pathname === "/groups") {
+        // 현재 목록 화면이면 즉시 새로고침
+        navigate(0);
+      } else {
+        // 목록 화면으로 이동
+        navigate("/groups", { replace: true });
+      }
+    } catch {
+      console.error("팀 생성 실패");
+      alert("팀 생성에 실패했어요. 잠시 후 다시 시도해주세요.");
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleAddMember();
     }
@@ -112,7 +197,7 @@ const GroupModal = ({ isOpen, onClose, onCreateGroup }: GroupProps) => {
                     type="text"
                     value={inviteInput}
                     onChange={(e) => setInviteInput(e.target.value)}
-                    onKeyPress={handleKeyPress}
+                    onKeyDown={handleKeyDown}
                     className={styles.inviteInput}
                     placeholder="초대할 닉네임을 작성해주세요"
                     style={{
@@ -145,8 +230,15 @@ const GroupModal = ({ isOpen, onClose, onCreateGroup }: GroupProps) => {
                   {members.map((member) => (
                     <div key={member.id} className={styles.memberItem}>
                       <div className={styles.memberAvatar}>
-                        {/* 기본 아바타 이미지 */}
-                        <div className={styles.avatarPlaceholder}></div>
+                        {member.avatar ? (
+                          <img
+                            src={member.avatar}
+                            alt={member.name}
+                            className={styles.avatarImage}
+                          />
+                        ) : (
+                          <div className={styles.avatarPlaceholder}></div>
+                        )}
                       </div>
                       <span className={styles.memberName}>{member.name}</span>
                       {member.isRemovable && (
