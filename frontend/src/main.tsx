@@ -4,6 +4,8 @@ import "./styles/index.scss";
 import App from "./App.tsx";
 import Login from "./pages/Login.tsx";
 import Home from "./pages/Home.tsx";
+import NickName from "./pages/NickName.tsx";
+import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import QuizDate from "./pages/Quiz/QuizDate.tsx";
 import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
 import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
+        path: "login/kakao/callback",
+        element: <Login />,
+      },
+      {
+        path: "nickname",
+        element: <NickName />,
+      },
+      {
         path: "home",
         element: <Home />,
       },
@@ -29,5 +39,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={router} />
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );
