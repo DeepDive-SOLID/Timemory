@@ -50,3 +50,10 @@ export { default as group_tab } from "./icons/group_tab.svg";
 export { default as home_tab } from "./icons/home_tab.svg";
 export { default as mypage_tab } from "./icons/mypage_tab.svg";
 export { default as capsule_tab } from "./icons/capsule_tab.svg";
+export { default as mypage_active } from "./icons/mypage_active.svg";
+export { default as home_active } from "./icons/home_active.svg";
+export { default as group_active } from "./icons/group_active.svg";
+export { default as capsule_active } from "./icons/capsule_active.svg";
+
+// Input Box Line
+export { default as input_box_line } from "./images/input_box_line.svg";
