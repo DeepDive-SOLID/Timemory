@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import style from "../../../styles/MapSearch.module.scss";
 import { search } from "../../../assets/index";
-import { kakao_logo } from "../../../assets/index";
+import { kakao_logo_white } from "../../../assets/index";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../store";
 import { getAddressForInput } from "./geocoder";
@@ -30,9 +30,9 @@ const MapSearch = () => {
   return searchType === "search" ? (
     <div className={style.searchBox}>
       <div className={style.searchLogo}>
-        <img src={kakao_logo} alt='로고' />
+        <img src={kakao_logo_white} alt='로고' />
       </div>
-      <input className={style.input} type='text' onChange={(e) => inputEvent(e)} onKeyDown={(e) => keyEvent(e)} />
+      <input className={style.input} type='text' onChange={(e) => inputEvent(e)} onKeyDown={(e) => keyEvent(e)} placeholder='원하는 주소를 검색하세요 !' />
       <button className={style.button}>
         <img src={search} alt='검색 버튼' onClick={() => submitEvent()} />
       </button>

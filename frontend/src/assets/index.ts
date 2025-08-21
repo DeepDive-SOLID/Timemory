@@ -8,6 +8,7 @@ export { default as bell } from "./icons/bell.svg";
 export { default as calendar } from "./icons/calendar.svg";
 export { default as camera } from "./icons/camera.svg";
 export { default as kakao_logo } from "./icons/kakao_logo.svg";
+export { default as kakao_logo_white } from "./icons/kakao_logo_white.svg";
 export { default as lightbulb } from "./icons/lightbulb.svg";
 export { default as lock } from "./icons/lock.svg";
 export { default as map_pin } from "./icons/map_pin.svg";
