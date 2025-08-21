@@ -8,6 +8,8 @@ import LocationCapsule from "./pages/LocationCapsule.tsx";
 import SearchLocation from "./pages/SearchLocation.tsx";
 import { Provider } from "react-redux";
 import index from "./store/index.ts";
+import NickName from "./pages/NickName.tsx";
+import { AuthProvider } from "./contexts/AuthProvider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +19,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Login />,
+      },
+      {
+        path: "login/kakao/callback",
+        element: <Login />,
+      },
+      {
+        path: "nickname",
+        element: <NickName />,
       },
       {
         path: "home",
@@ -35,7 +45,9 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <Provider store={index}>
-    <RouterProvider router={router} />
-  </Provider>
+  <AuthProvider>
+    <Provider store={index}>
+      <RouterProvider router={router} />
+    </Provider>
+  </AuthProvider>
 );
