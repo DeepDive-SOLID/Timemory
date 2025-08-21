@@ -1,0 +1,78 @@
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  display: grid;
+  gap: 10px;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+.track {
+  width: max-content;
+  will-change: transform;
+  animation: scroll var(--dur, 18s) linear infinite;
+}
+
+.reverse {
+  animation-name: scroll-rev;
+}
+
+.content {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #5497ff;
+  color: #f4faff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.pop {
+  animation: pop 280ms ease-out both;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  } /* 복제본 절반만큼 이동 */
+}
+
+@keyframes scroll-rev {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

@@ -6,6 +6,9 @@ import Login from "./pages/Login.tsx";
 import Home from "./pages/Home.tsx";
 import NickName from "./pages/NickName.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
+import QuizDate from "./pages/Quiz/QuizDate.tsx";
+import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
+import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
 
 const router = createBrowserRouter([
   {
@@ -28,12 +31,15 @@ const router = createBrowserRouter([
         path: "home",
         element: <Home />,
       },
+      { path: "date", element: <QuizDate /> },
+      { path: "location", element: <QuizLocation /> },
+      { path: "condition", element: <QuizCondition /> },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );
