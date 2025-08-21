@@ -9,6 +9,8 @@ import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import QuizDate from "./pages/Quiz/QuizDate.tsx";
 import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
 import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
+import OpenList from "./pages/OpenList.tsx";
+import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,11 @@ const router = createBrowserRouter([
       { path: "date", element: <QuizDate /> },
       { path: "location", element: <QuizLocation /> },
       { path: "condition", element: <QuizCondition /> },
+      { path: "openquiz", element: <QuizOpen /> },
+      {
+        path: "openlist",
+        element: <OpenList />,
+      },
     ],
   },
 ]);
