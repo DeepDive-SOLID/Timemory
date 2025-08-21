@@ -11,13 +11,13 @@ import static solid.backend.entity.QMember.member;
 import static solid.backend.entity.QTeamMember.teamMember;
 
 /**
- * 팀 QueryDSL 구현체
- * TeamRepositoryCustom 인터페이스 구현
+ * 팀 관련 QueryDSL 전용 리포지토리
+ * 복잡한 쿼리 및 조인 연산을 처리
  * @author Timemory Team
  */
 @Repository
 @RequiredArgsConstructor
-public class TeamRepositoryImpl implements TeamRepositoryCustom {
+public class TeamQueryRepository {
     
     private final JPAQueryFactory queryFactory;
     
@@ -27,7 +27,6 @@ public class TeamRepositoryImpl implements TeamRepositoryCustom {
      * @param teamId 팀 ID
      * @return 팀 멤버 목록
      */
-    @Override
     public List<Member> findMembersByTeamId(Integer teamId) {
         return queryFactory
                 .select(member)
@@ -43,7 +42,6 @@ public class TeamRepositoryImpl implements TeamRepositoryCustom {
      * @param teamId 팀 ID
      * @return 팀 멤버 수 (없으면 0 반환)
      */
-    @Override
     public long countMembersByTeamId(Integer teamId) {
         Long count = queryFactory
                 .select(teamMember.count())

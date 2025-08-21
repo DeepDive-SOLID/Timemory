@@ -11,13 +11,13 @@ import static solid.backend.entity.QTeam.team;
 import static solid.backend.entity.QTeamMember.teamMember;
 
 /**
- * 회원 QueryDSL 구현체
- * MemberRepositoryCustom 인터페이스 구현
+ * 회원 관련 QueryDSL 전용 리포지토리
+ * 복잡한 쿼리 및 조인 연산을 처리
  * @author Timemory Team
  */
 @Repository
 @RequiredArgsConstructor
-public class MemberRepositoryImpl implements MemberRepositoryCustom {
+public class MemberQueryRepository {
     
     private final JPAQueryFactory queryFactory;
     
@@ -27,7 +27,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
      * @param memberId 카카오 회원 ID
      * @return 회원이 속한 팀 목록
      */
-    @Override
     public List<Team> findTeamsByMemberId(String memberId) {
         return queryFactory
                 .select(team)

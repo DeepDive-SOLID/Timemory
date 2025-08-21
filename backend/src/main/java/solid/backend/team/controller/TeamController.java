@@ -78,24 +78,22 @@ public class TeamController {
     }
     
     /**
-     * 팀 탈퇴
-     * - 본인만 탈퇴 가능 (그룹장 개념 없음)
+     * 팀 탈퇴 (본인만 가능)
      * - 팀 멤버가 0명이 되면 팀 자동 삭제
+     * - JWT 토큰에서 추출한 회원 ID로 탈퇴 처리
      * @param teamId 팀 ID
-     * @param memberId 탈퇴할 회원 ID
      * @param principal JWT 인증 정보
      * @return 204 No Content
      */
-    @DeleteMapping("/{teamId}/members/{memberId}")
+    @DeleteMapping("/{teamId}/leave")
     public ResponseEntity<Void> leaveTeam(
             @PathVariable("teamId") Integer teamId,
-            @PathVariable("memberId") String memberId,
             Principal principal) {
         
-        // JWT에서 인증된 사용자 ID 추출
-        String requesterId = principal.getName();
+        // JWT에서 회원 ID 추출 (본인만 탈퇴 가능)
+        String memberId = principal.getName();
         
-        teamService.leaveTeam(teamId, memberId, requesterId);
+        teamService.leaveTeam(teamId, memberId, memberId);
         return ResponseEntity.noContent().build();
     }
     
@@ -134,12 +132,14 @@ public class TeamController {
     }
     
     /**
-     * 특정 회원이 속한 팀 목록 조회 (상세 정보 포함)
-     * @param memberId 카카오 회원 ID
+     * 내가 속한 팀 목록 조회 (상세 정보 포함)
+     * JWT 토큰에서 추출한 회원 ID로 조회
+     * @param principal JWT 인증 정보
      * @return 회원이 속한 팀 목록 (멤버 수, 멤버 프로필 포함)
      */
-    @GetMapping("/member/{memberId}")
-    public ResponseEntity<List<TeamResponseDto>> getMemberTeams(@PathVariable("memberId") String memberId) {
+    @GetMapping("/my-teams")
+    public ResponseEntity<List<TeamResponseDto>> getMyTeams(Principal principal) {
+        String memberId = principal.getName();
         List<TeamResponseDto> response = teamService.getMemberTeams(memberId);
         return ResponseEntity.ok(response);
     }

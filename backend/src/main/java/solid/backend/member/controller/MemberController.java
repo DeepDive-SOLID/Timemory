@@ -7,6 +7,7 @@ import solid.backend.member.dto.MemberResponseDto;
 import solid.backend.member.service.MemberService;
 import solid.backend.team.dto.TeamResponseDto;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -21,23 +22,27 @@ public class MemberController {
     private final MemberService memberService;
     
     /**
-     * 회원 정보 조회
-     * @param memberId 카카오 회원 ID
+     * 내 프로필 조회
+     * JWT 토큰에서 추출한 회원 ID로 조회
+     * @param principal JWT 인증 정보
      * @return 회원 정보
      */
-    @GetMapping("/{memberId}")
-    public ResponseEntity<MemberResponseDto> getMember(@PathVariable("memberId") String memberId) {
+    @GetMapping("/me")
+    public ResponseEntity<MemberResponseDto> getMyProfile(Principal principal) {
+        String memberId = principal.getName();
         MemberResponseDto response = memberService.getMember(memberId);
         return ResponseEntity.ok(response);
     }
     
     /**
-     * 회원이 속한 팀 목록 조회 (상세 정보 포함)
-     * @param memberId 카카오 회원 ID
+     * 내가 속한 팀 목록 조회 (상세 정보 포함)
+     * JWT 토큰에서 추출한 회원 ID로 조회
+     * @param principal JWT 인증 정보
      * @return 팀 목록 (멤버 수, 멤버 프로필 포함)
      */
-    @GetMapping("/{memberId}/teams")
-    public ResponseEntity<List<TeamResponseDto>> getMemberTeams(@PathVariable("memberId") String memberId) {
+    @GetMapping("/me/teams")
+    public ResponseEntity<List<TeamResponseDto>> getMyTeams(Principal principal) {
+        String memberId = principal.getName();
         List<TeamResponseDto> teams = memberService.getMemberTeams(memberId);
         return ResponseEntity.ok(teams);
     }
