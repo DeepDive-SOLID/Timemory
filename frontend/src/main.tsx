@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         element: <LocationCapsule />,
       },
       {
-        path: "test",
+        path: "map",
         element: <SearchLocation />,
       },
     ],

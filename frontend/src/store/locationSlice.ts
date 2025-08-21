@@ -29,10 +29,10 @@ const locationSlice = createSlice({
             state.building_name = action.payload;
         },
         setLat: (state, action: PayloadAction<number>) => {
-            state.x = action.payload;
+            state.y = action.payload;
         },
         setLng: (state, action: PayloadAction<number>) => {
-            state.y = action.payload;
+            state.x = action.payload;
         },
         setCheck: (state, action: PayloadAction<boolean>) => {
             state.check = action.payload;
