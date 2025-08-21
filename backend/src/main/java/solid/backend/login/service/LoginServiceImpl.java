@@ -50,6 +50,7 @@ public class LoginServiceImpl implements LoginService {
         tokenParams.add("client_id", loginApiDto.getKakao().getClientId());
         tokenParams.add("redirect_uri", "http://localhost:5173/login/kakao/callback");
         tokenParams.add("code", code);
+        tokenParams.add("client_secret", loginApiDto.getKakao().getClientSecret());
 
         HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(tokenParams, tokenHeaders);
         ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(kakaoTokenUrl, tokenRequest, Map.class);
