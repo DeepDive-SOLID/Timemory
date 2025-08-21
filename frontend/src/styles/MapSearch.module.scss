@@ -1,0 +1,55 @@
+@mixin all($position) {
+    position: $position;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@mixin box {
+    z-index: 99;
+    max-width: 400px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 1px 2px 5px gray;
+    left: 50%;
+    transform: translate(-50%, 20%);
+}
+
+.searchBox {
+    @include all(absolute);
+    @include box;
+}
+.pinBox {
+    @include all(absolute);
+    @include box;
+    padding: 15px 60px;
+    background-color: white;
+    font-size: 13px;
+}
+.searchLogo {
+    @include all(absolute);
+    left: 0;
+    background-color: #5497ff;
+    z-index: 99;
+    width: 50px;
+    height: 100%;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.input {
+    border: none;
+    position: relative;
+    width: 100%;
+    padding: 15px 60px;
+    border-radius: 8px;
+}
+
+.button {
+    position: absolute;
+    border: none;
+    background-color: white;
+    right: 1px;
+    border-radius: 8px;
+    height: 90%;
+    cursor: pointer;
+}
