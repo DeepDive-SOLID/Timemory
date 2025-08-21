@@ -15,7 +15,7 @@ const SearchInfo = () => {
   const clickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(setCheck(false));
     dispatch(setSearchType("search"));
-    if (e.currentTarget.innerText === "위치 결정") {
+    if (e.currentTarget.id === "submit") {
       // 프론트 합치면 변경
       navigate("/capsuleMap");
     }
@@ -30,12 +30,12 @@ const SearchInfo = () => {
           </div>
           <div className={style.address}>{address}</div>
           <div>
-            <button className={style.button} onClick={(e) => clickEvent(e)}>
+            <button className={style.button} id='submit' onClick={(e) => clickEvent(e)}>
               위치 결정
             </button>
           </div>
           {/* 나중에 x svg 가져오면 변경 */}
-          <button className={style.cancel} onClick={(e) => clickEvent(e)}>
+          <button className={style.cancel} id='cancel' onClick={(e) => clickEvent(e)}>
             X
           </button>
         </div>
