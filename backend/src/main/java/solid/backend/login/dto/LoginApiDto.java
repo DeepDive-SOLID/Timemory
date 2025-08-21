@@ -17,5 +17,6 @@ public class LoginApiDto {
     @Setter
     public static class Kakao {
         private String clientId;
+        private String clientSecret;
     }
 }
