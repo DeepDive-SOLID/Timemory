@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import solid.backend.Jwt.AccessToken;
 import solid.backend.Jwt.JwtUtil;
+import solid.backend.common.FileManager;
 import solid.backend.entity.Member;
 import solid.backend.jpaRepository.MemberRepository;
 import solid.backend.login.dto.LoginApiDto;
@@ -28,6 +30,7 @@ public class LoginServiceImpl implements LoginService {
     private final LoginApiDto loginApiDto;
     private final MemberRepository loginRepository;
     private final JwtUtil jwtUtil;
+    private final FileManager fileManager;
 
     /**
      * 설명 : 카카오 로그인
@@ -107,9 +110,12 @@ public class LoginServiceImpl implements LoginService {
         final String email = (String) kakaoAccount.get("email");
 
         // 프로필 이미지
-        final String newProfileImage = (profile != null)
-                ? (String) profile.get("profile_image_url")
-                : null;
+        String profileImage = null;
+        if (profile != null && profile.get("profile_image_url") != null) {
+            MultipartFile kakaoImage = fileManager.toMultipartFile((String) profile.get("profile_image_url"));
+            profileImage = fileManager.addFile(kakaoImage, "profile");
+        }
+        final String newProfileImage = profileImage;
 
         // 3. 회원 정보 확인 및 없으면 등록
         Member member = loginRepository.findById(id)
