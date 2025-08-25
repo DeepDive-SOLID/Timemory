@@ -131,7 +131,7 @@ public class FileManager {
                 }
 
                 // 3. MultipartFile 변환 후 반환
-                return new MockMultipartFile(
+                return new SimpleMultipartFile(
                         "file",
                         extension,
                         "image/" + extension.replace(".", ""),

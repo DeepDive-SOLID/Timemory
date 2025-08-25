@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class MockMultipartFile implements MultipartFile {
+public class SimpleMultipartFile implements MultipartFile {
 
     private String name;
     private String originalFilename;
