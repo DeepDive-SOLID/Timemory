@@ -9,6 +9,8 @@ import solid.backend.config.FileStorageConfig;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.UUID;
 
 @Slf4j
@@ -40,8 +42,8 @@ public class FileManager {
             }
 
             String lowerName = originalName.toLowerCase();
-            if (!lowerName.endsWith(".jpg") && !lowerName.endsWith(".png")) {
-                throw new IllegalArgumentException("허용되지 않는 파일 형식입니다. (jpg, png만 가능)");
+            if (!lowerName.endsWith(".jpg") && !lowerName.endsWith(".png") && !lowerName.endsWith(".jpeg")) {
+                throw new IllegalArgumentException("허용되지 않는 파일 형식입니다. (jpg, png, jpeg만 가능)");
             }
 
             // 파일명 길이 제한
@@ -104,4 +106,41 @@ public class FileManager {
         String processedUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("/solid").toUriString();
         return processedUrl + fileImgUrl;
     }
+
+    /**
+     * 설명 : 카카오 이미지 다운로드 후 MultipartFile 변환
+     * @param imageUrl
+     * @return MultipartFile
+     */
+    public MultipartFile toMultipartFile(String imageUrl) {
+        try {
+            // 1. 카카오 이미지 다운로드
+            URL url = new URL(imageUrl);
+            try (InputStream inputStream = url.openStream()) {
+                byte[] bytes = inputStream.readAllBytes();
+
+                // 2. 확장자 추출
+                String lowerUrl = imageUrl.toLowerCase();
+                String extension = ".jpg";
+                if (lowerUrl.endsWith(".png")) {
+                    extension = ".png";
+                } else if (lowerUrl.endsWith(".jpeg")) {
+                    extension = ".jpeg";
+                } else if (lowerUrl.endsWith(".jpg")) {
+                    extension = ".jpg";
+                }
+
+                // 3. MultipartFile 변환 후 반환
+                return new MockMultipartFile(
+                        "file",
+                        extension,
+                        "image/" + extension.replace(".", ""),
+                        bytes
+                );
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("카카오 프로필 이미지 변환 실패: " + e.getMessage(), e);
+        }
+    }
+
 }
