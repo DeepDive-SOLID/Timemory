@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import solid.backend.common.FileManager;
 import solid.backend.entity.Member;
 import solid.backend.entity.Team;
 import solid.backend.entity.TeamMember;
@@ -39,6 +40,7 @@ public class TeamServiceImpl implements TeamService {
     private final MemberRepository memberRepository;
     private final TeamQueryRepository teamQueryRepository;
     private final MemberQueryRepository memberQueryRepository;
+    private final FileManager fileManager;
     
     /**
      * 새로운 팀 생성 및 멤버 초대
@@ -194,7 +196,7 @@ public class TeamServiceImpl implements TeamService {
                 teamId, nickname, member.getMemberId());
         
         // 추가된 멤버의 프로필 정보 반환
-        return MemberProfileDto.from(member);
+        return MemberProfileDto.from(member, fileManager);
     }
     
     /**
@@ -251,7 +253,7 @@ public class TeamServiceImpl implements TeamService {
         // 팀 멤버 목록 조회
         List<Member> members = teamQueryRepository.findMembersByTeamId(teamId);
         List<MemberProfileDto> memberProfiles = members.stream()
-                .map(MemberProfileDto::from)
+                .map(member -> MemberProfileDto.from(member, fileManager))
                 .collect(Collectors.toList());
         
         return TeamResponseDto.builder()

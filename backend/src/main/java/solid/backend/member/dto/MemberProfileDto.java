@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import solid.backend.common.FileManager;
 import solid.backend.entity.Member;
 
 /**
@@ -35,11 +36,11 @@ public class MemberProfileDto {
     /**
      * Entity -> DTO 변환
      */
-    public static MemberProfileDto from(Member member) {
+    public static MemberProfileDto from(Member member, FileManager fileManager) {
         return MemberProfileDto.builder()
                 .memberId(member.getMemberId())
                 .nickname(member.getMemberNickname())
-                .profileImg(member.getMemberProfile())
+                .profileImg(fileManager.getFileUrl(member.getMemberProfile()))
                 .build();
     }
 }
