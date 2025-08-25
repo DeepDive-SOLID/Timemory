@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import NoCapsule from "../components/Domain/Home/NoCapsule";
 import TabBar from "../components/APP/TabBar";
+import HasCapsule from "../components/Domain/Home/HasCapsule";
 
+// api 요청 후 수정 예정
 const Home = () => {
   return (
     <div>
-      홈화면 입니다
-      <Link to="/">로그인 페이지 이동</Link>
+      {true ? <HasCapsule /> : <NoCapsule />}
       <TabBar />
     </div>
   );

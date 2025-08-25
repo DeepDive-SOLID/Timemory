@@ -1,0 +1,52 @@
+@mixin box($justify) {
+    display: flex;
+    align-items: center;
+    justify-content: $justify;
+}
+
+.titleBox {
+    @include box(space-between);
+    padding-top: 40px;
+    position: relative;
+    width: 100%;
+    h2 {
+        margin-left: 10px;
+    }
+    img {
+        padding: 10px;
+        cursor: pointer;
+    }
+}
+
+.imgBox {
+    @include box(center);
+    img {
+        width: 100%;
+    }
+}
+
+.buttonBox {
+    @include box(center);
+}
+.button {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    border: none;
+    background-color: #5497ff;
+    color: white;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.noCapsuleImg {
+    img {
+        cursor: pointer;
+        transition: all 0.2s linear;
+    }
+    img:hover {
+        transform: scale(1.1);
+    }
+}
+

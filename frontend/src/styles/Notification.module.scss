@@ -1,0 +1,13 @@
+.wrapper {
+    background-color: rgba(#c3c3c3, 0.73);
+    border-radius: 100%;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(-20px, 95px);
+}
