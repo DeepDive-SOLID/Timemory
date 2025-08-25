@@ -33,7 +33,14 @@ public class OpenServiceImpl implements OpenService {
      */
     @Override
     public List<OpenListDto> getOpenList() {
-        return openQueryRepository.getOpenList();
+        List<OpenListDto> list = openQueryRepository.getOpenList();
+        list.forEach(dto -> {
+            List<String> processedProfiles = dto.getMemberProfiles().stream()
+                    .map(fileManager::getFileUrl)
+                    .toList();
+            dto.setMemberProfiles(processedProfiles);
+        });
+        return list;
     }
 
     /**
