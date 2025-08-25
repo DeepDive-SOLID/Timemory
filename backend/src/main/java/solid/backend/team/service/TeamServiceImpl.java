@@ -57,6 +57,11 @@ public class TeamServiceImpl implements TeamService {
         Member creator = memberRepository.findById(creatorId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         
+        // 기념일용 팀 이름 사용 방지
+        if (requestDto.getTeamName() != null && requestDto.getTeamName().startsWith("TIME_CAPSULE_")) {
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
+        }
+        
         // 팀 생성
         Team team = Team.builder()
                 .teamName(requestDto.getTeamName())
@@ -90,12 +95,12 @@ public class TeamServiceImpl implements TeamService {
     }
     
     /**
-     * 전체 팀 목록 조회
-     * @return 전체 팀 목록
+     * 전체 팀 목록 조회 (기념일용 팀 제외)
+     * @return 일반 팀 목록
      */
     @Override
     public List<TeamResponseDto> getAllTeams() {
-        List<Team> teams = teamRepository.findAll();
+        List<Team> teams = teamRepository.findAllNonAnniversaryTeams();
         return teams.stream()
                 .map(team -> getTeamDetail(team.getTeamId()))
                 .collect(Collectors.toList());
@@ -109,7 +114,11 @@ public class TeamServiceImpl implements TeamService {
      */
     @Override
     public List<TeamMemberDto> getTeamMembers(Integer teamId) {
-        if (!teamRepository.existsById(teamId)) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
+        
+        // 기념일용 팀 접근 차단
+        if (team.getTeamName() != null && team.getTeamName().startsWith("TIME_CAPSULE_")) {
             throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
         }
         
@@ -139,7 +148,11 @@ public class TeamServiceImpl implements TeamService {
         }
         
         // 팀 존재 확인
-        if (!teamRepository.existsById(teamId)) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
+        
+        // 기념일용 팀 접근 차단
+        if (team.getTeamName() != null && team.getTeamName().startsWith("TIME_CAPSULE_")) {
             throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
         }
         
@@ -173,6 +186,11 @@ public class TeamServiceImpl implements TeamService {
         // 팀 존재 확인
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
+        
+        // 기념일용 팀 접근 차단
+        if (team.getTeamName() != null && team.getTeamName().startsWith("TIME_CAPSULE_")) {
+            throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
+        }
         
         // 닉네임으로 멤버 찾기
         Member member = memberRepository.findByMemberNickname(nickname)
@@ -249,6 +267,11 @@ public class TeamServiceImpl implements TeamService {
     public TeamResponseDto getTeamDetail(Integer teamId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
+        
+        // 기념일용 팀 접근 차단
+        if (team.getTeamName() != null && team.getTeamName().startsWith("TIME_CAPSULE_")) {
+            throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
+        }
         
         // 팀 멤버 목록 조회
         List<Member> members = teamQueryRepository.findMembersByTeamId(teamId);
