@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import solid.backend.common.FileManager;
 import solid.backend.entity.Member;
 import solid.backend.entity.Team;
 import solid.backend.exception.CustomException;
@@ -33,6 +34,7 @@ public class MemberServiceImpl implements MemberService {
     private final TeamRepository teamRepository;
     private final MemberQueryRepository memberQueryRepository;
     private final TeamQueryRepository teamQueryRepository;
+    private final FileManager fileManager;
     
     /**
      * 회원 정보 조회
@@ -44,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberResponseDto getMember(String memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        return MemberResponseDto.from(member);
+        return MemberResponseDto.from(member, fileManager);
     }
     
     /**
@@ -63,7 +65,7 @@ public class MemberServiceImpl implements MemberService {
                 .map(team -> {
                     List<Member> members = teamQueryRepository.findMembersByTeamId(team.getTeamId());
                     List<MemberProfileDto> memberProfiles = members.stream()
-                            .map(MemberProfileDto::from)
+                            .map(member -> MemberProfileDto.from(member, fileManager))
                             .collect(Collectors.toList());
                     
                     return TeamResponseDto.builder()
@@ -86,6 +88,6 @@ public class MemberServiceImpl implements MemberService {
     public MemberResponseDto searchMemberByNickname(String nickname) {
         Member member = memberRepository.findByMemberNickname(nickname)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        return MemberResponseDto.from(member);
+        return MemberResponseDto.from(member, fileManager);
     }
 }

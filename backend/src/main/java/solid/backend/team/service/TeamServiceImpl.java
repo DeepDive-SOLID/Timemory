@@ -115,7 +115,7 @@ public class TeamServiceImpl implements TeamService {
         
         List<TeamMember> teamMembers = teamMemberRepository.findByTeamTeamId(teamId);
         return teamMembers.stream()
-                .map(TeamMemberDto::from)
+                .map(teamMember -> TeamMemberDto.from(teamMember, fileManager))
                 .collect(Collectors.toList());
     }
     
