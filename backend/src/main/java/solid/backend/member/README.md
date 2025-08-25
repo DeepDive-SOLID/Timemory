@@ -5,29 +5,29 @@
 ### Controller
 - **MemberController.java**: 회원 관련 API 엔드포인트 처리
 ### Service
-- **MemberService.java**: 회원 관련 비즈니스 로직 처리
+- **MemberService.java**: 회원 관련 비즈니스 로직 인터페이스
+- **MemberServiceImpl.java**: MemberService 구현체
 ### DTO
 - **MemberResponseDto.java**: 회원 정보 응답 DTO
 - **MemberProfileDto.java**: 회원 프로필 간단 정보 DTO
 
 ### Repository
-- **MemberRepositoryCustom.java**: QueryDSL 커스텀 인터페이스
-- **MemberRepositoryImpl.java**: MemberRepositoryCustom 구현체
+- **MemberQueryRepository.java**: QueryDSL을 사용한 복잡한 쿼리 처리
 
 
 ## API 목록
 
-### [회원 정보 조회]
+### [내 프로필 조회]
 - **HTTP method**: GET
-- **HTTP request URL**: /api/members/{memberId}
-- **Path Variable**: memberId (카카오 회원 ID)
+- **HTTP request URL**: /api/members/me
+- **Authorization**: Bearer Token (JWT)
 - **Return**: ResponseEntity<MemberResponseDto>
 
 
-### [회원이 속한 팀 목록 조회]
+### [내가 속한 팀 목록 조회]
 - **HTTP method**: GET
-- **HTTP request URL**: /api/members/{memberId}/teams
-- **Path Variable**: memberId (카카오 회원 ID)
+- **HTTP request URL**: /api/members/me/teams
+- **Authorization**: Bearer Token (JWT)
 - **Return**: ResponseEntity<List<TeamResponseDto>>
 
 ### [닉네임으로 회원 검색 (정확히 일치)]
@@ -35,12 +35,6 @@
 - **HTTP request URL**: /api/members/search/exact
 - **Request Param**: nickname (검색할 닉네임)
 - **Return**: ResponseEntity<MemberResponseDto>
-
-### [닉네임으로 회원 검색 (부분 일치)]
-- **HTTP method**: GET
-- **HTTP request URL**: /api/members/search
-- **Request Param**: keyword (검색 키워드)
-- **Return**: ResponseEntity<List<MemberResponseDto>>
 
 ## 주요 기능
 
@@ -50,7 +44,6 @@
 
 ### 2. 회원 검색
 - 닉네임 정확 일치 검색
-- 닉네임 부분 일치 검색 (키워드 포함)
 
 ### 3. 팀 연관 조회
 - 회원이 속한 모든 팀 목록 조회

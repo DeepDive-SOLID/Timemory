@@ -57,15 +57,4 @@ public class MemberController {
         MemberResponseDto response = memberService.searchMemberByNickname(nickname);
         return ResponseEntity.ok(response);
     }
-    
-    /**
-     * 닉네임으로 회원 검색 (부분 일치)
-     * @param keyword 검색 키워드
-     * @return 검색된 회원 목록
-     */
-    @GetMapping("/search")
-    public ResponseEntity<List<MemberResponseDto>> searchMembers(@RequestParam("keyword") String keyword) {
-        List<MemberResponseDto> response = memberService.searchMembersByNicknameContaining(keyword);
-        return ResponseEntity.ok(response);
-    }
 }

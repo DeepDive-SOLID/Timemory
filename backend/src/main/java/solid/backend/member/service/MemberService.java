@@ -31,11 +31,4 @@ public interface MemberService {
      * @return 회원 정보 DTO
      */
     MemberResponseDto searchMemberByNickname(String nickname);
-    
-    /**
-     * 닉네임 부분 검색으로 회원 목록 조회
-     * @param nicknameKeyword 검색 키워드
-     * @return 검색된 회원 목록
-     */
-    List<MemberResponseDto> searchMembersByNicknameContaining(String nicknameKeyword);
 }

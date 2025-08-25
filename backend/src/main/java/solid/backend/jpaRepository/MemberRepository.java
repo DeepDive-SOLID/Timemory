@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import solid.backend.entity.Member;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,12 +20,4 @@ public interface MemberRepository extends JpaRepository<Member, String> {
      * @return 회원 정보 (Optional)
      */
     Optional<Member> findByMemberNickname(String nickname);
-    
-    
-    /**
-     * 닉네임 부분 검색
-     * @param nicknameKeyword 검색 키워드
-     * @return 닉네임에 키워드를 포함하는 회원 목록
-     */
-    List<Member> findByMemberNicknameContaining(String nicknameKeyword);
 }

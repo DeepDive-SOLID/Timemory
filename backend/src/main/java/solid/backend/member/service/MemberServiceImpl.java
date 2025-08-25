@@ -88,17 +88,4 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         return MemberResponseDto.from(member);
     }
-    
-    /**
-     * 닉네임 부분 검색으로 회원 목록 조회
-     * @param nicknameKeyword 검색 키워드
-     * @return 검색된 회원 목록
-     */
-    @Override
-    public List<MemberResponseDto> searchMembersByNicknameContaining(String nicknameKeyword) {
-        List<Member> members = memberRepository.findByMemberNicknameContaining(nicknameKeyword);
-        return members.stream()
-                .map(MemberResponseDto::from)
-                .collect(Collectors.toList());
-    }
 }
