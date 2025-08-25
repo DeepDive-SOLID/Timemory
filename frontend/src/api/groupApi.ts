@@ -6,11 +6,15 @@ import type {
   TeamRequestDto,
 } from "../types/group";
 
-// 사용자의 팀 목록 조회 API
-export const getUserTeams = async (
-  memberId: string
-): Promise<TeamResponseDto[]> => {
-  const response = await api.get(`/teams/member/${memberId}`);
+// 전체 팀 목록 조회 API (인증 불필요)
+export const getAllTeams = async (): Promise<TeamResponseDto[]> => {
+  const response = await api.get(`/teams`);
+  return response.data as TeamResponseDto[];
+};
+
+// 사용자의 팀 목록 조회 API (JWT 토큰 기반)
+export const getUserTeams = async (): Promise<TeamResponseDto[]> => {
+  const response = await api.get(`/teams/my-teams`);
   return response.data as TeamResponseDto[];
 };
 
@@ -30,12 +34,9 @@ export const getTeamById = async (teamId: number): Promise<TeamResponseDto> => {
   return response.data as TeamResponseDto;
 };
 
-// 팀 탈퇴 (본인만 가능)
-export const leaveTeam = async (
-  teamId: number,
-  memberId: string
-): Promise<void> => {
-  await api.delete(`/teams/${teamId}/members/${memberId}`);
+// 팀 탈퇴 (JWT 토큰 기반, 본인만 가능)
+export const leaveTeam = async (teamId: number): Promise<void> => {
+  await api.delete(`/teams/${teamId}/leave`);
 };
 
 // 팀에 멤버 초대(닉네임으로 추가)

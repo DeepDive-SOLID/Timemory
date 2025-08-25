@@ -8,7 +8,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1002; /* TabBar(z-index: 1001) 위에 표시되도록 1002로 변경 */
 }
 
 .modal {

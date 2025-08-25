@@ -29,7 +29,6 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [pendingLeaveId, setPendingLeaveId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTeamDetail = async () => {
@@ -86,16 +85,14 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
     const currentId = getCurrentMemberId();
     if (!currentId || memberId !== currentId || !teamId) return;
 
-    setPendingLeaveId(memberId);
     setConfirmOpen(true);
   };
 
   const confirmLeave = () => {
-    if (!teamId || !pendingLeaveId) return;
-    leaveTeam(teamId, pendingLeaveId)
+    if (!teamId) return;
+    leaveTeam(teamId)
       .then(() => {
         setConfirmOpen(false);
-        setPendingLeaveId(null);
         onClose();
         if (location.pathname === "/groups") {
           navigate(0);
@@ -105,14 +102,12 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
       })
       .catch(() => {
         setConfirmOpen(false);
-        setPendingLeaveId(null);
         alert("탈퇴에 실패했어요. 잠시 후 다시 시도해주세요.");
       });
   };
 
   const cancelLeave = () => {
     setConfirmOpen(false);
-    setPendingLeaveId(null);
   };
 
   const handleUpdateTeam = async () => {

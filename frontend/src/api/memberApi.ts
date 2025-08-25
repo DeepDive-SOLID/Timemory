@@ -1,6 +1,12 @@
 import api from "./axios";
 import type { MemberResponseDto } from "../types/member";
 
+// 현재 로그인한 사용자의 프로필 정보 조회
+export const getCurrentUserProfile = async (): Promise<MemberResponseDto> => {
+  const response = await api.get(`/members/me`);
+  return response.data as MemberResponseDto;
+};
+
 // 닉네임 정확 매칭 검색
 export const searchMemberByExactNickname = async (
   nickname: string

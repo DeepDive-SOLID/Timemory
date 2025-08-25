@@ -14,11 +14,11 @@ const GroupTabs = ({ activeTab, onTabChange, onAddGroup }: GroupTabsProps) => {
         </button>
         <button
           className={`${styles.tab} ${
-            activeTab === "open" ? styles.active : ""
+            activeTab === "all" ? styles.active : ""
           }`}
-          onClick={() => onTabChange("open")}
+          onClick={() => onTabChange("all")}
         >
-          OPEN GROUP
+          ALL TEAMS
         </button>
         <button className={styles.addButton} onClick={onAddGroup}>
           <img src={plus_circle} alt="Add group" />

@@ -1,5 +1,5 @@
 export interface GroupTabsProps {
-  activeTab: "my" | "open";
-  onTabChange: (tab: "my" | "open") => void;
+  activeTab: "my" | "all";
+  onTabChange: (tab: "my" | "all") => void;
   onAddGroup?: () => void;
 }

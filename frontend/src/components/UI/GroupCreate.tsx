@@ -10,10 +10,9 @@ import {
 } from "../../assets";
 import {
   searchMemberByExactNickname,
-  getMemberById,
+  getCurrentUserProfile,
 } from "../../api/memberApi";
 import type { MemberResponseDto } from "../../types/member";
-import { getCurrentMemberId } from "../../utils/auth";
 import { createTeam } from "../../api/groupApi";
 import type { TeamCreateRequestDto } from "../../types/group";
 import type {
@@ -32,14 +31,8 @@ const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
   useEffect(() => {
     if (!isOpen) return;
     const initializeSelf = async () => {
-      const currentId = getCurrentMemberId();
-      if (!currentId) {
-        setMembers([{ id: "me", name: "나", isRemovable: false }]);
-        setInviteInput("");
-        return;
-      }
       try {
-        const me = await getMemberById(currentId);
+        const me = await getCurrentUserProfile();
         setMembers([
           {
             id: me.id,
@@ -50,7 +43,7 @@ const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
         ]);
       } catch {
         // 조회 실패 시 기본 표시
-        setMembers([{ id: currentId, name: "나", isRemovable: false }]);
+        setMembers([{ id: "me", name: "나", isRemovable: false }]);
       } finally {
         setInviteInput("");
       }
@@ -99,13 +92,6 @@ const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
     if (!name) return;
 
     try {
-      // 인증 체크: 토큰/회원 식별자 없으면 중단
-      const currentId = getCurrentMemberId();
-      if (!currentId) {
-        alert("로그인이 필요합니다. 다시 로그인해주세요.");
-        return;
-      }
-
       // 요청 본문: 팀명 + 초대 닉네임 목록(본인은 서버에서 자동 포함)
       const inviteNicknames = members
         .filter((m) => m.isRemovable) // 본인 제외
@@ -122,7 +108,7 @@ const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
       setGroupName("");
       setMembers([
         {
-          id: currentId ?? "me",
+          id: "me",
           name: members.find((m) => !m.isRemovable)?.name || "나",
           avatar: members.find((m) => !m.isRemovable)?.avatar,
           isRemovable: false,
