@@ -1,0 +1,59 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.dialog {
+  width: 88%;
+  max-width: 360px;
+  background: #fffdf7;
+  padding: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  font-family: "Pretendard", sans-serif;
+}
+
+.header {
+  padding: 16px 20px 0 20px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+}
+
+.body {
+  padding: 12px 20px 0 20px;
+  font-size: 14px;
+  color: #444;
+}
+
+.footer {
+  display: flex;
+  gap: 10px;
+  padding: 16px 20px 20px 20px;
+}
+
+.cancelButton,
+.confirmButton {
+  flex: 1;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background: #eee;
+  color: #222;
+}
+
+.confirmButton {
+  background: #e86a5a;
+  color: #fff;
+}
