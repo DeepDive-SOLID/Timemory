@@ -1,4 +1,4 @@
-### 채팅 관리 : api/mypage
+### 마이페이지 관리 : api/mypage
 - controller(컨트롤러)
   - MypageController.java
 - dto(객체정보)
