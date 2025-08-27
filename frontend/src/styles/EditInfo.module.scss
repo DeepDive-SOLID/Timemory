@@ -1,0 +1,113 @@
+.header {
+  color: #5497ff;
+  font-family: "Pretendard Variable";
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.5rem;
+  letter-spacing: -0.04rem;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 14px;
+
+  .ImgWrapper {
+    position: relative;
+    display: inline-block;
+
+    .profileImg {
+      width: 7.5rem;
+      height: 7.5rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .camera {
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      padding: 0.5rem;
+      border: 1px solid #a1a1a1;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 2.2rem;
+      height: 2.2rem;
+      cursor: pointer;
+      object-fit: cover;
+    }
+  }
+
+  .nickname {
+    margin-top: 12px;
+    color: #2f2a1e;
+    font-family: "Pretendard Variable";
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.875rem;
+    letter-spacing: -0.03rem;
+  }
+}
+
+.infoContents {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 0.625rem;
+
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+
+  .title {
+    color: var(--primary, #5497ff);
+    font-family: "Pretendard Variable";
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.6875rem;
+    letter-spacing: -0.025rem;
+  }
+
+  .content {
+    color: var(--gray, #3c3c3c);
+    text-align: right;
+    font-family: "Pretendard Variable";
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.6875rem;
+    letter-spacing: -0.025rem;
+  }
+}
+
+.logoutButton {
+  color: #e86a5a;
+  font-weight: 600;
+  text-align: center;
+  font-family: "Pretendard Variable";
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 12px 0;
+  cursor: pointer;
+}
+
+.deleteButton {
+  font-weight: 600;
+  text-align: center;
+  font-family: "Pretendard Variable";
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 12px 0;
+  cursor: pointer;
+  color: #a1a1a1;
+}
