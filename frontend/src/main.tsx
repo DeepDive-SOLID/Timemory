@@ -4,6 +4,7 @@ import "./styles/index.scss";
 import App from "./App.tsx";
 import Login from "./pages/Login.tsx";
 import Home from "./pages/Home.tsx";
+import GroupList from "./pages/GroupList.tsx";
 import NickName from "./pages/NickName.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
 
@@ -28,12 +29,16 @@ const router = createBrowserRouter([
         path: "home",
         element: <Home />,
       },
+      {
+        path: "group",
+        element: <GroupList />,
+      },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );

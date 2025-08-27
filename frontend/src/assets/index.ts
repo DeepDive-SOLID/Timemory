@@ -12,6 +12,12 @@ export { default as lightbulb } from "./icons/lightbulb.svg";
 export { default as lock } from "./icons/lock.svg";
 export { default as map_pin } from "./icons/map_pin.svg";
 export { default as option } from "./icons/option.svg";
+export { default as plus_circle } from "./icons/plus_circle.svg";
+export { default as x_circle } from "./icons/x_circle.svg";
+export { default as dots_three } from "./icons/dots_three.svg";
+export { default as rectangle_radius_0 } from "./icons/rectangle_radius_0.svg";
+export { default as rectangle_radius_10 } from "./icons/rectangle_radius_10.svg";
+export { default as rectangle_large } from "./icons/rectangle_large.svg";
 
 // Images
 export { default as capsule_img } from "./images/capsule_img.svg";
