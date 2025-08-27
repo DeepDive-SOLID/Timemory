@@ -54,11 +54,11 @@ export const CapsuleCndtCreateApi = async (
 // 조건 캡슐 삭제
 export const CapsuleCndtDelApi = async (capId: number): Promise<string> => {
   try {
-    const res = await axios.delete<string>("/api/capsule/cndt/delete", {
-      data: capId,
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const res = await axios.request<string>({
+      url: "/api/capsule/cndt/delete",
+      method: "DELETE",
+      data: capId.toString(),
+      headers: { "Content-Type": "application/json" },
     });
     return res.data;
   } catch (error) {
@@ -93,11 +93,11 @@ export const CapsuleDateCreateApi = async (
 // 날짜 캡슐 삭제
 export const CapsuleDateDelApi = async (capId: number): Promise<string> => {
   try {
-    const res = await axios.delete<string>("/api/capsule/date/delete", {
-      data: capId,
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const res = await axios.request<string>({
+      url: "/api/capsule/date/delete",
+      method: "DELETE",
+      data: capId.toString(),
+      headers: { "Content-Type": "application/json" },
     });
     return res.data;
   } catch (error) {
