@@ -8,7 +8,8 @@ import Calendar from "../../components/UI/Calendar";
 import type { CapsuleDateDto } from "../../types/capsule";
 import { CapsuleDateCreateApi } from "../../api/CapsuleApi";
 import { toLocalDateTimeString, formatMD } from "../../utils/datetime";
-import { getCurrentMemberId } from "../../utils/auth";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 
 const quizData = [
@@ -76,7 +77,8 @@ const QuizDate = () => {
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
   const current = quizData[step];
 
-  const memberId = getCurrentMemberId();
+  const { userInfo } = useContext(AuthContext)!;
+  const memberId = userInfo?.memberId ?? "";
   const location = useLocation() as { state?: { teamId?: number } };
   const teamId = location.state?.teamId;
 

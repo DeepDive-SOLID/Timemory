@@ -12,7 +12,8 @@ import { useState } from "react";
 import type { CapsuleCndtDto } from "../../types/capsule";
 import { CapsuleCndtCreateApi } from "../../api/CapsuleApi";
 import { toLocalDateTimeString } from "../../utils/datetime";
-import { getCurrentMemberId } from "../../utils/auth";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 
 const quizData = [
@@ -83,7 +84,8 @@ const QuizCondition = () => {
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
   const current = quizData[step];
 
-  const memberId = getCurrentMemberId();
+  const { userInfo } = useContext(AuthContext)!;
+  const memberId = userInfo?.memberId ?? "";
   const location = useLocation() as { state?: { teamId?: number } };
   const teamId = location.state?.teamId;
 
