@@ -4,15 +4,21 @@ import { cloud_img, hashtag_img, camera_img } from "../../assets";
 import InputBox from "../../components/UI/InputBox";
 import StatusBar from "../../components/APP/StatusBar";
 import { useState } from "react";
-import type { CapsuleCndtDto } from "../../types/capsule";
-import { CapsuleCndtCreateApi } from "../../api/CapsuleApi";
+import type { OpenCapsuleAddDto } from "../../types/openlist";
+import { addOpenCapsuleDto } from "../../api/openlistApi";
 import { toLocalDateTimeString } from "../../utils/datetime";
 import { events } from "../../constants/events";
-import { useParams } from "react-router-dom";
+import { getCurrentMemberId } from "../../utils/auth";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 
 const QuizOpen = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const eventData = events.find((e) => e.id === eventId) || events[0];
+  const memberId = getCurrentMemberId();
+
+  const location = useLocation() as { state?: { teamId?: number } };
+  const teamId = location.state?.teamId;
+  const navigate = useNavigate();
 
   const quizData = [
     {
@@ -79,6 +85,9 @@ const QuizOpen = () => {
     if (step === 0 && !momentText.trim()) return "기억을 입력해주세요.";
     if (step === 1 && tags.length === 0)
       return "키워드를 한 개 이상 추가해주세요.";
+    if (step === 2 && !file) {
+      return "사진을 추가해주세요.";
+    }
     return null;
   };
 
@@ -94,17 +103,23 @@ const QuizOpen = () => {
       return;
     }
     try {
-      const dto: CapsuleCndtDto = {
-        teamId: 1, // TODO: 실제 팀 ID 연결
-        memberId: "test", // TODO: 로그인한 사용자 ID 연결
+      if (!teamId) {
+        alert("팀 정보가 없습니다. 홈에서 다시 시도해주세요.");
+        return;
+      }
+
+      const dto: OpenCapsuleAddDto = {
+        teamId,
+        memberId: memberId ?? "",
         capText: momentText.trim(),
-        capEt: toLocalDateTimeString(new Date()),
+        capUt: toLocalDateTimeString(new Date()),
         capImg: file as File,
         capTag: tags.join(","),
       };
 
-      const res = await CapsuleCndtCreateApi(dto);
+      const res = await addOpenCapsuleDto(dto);
       alert("캡슐 생성 성공: " + res);
+      navigate(`/openlist/${eventId}`, { state: { teamId } });
     } catch (err) {
       alert("캡슐 생성 실패");
       console.error(err);

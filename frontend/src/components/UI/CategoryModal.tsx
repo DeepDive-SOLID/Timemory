@@ -17,9 +17,7 @@ export interface CategoryModalProps {
 }
 
 const CategoryModal = ({ isOpen, onClose }: CategoryModalProps) => {
-  const [activeCategory, setActiveCategory] = useState<
-    "date" | "location" | "condition"
-  >();
+  const [activeCategory] = useState<"date" | "location" | "condition">();
 
   const navigate = useNavigate();
 

@@ -36,11 +36,8 @@ const router = createBrowserRouter([
       { path: "date", element: <QuizDate /> },
       { path: "location", element: <QuizLocation /> },
       { path: "condition", element: <QuizCondition /> },
-      { path: "openquiz", element: <QuizOpen /> },
-      {
-        path: "openlist",
-        element: <OpenList />,
-      },
+      { path: "openlist/:eventId", element: <OpenList /> },
+      { path: "quiz/:eventId", element: <QuizOpen /> },
     ],
   },
 ]);

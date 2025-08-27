@@ -14,6 +14,8 @@ import {
 } from "../assets";
 
 export interface EventData {
+  annName: string;
+  annDt: string;
   id: string;
   title: string;
   date: string;
@@ -26,6 +28,8 @@ export interface EventData {
 
 export const events: EventData[] = [
   {
+    annName: "크리스마스",
+    annDt: "2026-12-25",
     id: "christmas",
     title: "메리 크리스마스 🎅",
     date: "12월 25일",
@@ -36,6 +40,8 @@ export const events: EventData[] = [
     buttonText: "크리스마스 이벤트 참여하기",
   },
   {
+    annName: "만우절",
+    annDt: "2026-04-01",
     id: "april_fools_day",
     title: "오늘만은 장난 OK! 만우절 🤡",
     date: "4월 1일",
@@ -46,6 +52,8 @@ export const events: EventData[] = [
     buttonText: "만우절 이벤트 참여하기",
   },
   {
+    annName: "빼빼로데이",
+    annDt: "2025-11-11",
     id: "pepero_day",
     title: "달콤한 빼빼로 데이 🍫",
     date: "11월 11일",
@@ -56,6 +64,8 @@ export const events: EventData[] = [
     buttonText: "빼빼로 데이 이벤트 참여하기",
   },
   {
+    annName: "화이트데이",
+    annDt: "2026-03-14",
     id: "white_day",
     title: "사랑을 전하는 화이트 데이 💝",
     date: "3월 14일",
@@ -66,6 +76,8 @@ export const events: EventData[] = [
     buttonText: "화이트 데이 이벤트 참여하기",
   },
   {
+    annName: "발렌타인데이",
+    annDt: "2026-02-14",
     id: "valentine_day",
     title: "로맨틱 발렌타인 데이 ❤️",
     date: "2월 14일",
@@ -76,6 +88,8 @@ export const events: EventData[] = [
     buttonText: "발렌타인 데이 이벤트 참여하기",
   },
   {
+    annName: "새해",
+    annDt: "2026-01-01",
     id: "new_year",
     title: "Happy New Year 🎆",
     date: "1월 1일",

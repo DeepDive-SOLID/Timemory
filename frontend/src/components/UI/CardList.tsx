@@ -2,93 +2,30 @@ import Card from "./Card";
 import styles from "../../styles/Card.module.scss";
 import { useNavigate } from "react-router-dom";
 
-const CardList = () => {
-  const navigate = useNavigate();
+export interface CardItem {
+  title: string;
+  date: string;
+  user: string;
+  isOpen: boolean;
+  onClick?: () => void;
+}
 
-  const cards = [
-    {
-      title: "메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: true,
-    },
-    {
-      title: "메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: false,
-    },
-    {
-      title: "메리 크리스마스메리 크리스마스메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: true,
-    },
-    {
-      title: "메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: false,
-    },
-    {
-      title: "메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: true,
-    },
-    {
-      title: "메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: false,
-    },
-    {
-      title: "메리 크리스마스메리 크리스마스메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: true,
-    },
-    {
-      title: "메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: false,
-    },
-    {
-      title: "메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: true,
-    },
-    {
-      title: "메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: false,
-    },
-    {
-      title: "메리 크리스마스메리 크리스마스메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: true,
-    },
-    {
-      title: "메리 크리스마스",
-      date: "2025.12.25",
-      user: "나옹",
-      isOpen: false,
-    },
-  ];
+interface CardListProps {
+  items: CardItem[];
+}
+
+const CardList = ({ items }: CardListProps) => {
+  const navigate = useNavigate();
 
   return (
     <div className={styles.ListContainer}>
       <div className={styles.ListHeader}>
         <p className={styles.ListTitle}>OPEN LIST</p>
-        <span className={styles.ListCount}>({cards.length})</span>
+        <span className={styles.ListCount}>({items.length})</span>
       </div>
 
       <div className={styles.CardGrid}>
-        {cards.map((card, idx) => (
+        {items.map((card, idx) => (
           <Card
             key={idx}
             {...card}
