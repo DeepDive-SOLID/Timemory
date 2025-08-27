@@ -8,13 +8,15 @@ import type { OpenCapsuleAddDto } from "../../types/openlist";
 import { addOpenCapsuleDto } from "../../api/openlistApi";
 import { toLocalDateTimeString } from "../../utils/datetime";
 import { events } from "../../constants/events";
-import { getCurrentMemberId } from "../../utils/auth";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 
 const QuizOpen = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const eventData = events.find((e) => e.id === eventId) || events[0];
-  const memberId = getCurrentMemberId();
+  const { userInfo } = useContext(AuthContext)!;
+  const memberId = userInfo?.memberId ?? "";
 
   const location = useLocation() as { state?: { teamId?: number } };
   const teamId = location.state?.teamId;
