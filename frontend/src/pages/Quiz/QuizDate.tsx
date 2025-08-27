@@ -8,6 +8,8 @@ import Calendar from "../../components/UI/Calendar";
 import type { CapsuleDateDto } from "../../types/capsule";
 import { CapsuleDateCreateApi } from "../../api/CapsuleApi";
 import { toLocalDateTimeString, formatMD } from "../../utils/datetime";
+import { getCurrentMemberId } from "../../utils/auth";
+import { useLocation } from "react-router-dom";
 
 const quizData = [
   {
@@ -72,8 +74,11 @@ const QuizDate = () => {
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
-
   const current = quizData[step];
+
+  const memberId = getCurrentMemberId();
+  const location = useLocation() as { state?: { teamId?: number } };
+  const teamId = location.state?.teamId;
 
   const validateCurrent = () => {
     if (step === 0 && !selectedDate) return "날짜를 선택해주세요.";
@@ -102,8 +107,8 @@ const QuizDate = () => {
       }
 
       const dto: CapsuleDateDto = {
-        teamId: 1, // 실제 팀 ID로 교체
-        memberId: "test", // 로그인 사용자 ID로 교체
+        teamId: teamId ?? 1,
+        memberId: memberId ?? "",
         capText: momentText.trim(),
         capEt: toLocalDateTimeString(selectedDate),
         capImg: file as File,

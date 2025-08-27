@@ -12,6 +12,8 @@ import { useState } from "react";
 import type { CapsuleCndtDto } from "../../types/capsule";
 import { CapsuleCndtCreateApi } from "../../api/CapsuleApi";
 import { toLocalDateTimeString } from "../../utils/datetime";
+import { getCurrentMemberId } from "../../utils/auth";
+import { useLocation } from "react-router-dom";
 
 const quizData = [
   {
@@ -79,6 +81,11 @@ const QuizCondition = () => {
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
+  const current = quizData[step];
+
+  const memberId = getCurrentMemberId();
+  const location = useLocation() as { state?: { teamId?: number } };
+  const teamId = location.state?.teamId;
 
   const handleTextChange = (v: string) => {
     if (step === 0) setReason(v);
@@ -106,8 +113,8 @@ const QuizCondition = () => {
     }
     try {
       const dto: CapsuleCndtDto = {
-        teamId: 1, // TODO: 실제 팀 ID 연결
-        memberId: "test", // TODO: 로그인한 사용자 ID 연결
+        teamId: teamId ?? 1,
+        memberId: memberId ?? "",
         capText: `${reason}\n${momentText}`.trim(),
         capEt: toLocalDateTimeString(new Date()),
         capImg: file as File,
@@ -122,8 +129,6 @@ const QuizCondition = () => {
       console.error(err);
     }
   };
-
-  const current = quizData[step];
 
   return (
     <div>
