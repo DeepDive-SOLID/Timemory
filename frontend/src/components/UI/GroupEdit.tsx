@@ -94,10 +94,10 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
       .then(() => {
         setConfirmOpen(false);
         onClose();
-        if (location.pathname === "/groups") {
+        if (location.pathname === "/group") {
           navigate(0);
         } else {
-          navigate("/groups", { replace: true });
+          navigate("/group", { replace: true });
         }
       })
       .catch(() => {
@@ -121,7 +121,7 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
       setGroupName(updated.teamName);
       // 닫고 목록 새로고침
       onClose();
-      if (location.pathname === "/groups") {
+      if (location.pathname === "/group") {
         navigate(0);
       }
     } finally {

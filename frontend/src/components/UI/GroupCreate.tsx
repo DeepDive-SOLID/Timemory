@@ -115,12 +115,12 @@ const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
         },
       ]);
       onClose();
-      if (location.pathname === "/groups") {
+      if (location.pathname === "/group") {
         // 현재 목록 화면이면 즉시 새로고침
         navigate(0);
       } else {
         // 목록 화면으로 이동
-        navigate("/groups", { replace: true });
+        navigate("/group", { replace: true });
       }
     } catch {
       console.error("팀 생성 실패");
