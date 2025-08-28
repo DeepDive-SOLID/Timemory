@@ -1,11 +1,15 @@
-import axios from "axios"
-import type { LtListDto } from "../types/map";
+import api from "./axios";
+import type { LtAddDto, LtListDto } from "../types/map";
 
+export const getLtList = async (teamId: number) => {
+  const res = await api.post<LtListDto[]>("/capsule/lt/getLtList", teamId, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return res.data;
+};
 
+export const saveLt = async (ltDto: LtAddDto) => {
+  const res = await api.post("/capsule/lt/addLtDto", ltDto);
 
-export const getLtList = async (teamId:number) => {
-    const res = await axios.post<LtListDto[]>("http://localhost:8080/capsule/lt/getLtList",teamId ,{
-        headers: { "Content-Type": "application/json" },
-      });;
-    return res.data;
-}
+  return res.data;
+};
