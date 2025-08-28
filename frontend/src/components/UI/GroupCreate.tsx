@@ -19,6 +19,10 @@ import type {
   GroupCreateProps,
   EditableMemberItem as MemberItem,
 } from "../../types/groupModals";
+import {
+  getValidProfileImageUrl,
+  useImageErrorHandler,
+} from "../../utils/imageUtils";
 
 const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
   const [groupName, setGroupName] = useState("");
@@ -26,6 +30,7 @@ const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
   const [members, setMembers] = useState<MemberItem[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const { imageErrors, handleImageError } = useImageErrorHandler();
 
   // 모달이 열릴 때 현재 로그인 사용자로 초기 멤버 세팅
   useEffect(() => {
@@ -37,7 +42,7 @@ const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
           {
             id: me.id,
             name: me.nickname,
-            avatar: me.profileImg,
+            avatar: getValidProfileImageUrl(me.profileImg) || undefined,
             isRemovable: false,
           },
         ]);
@@ -73,7 +78,7 @@ const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
       const newMember: MemberItem = {
         id: found.id,
         name: found.nickname,
-        avatar: found.profileImg,
+        avatar: getValidProfileImageUrl(found.profileImg) || undefined,
         isRemovable: true,
       };
       setMembers((prev) => [...prev, newMember]);
@@ -213,17 +218,20 @@ const GroupModal = ({ isOpen, onClose }: GroupCreateProps) => {
               />
               <div className={styles.membersContent}>
                 <div className={styles.membersList}>
-                  {members.map((member) => (
+                  {members.map((member, index) => (
                     <div key={member.id} className={styles.memberItem}>
                       <div className={styles.memberAvatar}>
-                        {member.avatar ? (
+                        {member.avatar && !imageErrors[index] ? (
                           <img
                             src={member.avatar}
                             alt={member.name}
                             className={styles.avatarImage}
+                            onError={() => handleImageError(index)}
                           />
                         ) : (
-                          <div className={styles.avatarPlaceholder}></div>
+                          <div className={styles.avatarPlaceholder}>
+                            {member.name.charAt(0)}
+                          </div>
                         )}
                       </div>
                       <span className={styles.memberName}>{member.name}</span>

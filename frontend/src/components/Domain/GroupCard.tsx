@@ -3,12 +3,14 @@ import styles from "../../styles/GroupCard.module.scss";
 import { rectangle_radius_0, dots_three } from "../../assets";
 import GroupEdit from "../UI/GroupEdit";
 import type { GroupCardProps } from "../../types/groupCard";
+import {
+  getValidProfileImageUrl,
+  useImageErrorHandler,
+} from "../../utils/imageUtils";
 
 const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>(
-    {}
-  );
+  const { imageErrors, handleImageError } = useImageErrorHandler();
 
   const getSubtitle = () => {
     if (isOpenGroup && group.date) {
@@ -26,26 +28,6 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
 
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
-  };
-
-  const handleImageError = (index: number) => {
-    setImageErrors((prev) => ({ ...prev, [index]: true }));
-  };
-
-  // 프로필 이미지 URL 검증 및 수정
-  const getValidProfileImageUrl = (url: string): string | null => {
-    if (!url) return null;
-
-    // 잘못된 URL 패턴 감지 (localhost:8080/solidhttp://...)
-    if (url.includes("localhost:8080/solidhttp://")) {
-      // 카카오 프로필 이미지 URL 추출
-      const kakaoUrlMatch = url.match(/solidhttp:\/\/(.+)/);
-      if (kakaoUrlMatch) {
-        return `http://${kakaoUrlMatch[1]}`;
-      }
-    }
-
-    return null;
   };
 
   return (
