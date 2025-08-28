@@ -17,6 +17,17 @@ export interface LtListDto {
   capLtDetail: string;
 }
 
+export interface LtAddDto {
+  teamId: number;
+  memberId: string;
+  capText: string;
+  capUt: Date;
+  capImg: File;
+  capTag: string;
+  capLtAddr: string;
+  capLtDetail: string;
+}
+
 export interface CustomOverlayProps {
   img: string;
 }
