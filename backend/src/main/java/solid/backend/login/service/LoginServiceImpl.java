@@ -16,6 +16,7 @@ import solid.backend.entity.Member;
 import solid.backend.jpaRepository.MemberRepository;
 import solid.backend.login.dto.LoginApiDto;
 import solid.backend.login.dto.LoginDto;
+import solid.backend.util.TokenStore;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class LoginServiceImpl implements LoginService {
     private final LoginApiDto loginApiDto;
     private final MemberRepository loginRepository;
     private final JwtUtil jwtUtil;
+    private final TokenStore tokenStore;
 
     /**
      * 설명 : 카카오 로그인
@@ -60,6 +62,14 @@ public class LoginServiceImpl implements LoginService {
         }
 
         String accessToken = (String) tokenResponse.getBody().get("access_token");
+        //String refreshToken = (String) tokenResponse.getBody().get("refresh_token");
+
+        // 카카오 토큰 세션 저장
+        HttpSession session = request.getSession(true);
+        session.setAttribute("accessToken", accessToken);
+        tokenStore.saveAccessToken(accessToken);
+        System.out.println(session.getAttribute("accessToken"));
+        //System.out.println("refresh token" + refreshToken);
 
         // 2. 사용자 정보 요청
         String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
@@ -78,6 +88,8 @@ public class LoginServiceImpl implements LoginService {
 
         // 고유 id
         String id = String.valueOf(body.get("id"));
+        session.setAttribute("memberId", id);
+        tokenStore.saveMemberId(id);
 
         // 이름이 없으면 닉네임으로 대체
         String name = (String) kakaoAccount.get("name");
