@@ -1,0 +1,230 @@
+.container {
+  height: 100vh;
+  background-color: #fffdf8;
+  display: flex;
+  flex-direction: column;
+  font-family: "Pretendard", sans-serif;
+  overflow: hidden;
+  margin: -20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #5497ff;
+  text-align: left;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.38rem;
+  font-weight: 600;
+  text-align: center;
+
+  p {
+    color: #333;
+    margin: 0;
+    line-height: 1.2;
+  }
+}
+
+.highlight {
+  color: #5497ff;
+}
+
+.capsuleSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.capsuleSlider {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  perspective: 1500px;
+  overflow: visible;
+}
+
+.cardsContainer {
+  flex: 1;
+  position: relative;
+  overflow: visible;
+  height: 433px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.capsuleCard {
+  background: #5497ff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  color: white;
+  position: absolute;
+  width: 320px;
+  max-height: 433px;
+  min-height: 433px;
+  overflow-y: auto;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &.active {
+    opacity: 1;
+    z-index: 3;
+    transform: translateX(0) rotateY(0deg) scale(1);
+    box-shadow: 0 20px 40px rgba(84, 151, 255, 0.4),
+      0 8px 16px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  &.inactive {
+    opacity: 0.4;
+    z-index: 1;
+    transform: translateX(0) rotateY(0deg) scale(0.85);
+    box-shadow: 0 10px 20px rgba(84, 151, 255, 0.2),
+      0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  // 스크롤바 스타일링
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  h3 {
+    font-size: 1.45rem;
+    font-weight: 500;
+    margin: 0;
+    padding-right: 0.1rem;
+  }
+
+  .closeBtn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.3rem;
+  }
+}
+
+.cardImage {
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+}
+
+.cardFooter {
+  margin-top: 0.8rem;
+}
+
+.hashtags {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.hashtag {
+  background: #f4faff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  color: #5497ff;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.dates {
+  .dateRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.2rem 0.8rem;
+    font-size: 1.2rem;
+    opacity: 0.9;
+
+    span:first-child {
+      text-align: left;
+    }
+
+    span:last-child {
+      text-align: right;
+    }
+  }
+}
+
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+  transition: background-color 0.3s ease;
+
+  &.active {
+    background-color: #5497ff;
+  }
+}

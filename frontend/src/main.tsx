@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import Login from "./pages/Login.tsx";
 import Home from "./pages/Home.tsx";
 import NickName from "./pages/NickName.tsx";
+import MyCapsule from "./pages/MyCapsule.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
 
 const router = createBrowserRouter([
@@ -28,12 +29,16 @@ const router = createBrowserRouter([
         path: "home",
         element: <Home />,
       },
+      {
+        path: "mycapsule",
+        element: <MyCapsule />,
+      },
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );
