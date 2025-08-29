@@ -3,9 +3,14 @@ import styles from "../../styles/GroupCard.module.scss";
 import { rectangle_radius_0, dots_three } from "../../assets";
 import GroupEdit from "../UI/GroupEdit";
 import type { GroupCardProps } from "../../types/groupCard";
+import {
+  getValidProfileImageUrl,
+  useImageErrorHandler,
+} from "../../utils/imageUtils";
 
 const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const { imageErrors, handleImageError } = useImageErrorHandler();
 
   const getSubtitle = () => {
     if (isOpenGroup && group.date) {
@@ -58,19 +63,29 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
             )}
           </div>
           <div className={styles.memberAvatars}>
-            {group.members.map((member, index) => (
-              <div key={index} className={styles.avatar}>
-                {group.profiles && group.profiles[index] ? (
-                  <img
-                    src={group.profiles[index]}
-                    alt={member}
-                    className={styles.profileImage}
-                  />
-                ) : (
-                  member
-                )}
-              </div>
-            ))}
+            {group.members.map((member, index) => {
+              const profileUrl =
+                group.profiles && group.profiles[index]
+                  ? getValidProfileImageUrl(group.profiles[index])
+                  : null;
+
+              return (
+                <div key={index} className={styles.avatar}>
+                  {profileUrl && !imageErrors[index] ? (
+                    <img
+                      src={profileUrl}
+                      alt={member}
+                      className={styles.profileImage}
+                      onError={() => handleImageError(index)}
+                    />
+                  ) : (
+                    <div className={styles.defaultAvatar}>
+                      {member.charAt(0)}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
