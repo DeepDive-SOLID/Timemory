@@ -12,6 +12,10 @@ export { default as lightbulb } from "./icons/lightbulb.svg";
 export { default as lock } from "./icons/lock.svg";
 export { default as map_pin } from "./icons/map_pin.svg";
 export { default as option } from "./icons/option.svg";
+export { default as xcircle } from "./icons/XCircle.svg";
+export { default as map_pin_white } from "./icons/map_pin_white.svg";
+export { default as lightbulb_white } from "./icons/lightbulb_white.svg";
+export { default as calendar_white } from "./icons/calendar_white.svg";
 export { default as plus_circle } from "./icons/plus_circle.svg";
 export { default as x_circle } from "./icons/x_circle.svg";
 export { default as dots_three } from "./icons/dots_three.svg";
@@ -54,6 +58,10 @@ export { default as mypage_active } from "./icons/mypage_active.svg";
 export { default as home_active } from "./icons/home_active.svg";
 export { default as group_active } from "./icons/group_active.svg";
 export { default as capsule_active } from "./icons/capsule_active.svg";
+
+// Input Box Image
+export { default as inputbox_lg } from "./images/input_box_lg.svg";
+export { default as inputbox_sm } from "./images/input_box_sm.svg";
 
 // Input Box Line
 export { default as input_box_line } from "./images/input_box_line.svg";
