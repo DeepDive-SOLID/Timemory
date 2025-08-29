@@ -13,6 +13,7 @@ import { events } from "../../constants/events";
 const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { imageErrors, handleImageError } = useImageErrorHandler();
+  const navigate = useNavigate();
 
   const getSubtitle = () => {
     if (isOpenGroup && group.date) {
@@ -23,8 +24,6 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
     }
     return "";
   };
-
-  const navigate = useNavigate();
 
   const handleCardClick = () => {
     if (isOpenGroup) {

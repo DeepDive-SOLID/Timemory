@@ -8,6 +8,10 @@ import Calendar from "../../components/UI/Calendar";
 import type { CapsuleDateDto } from "../../types/capsule";
 import { CapsuleDateCreateApi } from "../../api/CapsuleApi";
 import { toLocalDateTimeString, formatMD } from "../../utils/datetime";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const quizData = [
   {
@@ -45,7 +49,7 @@ const quizData = [
     ),
     image: hashtag_img,
     input: "키워드를 입력해주세요.",
-    warning: "20자 이내로 작성해주세요.",
+    warning: "20자 이내로 엔터를 눌러 작성해주세요.",
     svgBox: "sm" as const,
   },
   {
@@ -70,10 +74,14 @@ const QuizDate = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagText, setTagText] = useState("");
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
-
   const current = quizData[step];
+
+  const { userInfo } = useContext(AuthContext)!;
+  const memberId = userInfo?.memberId ?? "";
+  const { teamId } = useParams<{ teamId: string }>();
 
   const validateCurrent = () => {
     if (step === 0 && !selectedDate) return "날짜를 선택해주세요.";
@@ -102,8 +110,8 @@ const QuizDate = () => {
       }
 
       const dto: CapsuleDateDto = {
-        teamId: 1, // 실제 팀 ID로 교체
-        memberId: "test", // 로그인 사용자 ID로 교체
+        teamId: Number(teamId),
+        memberId: memberId ?? "",
         capText: momentText.trim(),
         capEt: toLocalDateTimeString(selectedDate),
         capImg: file as File,
@@ -111,6 +119,7 @@ const QuizDate = () => {
       };
       const res = await CapsuleDateCreateApi(dto);
       alert("날짜 캡슐 생성 성공: " + res);
+      navigate("/group/" + teamId);
     } catch (e) {
       console.error(e);
       alert("날짜 캡슐 생성 실패");

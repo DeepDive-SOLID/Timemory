@@ -91,6 +91,12 @@ const InputBox = ({
   const handleKeywordKeyDown: React.KeyboardEventHandler<
     HTMLTextAreaElement
   > = (e) => {
+    // 쉼표 입력 막기
+    if (e.key === ",") {
+      e.preventDefault();
+      return;
+    }
+
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       const t = currentText.trim();

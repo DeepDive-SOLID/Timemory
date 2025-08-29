@@ -12,6 +12,10 @@ import { useState } from "react";
 import type { CapsuleCndtDto } from "../../types/capsule";
 import { CapsuleCndtCreateApi } from "../../api/CapsuleApi";
 import { toLocalDateTimeString } from "../../utils/datetime";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const quizData = [
   {
@@ -50,7 +54,7 @@ const quizData = [
     ),
     image: hashtag_img,
     input: "키워드를 입력해주세요.",
-    warning: "20자 이내로 작성해주세요. ",
+    warning: "20자 이내로 엔터를 눌러 작성해주세요.",
     svgBox: "sm" as const,
     maxTagLen: 20,
     required: false,
@@ -77,8 +81,14 @@ const QuizCondition = () => {
   const [tagText, setTagText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
+  const current = quizData[step];
+
+  const { userInfo } = useContext(AuthContext)!;
+  const memberId = userInfo?.memberId ?? "";
+  const { teamId } = useParams<{ teamId: string }>();
 
   const handleTextChange = (v: string) => {
     if (step === 0) setReason(v);
@@ -106,8 +116,8 @@ const QuizCondition = () => {
     }
     try {
       const dto: CapsuleCndtDto = {
-        teamId: 1, // TODO: 실제 팀 ID 연결
-        memberId: "test", // TODO: 로그인한 사용자 ID 연결
+        teamId: Number(teamId),
+        memberId: memberId ?? "",
         capText: `${reason}\n${momentText}`.trim(),
         capEt: toLocalDateTimeString(new Date()),
         capImg: file as File,
@@ -117,13 +127,12 @@ const QuizCondition = () => {
 
       const res = await CapsuleCndtCreateApi(dto);
       alert("캡슐 생성 성공: " + res);
+      navigate("/group/" + teamId);
     } catch (err) {
       alert("캡슐 생성 실패");
       console.error(err);
     }
   };
-
-  const current = quizData[step];
 
   return (
     <div>

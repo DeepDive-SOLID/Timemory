@@ -51,22 +51,6 @@ export const CapsuleCndtCreateApi = async (
   }
 };
 
-// 조건 캡슐 삭제
-export const CapsuleCndtDelApi = async (capId: number): Promise<string> => {
-  try {
-    const res = await axios.delete<string>("/api/capsule/cndt/delete", {
-      data: capId,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return res.data;
-  } catch (error) {
-    console.error("캡슐 삭제 실패:", error);
-    throw error;
-  }
-};
-
 // 날짜 캡슐 생성
 export const CapsuleDateCreateApi = async (
   dto: CapsuleDateDto
@@ -86,22 +70,6 @@ export const CapsuleDateCreateApi = async (
     return res.data;
   } catch (error) {
     console.error("날짜 캡슐 생성 실패:", error);
-    throw error;
-  }
-};
-
-// 날짜 캡슐 삭제
-export const CapsuleDateDelApi = async (capId: number): Promise<string> => {
-  try {
-    const res = await axios.delete<string>("/api/capsule/date/delete", {
-      data: capId,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return res.data;
-  } catch (error) {
-    console.error("날짜 캡슐 삭제 실패:", error);
     throw error;
   }
 };

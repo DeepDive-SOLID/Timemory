@@ -12,6 +12,7 @@ import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
 import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
 import OpenList from "./pages/OpenList.tsx";
 import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
+import GroupCapsule from "./pages/GroupCapsule.tsx";
 
 const router = createBrowserRouter([
   {
@@ -34,31 +35,34 @@ const router = createBrowserRouter([
         path: "home",
         element: <Home />,
       },
-      { 
-        path: "date", 
-        element: <QuizDate /> 
+      {
+        path: "date/:teamId",
+        element: <QuizDate />,
       },
-      { 
-        path: "location", 
-        element: <QuizLocation /> 
+      {
+        path: "location/:teamId",
+        element: <QuizLocation />,
       },
-      { 
-        path: "condition", 
-        element: <QuizCondition /> 
-      },
-      { 
-        path: "openlist/:eventId", 
-        element: <OpenList /> 
-      },
-      { 
-        path: "quiz/:eventId", 
-        element: <QuizOpen /> 
+      {
+        path: "condition/:teamId",
+        element: <QuizCondition />,
       },
       {
         path: "group",
         element: <GroupList />,
       },
-
+      {
+        path: "openlist/:eventId",
+        element: <OpenList />,
+      },
+      {
+        path: "quiz/:eventId",
+        element: <QuizOpen />,
+      },
+      {
+        path: "group/:groupId",
+        element: <GroupCapsule />,
+      },
     ],
   },
 ]);

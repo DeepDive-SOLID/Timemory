@@ -14,14 +14,24 @@ import { useNavigate } from "react-router-dom";
 export interface CategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
+  teamId?: number;
 }
 
-const CategoryModal = ({ isOpen, onClose }: CategoryModalProps) => {
+const CategoryModal = ({ isOpen, onClose, teamId }: CategoryModalProps) => {
   const [activeCategory] = useState<"date" | "location" | "condition">();
 
   const navigate = useNavigate();
 
   if (!isOpen) return null;
+
+  const handleNavigate = (path: string) => {
+    if (!teamId) {
+      alert("팀 정보가 없습니다. 홈에서 다시 진입해주세요.");
+      return;
+    }
+    navigate(`${path}/${teamId}`);
+    onClose();
+  };
 
   return (
     <div className={styles.modalContainer}>
@@ -41,7 +51,7 @@ const CategoryModal = ({ isOpen, onClose }: CategoryModalProps) => {
           className={`${styles.categoryOption} ${
             activeCategory === "date" ? styles.active : ""
           }`}
-          onClick={() => navigate("/date")}
+          onClick={() => handleNavigate("/date")}
         >
           <img
             src={activeCategory === "date" ? calendar_white : calendar}
@@ -55,7 +65,7 @@ const CategoryModal = ({ isOpen, onClose }: CategoryModalProps) => {
           className={`${styles.categoryOption} ${
             activeCategory === "location" ? styles.active : ""
           }`}
-          onClick={() => navigate("/location")}
+          onClick={() => handleNavigate("/location")}
         >
           <img
             src={activeCategory === "location" ? map_pin_white : map_pin}
@@ -69,7 +79,7 @@ const CategoryModal = ({ isOpen, onClose }: CategoryModalProps) => {
           className={`${styles.categoryOption} ${
             activeCategory === "condition" ? styles.active : ""
           }`}
-          onClick={() => navigate("/condition")}
+          onClick={() => handleNavigate("/condition")}
         >
           <img
             src={activeCategory === "condition" ? lightbulb_white : lightbulb}
