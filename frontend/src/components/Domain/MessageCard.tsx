@@ -1,16 +1,7 @@
 import React from "react";
 import styles from "../../styles/MyCapsule.module.scss";
 import { lock, x_circle } from "../../assets/index.ts";
-
-type MessageCard = {
-  id: number;
-  message: string;
-  hashtags: string[];
-  author: string;
-  createdDate: string; // 잠금 기준 날짜
-  image: string;
-  isOpened: boolean;
-};
+import type { MessageCard } from "../../types/capsule";
 
 interface MessageCardSectionProps {
   cards: MessageCard[];
@@ -39,9 +30,11 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({ cards }) => {
               <div className={styles.messageContent}>
                 <p className={styles.messageText}>{card.message}</p>
 
-                <div className={styles.messageImage}>
-                  <img src={card.image} alt="message" />
-                </div>
+                {card.image && (
+                  <div className={styles.messageImage}>
+                    <img src={card.image} alt="message" />
+                  </div>
+                )}
 
                 <div className={styles.hashtags}>
                   {card.hashtags.map((tag, idx) => (

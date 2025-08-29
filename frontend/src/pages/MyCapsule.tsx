@@ -1,89 +1,92 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TabBar from "../components/APP/TabBar";
 import CapsuleSlider from "../components/Domain/CapsuleSlider";
 import MessageCardSection from "../components/Domain/MessageCard";
 import LocationSection from "../components/Domain/LocationSection";
 import styles from "../styles/MyCapsule.module.scss";
-import { card_ex } from "../assets/index.ts";
+import type { Capsule } from "../types/capsule";
+import { getUserCapsulesApi } from "../api/capsuleApi";
+
+// DATE 타입 캡슐만 필터링하는 헬퍼 함수
+const filterDateCapsules = (capsules: Capsule[]): Capsule[] => {
+  return capsules.filter((capsule) => capsule.capsuleType === "DATE");
+};
+
+// CONDITION 타입 캡슐만 필터링하는 헬퍼 함수
+const filterConditionCapsules = (capsules: Capsule[]): Capsule[] => {
+  return capsules.filter((capsule) => capsule.capsuleType === "CONDITION");
+};
 
 const MyCapsule: React.FC = () => {
-  const capsules = [
-    {
-      id: 1,
-      title:
-        "오늘 생일파티 즐거움 오늘 생일파티 즐거움 오늘 생일파티 즐거움 오늘 생일파티 즐거움 오늘 생일파티 즐거움 오늘 생일파티 즐거움",
-      hashtags: [
-        "#내 생일",
-        "#생일파티",
-        "#생일파티",
-        "#생일파티",
-        "#생일파티",
-        "#생일파티",
-      ],
-      createdDate: "2025.08.06",
-      expireDate: "2025.08.10",
-      image: card_ex,
-      isOpened: true,
-    },
-    {
-      id: 2,
-      title: "여행 추억",
-      hashtags: ["#여행", "#추억"],
-      createdDate: "2025.07.15",
-      expireDate: "2025.09.20",
-      image: card_ex,
-      isOpened: false,
-    },
-    {
-      id: 3,
-      title: "친구들과 만남",
-      hashtags: ["#친구", "#만남"],
-      createdDate: "2025.08.01",
-      expireDate: "2025.08.15",
-      image: card_ex,
-      isOpened: true,
-    },
-    {
-      id: 4,
-      title: "새로운 시작",
-      hashtags: ["#새시작", "#도전"],
-      createdDate: "2025.07.20",
-      expireDate: "2025.10.01",
-      image: card_ex,
-      isOpened: false,
-    },
-  ];
+  const [dateCapsules, setDateCapsules] = useState<Capsule[]>([]);
+  const [conditionCapsules, setConditionCapsules] = useState<Capsule[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [memberNickname, setMemberNickname] = useState<string>("");
 
-  const messageCards = [
-    {
-      id: 1,
-      message: "사실 오늘 제 생일이었어요...",
-      hashtags: ["#친구", "#만남"],
-      author: "user1",
-      createdDate: "2025.08.30",
-      image: card_ex,
-      isOpened: false,
-    },
-    {
-      id: 2,
-      message:
-        "오늘 정말 좋은 하루였어요!오늘 정말 좋은 하루였어요!오늘 정말 좋은 하루였어요!오늘 정말 좋은 하루였어요!오늘 정말 좋은 하루였어요!오늘 정말 좋은 하루였어요!",
-      hashtags: ["#친구", "#만남"],
-      author: "user2",
-      createdDate: "2025.08.07",
-      image: card_ex,
-      isOpened: true,
-    },
-    {
-      id: 3,
-      message: "새로운 도전을 시작했어요",
-      hashtags: ["#친구", "#만남"],
-      author: "user3",
-      createdDate: "2025.08.06",
-      image: card_ex,
-      isOpened: false,
-    },
-  ];
+  useEffect(() => {
+    const fetchCapsules = async () => {
+      try {
+        setLoading(true);
+        const response = await getUserCapsulesApi();
+        setMemberNickname(response.memberNickname);
+        const filteredDateCapsules = filterDateCapsules(response.capsules);
+        const filteredConditionCapsules = filterConditionCapsules(
+          response.capsules
+        );
+
+        // DATE 타입 캡슐들을 열림일자 가까운 순으로 정렬
+        const sortedDateCapsules = filteredDateCapsules.sort((a, b) => {
+          const dateA = new Date(a.openDate).getTime();
+          const dateB = new Date(b.openDate).getTime();
+          return dateA - dateB; // 오름차순 (가까운 순)
+        });
+
+        // CONDITION 타입 캡슐 정렬: (1) 열린 캡슐 먼저, (2) 최신 작성일 내림차순
+        const sortedConditionCapsules = filteredConditionCapsules.sort(
+          (a, b) => {
+            if (a.isOpened !== b.isOpened) {
+              return a.isOpened ? -1 : 1;
+            }
+            const aCreated = new Date(a.createdAt).getTime();
+            const bCreated = new Date(b.createdAt).getTime();
+            return aCreated - bCreated; // 오름차순
+          }
+        );
+
+        setDateCapsules(sortedDateCapsules);
+        setConditionCapsules(sortedConditionCapsules);
+        setError(null);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "캡슐을 불러오는 중 오류가 발생했습니다."
+        );
+        console.error("캡슐 조회 오류:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCapsules();
+  }, []);
+
+  // CONDITION 타입 캡슐을 MessageCard 형태로 변환하는 함수
+  const convertConditionCapsulesToMessageCards = (capsules: Capsule[]) => {
+    return capsules.map((capsule) => ({
+      id: capsule.capsuleId,
+      message: capsule.content,
+      hashtags: [`#${capsule.tag}`],
+      author: memberNickname,
+      createdDate: new Date(capsule.createdAt).toLocaleDateString("ko-KR"),
+      image: capsule.imageUrl || "",
+      isOpened: capsule.isOpened,
+    }));
+  };
+
+  const messageCards =
+    convertConditionCapsulesToMessageCards(conditionCapsules);
 
   return (
     <div className={styles.container}>
@@ -103,7 +106,19 @@ const MyCapsule: React.FC = () => {
         </div>
       </div>
 
-      <CapsuleSlider capsules={capsules} />
+      {loading ? (
+        <div className={styles.loadingContainer}>
+          <p>캡슐을 불러오는 중...</p>
+        </div>
+      ) : error ? (
+        <div className={styles.errorContainer}>
+          <p>오류: {error}</p>
+        </div>
+      ) : (
+        <>
+          {dateCapsules.length > 0 && <CapsuleSlider capsules={dateCapsules} />}
+        </>
+      )}
 
       <MessageCardSection cards={messageCards} />
 

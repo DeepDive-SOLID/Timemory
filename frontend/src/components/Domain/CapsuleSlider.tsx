@@ -1,16 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "../../styles/MyCapsule.module.scss";
 import { lock, x_circle } from "../../assets/index.ts";
-
-interface Capsule {
-  id: number;
-  title: string;
-  hashtags: string[];
-  createdDate: string;
-  expireDate: string;
-  image: string;
-  isOpened: boolean;
-}
+import type { Capsule } from "../../types/capsule";
 
 interface CapsuleSliderProps {
   capsules: Capsule[];
@@ -24,10 +15,10 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
 
   // 남은 일수 계산
-  const getDaysRemaining = (expireDate: string) => {
+  const getDaysRemaining = (openDate: string) => {
     const currentDate = new Date();
-    const expireDateTime = new Date(expireDate);
-    const diffTime = expireDateTime.getTime() - currentDate.getTime();
+    const openDateTime = new Date(openDate);
+    const diffTime = openDateTime.getTime() - currentDate.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays > 0 ? diffDays : 0;
   };
@@ -132,11 +123,11 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
         <div className={styles.cardsContainer}>
           {capsules.map((capsule, index) => {
             const isLocked = !capsule.isOpened;
-            const daysRemaining = getDaysRemaining(capsule.expireDate);
+            const daysRemaining = getDaysRemaining(capsule.openDate);
 
             return (
               <div
-                key={capsule.id}
+                key={capsule.capsuleId}
                 className={`${styles.capsuleCard} ${
                   index === currentIndex ? styles.active : styles.inactive
                 } ${isLocked ? styles.locked : ""}`}
@@ -150,32 +141,36 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
                 }}
               >
                 <div className={styles.cardHeader}>
-                  <h3>{capsule.title}</h3>
+                  <h3>{capsule.content}</h3>
                   <button className={styles.closeBtn}>×</button>
                 </div>
-                <div className={styles.cardImage}>
-                  <img
-                    src={capsule.image}
-                    alt={capsule.title}
-                    className={styles.cardImage}
-                  />
-                </div>
+                {capsule.imageUrl && (
+                  <div className={styles.cardImage}>
+                    <img
+                      src={capsule.imageUrl}
+                      alt={capsule.content}
+                      className={styles.cardImage}
+                    />
+                  </div>
+                )}
                 <div className={styles.cardFooter}>
                   <div className={styles.hashtags}>
-                    {capsule.hashtags.map((tag, tagIndex) => (
-                      <span key={tagIndex} className={styles.hashtag}>
-                        {tag}
-                      </span>
-                    ))}
+                    <span className={styles.hashtag}>#{capsule.tag}</span>
                   </div>
                   <div className={styles.dates}>
                     <div className={styles.dateRow}>
                       <span>작성일자</span>
-                      <span>{capsule.createdDate}</span>
+                      <span>
+                        {new Date(capsule.createdAt).toLocaleDateString(
+                          "ko-KR"
+                        )}
+                      </span>
                     </div>
                     <div className={styles.dateRow}>
-                      <span>만료일자</span>
-                      <span>{capsule.expireDate}</span>
+                      <span>열림일자</span>
+                      <span>
+                        {new Date(capsule.openDate).toLocaleDateString("ko-KR")}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -186,7 +181,7 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
                       <img src={x_circle} alt="close" />
                     </button>
                     <div className={styles.lockOverlay}>
-                      <div className={styles.lockIcon}>
+                      <div className={styles.capsuleLockIcon}>
                         <img src={lock} alt="lock" />
                       </div>
                       <div className={styles.daysRemaining}>

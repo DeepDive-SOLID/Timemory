@@ -50,6 +50,27 @@
   color: #5497ff;
 }
 
+.loadingContainer,
+.errorContainer,
+.emptyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 200px;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.errorContainer {
+  color: #e74c3c;
+}
+
+.emptyContainer {
+  color: #999;
+}
+
 .capsuleSection {
   display: flex;
   flex-direction: column;
@@ -91,7 +112,7 @@
   position: absolute;
   width: 320px;
   max-height: 433px;
-  min-height: 433px;
+  min-height: 40px;
   overflow-y: auto;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform-style: preserve-3d;
@@ -437,11 +458,25 @@
   }
 }
 
+.capsuleLockIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 36px;
+    height: 36px;
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
+      hue-rotate(0deg) brightness(100%) contrast(100%);
+  }
+}
+
 .daysRemaining {
   font-size: 1.2rem;
   font-weight: 500;
-  color: #5497ff;
+  color: #ffffff;
   text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 // 지도 섹션
