@@ -7,6 +7,8 @@ const Home = () => {
     <div>
       <CategoryModal isOpen={true} onClose={() => {}} teamId={group.id} />
       <Link to="/">로그인 페이지 이동</Link>
+      <br />
+      <Link to="/group">그룹 목록 페이지 이동</Link>
       <TabBar />
     </div>
   );

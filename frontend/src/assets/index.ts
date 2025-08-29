@@ -16,6 +16,12 @@ export { default as xcircle } from "./icons/XCircle.svg";
 export { default as map_pin_white } from "./icons/map_pin_white.svg";
 export { default as lightbulb_white } from "./icons/lightbulb_white.svg";
 export { default as calendar_white } from "./icons/calendar_white.svg";
+export { default as plus_circle } from "./icons/plus_circle.svg";
+export { default as x_circle } from "./icons/x_circle.svg";
+export { default as dots_three } from "./icons/dots_three.svg";
+export { default as rectangle_radius_0 } from "./icons/rectangle_radius_0.svg";
+export { default as rectangle_radius_10 } from "./icons/rectangle_radius_10.svg";
+export { default as rectangle_large } from "./icons/rectangle_large.svg";
 
 // Images
 export { default as capsule_img } from "./images/capsule_img.svg";
