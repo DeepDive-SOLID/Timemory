@@ -1,20 +1,21 @@
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
-import useLocation from "../../../hooks/useLocation";
 import CustomOverlay from "./CustomOverlay";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../../store";
 import { setLat, setLng } from "../../../store/locationSlice";
 import { getAddressForLatLng } from "./geocoder";
 import type { KakaoProps } from "../../../types/map";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import useMyLocation from "../../../hooks/useMyLocation";
 
 const Kakao = ({ customProps }: KakaoProps) => {
-  // 현재 내 위치를 가져옴
-  const location = useLocation();
-  const check = useSelector((state: RootState) => state.location.check);
-  const lng = useSelector((state: RootState) => state.location.x);
-  const lat = useSelector((state: RootState) => state.location.y);
-  const type = useSelector((state: RootState) => state.searchType.searchType);
-  const dispatch = useDispatch();
+  // 현재 내 위치를 가져옴 - 커스텀 훅
+  const location = useMyLocation();
+
+  // redux를 통한 상태관리
+  const check = useAppSelector((state) => state.location.check);
+  const lng = useAppSelector((state) => state.location.x);
+  const lat = useAppSelector((state) => state.location.y);
+  const type = useAppSelector((state) => state.searchType.searchType);
+  const dispatch = useAppDispatch();
 
   // 맵 중심 (center를 구함)
   const center = !check ? { lat: location.lat, lng: location.lng } : { lat, lng };

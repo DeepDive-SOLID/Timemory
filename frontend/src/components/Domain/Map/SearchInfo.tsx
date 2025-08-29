@@ -1,15 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../../store";
 import style from "../../../styles/SearchInfo.module.scss";
 import { setCheck } from "../../../store/locationSlice";
 import { useNavigate } from "react-router-dom";
 import { setSearchType } from "../../../store/searchTypeSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 
 const SearchInfo = () => {
-  const address = useSelector((state: RootState) => state.location.address_name);
-  const buildingName = useSelector((state: RootState) => state.location.building_name);
-  const check = useSelector((state: RootState) => state.location.check);
-  const dispatch = useDispatch();
+  // redux를 통한 상태관리
+  const address = useAppSelector((state) => state.location.address_name);
+  const buildingName = useAppSelector((state) => state.location.building_name);
+  const check = useAppSelector((state) => state.location.check);
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
 
   const clickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {

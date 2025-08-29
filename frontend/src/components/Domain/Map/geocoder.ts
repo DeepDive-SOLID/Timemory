@@ -4,6 +4,7 @@ import type { InputProps, LatLngProps } from "../../../types/map";
 const geocoder = new kakao.maps.services.Geocoder();
 
 // 입력값 ( x,y 좌표 및 도로명, 건물이름 )을 통해 데이터를 얻음
+// 도로명 주소가 존재하지 않으면 찾지 않음
 export const getAddressForInput = ({ inputData, dispatch }: InputProps) => {
   geocoder.addressSearch(inputData, function (result, status) {
     if (status === kakao.maps.services.Status.OK) {

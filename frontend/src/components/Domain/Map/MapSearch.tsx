@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import style from "../../../styles/MapSearch.module.scss";
 import { search } from "../../../assets/index";
 import { kakao_logo_white } from "../../../assets/index";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../../store";
 import { getAddressForInput } from "./geocoder";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 
 const MapSearch = () => {
   const [inputData, setInputData] = useState<string>("");
-  const searchType = useSelector((state: RootState) => state.searchType.searchType);
-  const dispatch = useDispatch();
+
+  // redux를 통한 상태관리
+  const searchType = useAppSelector((state) => state.searchType.searchType);
+  const dispatch = useAppDispatch();
 
   const inputEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputData(e.target.value);

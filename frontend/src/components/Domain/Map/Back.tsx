@@ -11,7 +11,7 @@ const Back = () => {
   };
   return (
     <div className={style.backBox} onClick={() => clickEvent()}>
-      <img src={back_arrow} alt='' />
+      <img src={back_arrow} alt='뒤로가기' />
     </div>
   );
 };
