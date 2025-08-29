@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "../../styles/MyCapsule.module.scss";
+import { lock, x_circle } from "../../assets/index.ts";
 
 interface Capsule {
   id: number;
@@ -20,6 +21,22 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
+
+  // 캡슐이 잠금 상태인지 확인하는 함수
+  const isCapsuleLocked = (expireDate: string) => {
+    const currentDate = new Date();
+    const expireDateTime = new Date(expireDate);
+    return currentDate < expireDateTime;
+  };
+
+  // 남은 일수 계산
+  const getDaysRemaining = (expireDate: string) => {
+    const currentDate = new Date();
+    const expireDateTime = new Date(expireDate);
+    const diffTime = expireDateTime.getTime() - currentDate.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % capsules.length);
@@ -119,53 +136,74 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
         onTouchEnd={handleTouchEnd}
       >
         <div className={styles.cardsContainer}>
-          {capsules.map((capsule, index) => (
-            <div
-              key={capsule.id}
-              className={`${styles.capsuleCard} ${
-                index === currentIndex ? styles.active : styles.inactive
-              }`}
-              style={{
-                transform: `translateX(${
-                  (index - currentIndex) * 310
-                }px) rotateY(${(index - currentIndex) * 15}deg) scale(${
-                  index === currentIndex ? 1 : 0.85
-                })`,
-                cursor: isDragging ? "grabbing" : "grab",
-              }}
-            >
-              <div className={styles.cardHeader}>
-                <h3>{capsule.title}</h3>
-                <button className={styles.closeBtn}>×</button>
-              </div>
-              <div className={styles.cardImage}>
-                <img
-                  src={capsule.image}
-                  alt={capsule.title}
-                  className={styles.cardImage}
-                />
-              </div>
-              <div className={styles.cardFooter}>
-                <div className={styles.hashtags}>
-                  {capsule.hashtags.map((tag, tagIndex) => (
-                    <span key={tagIndex} className={styles.hashtag}>
-                      {tag}
-                    </span>
-                  ))}
+          {capsules.map((capsule, index) => {
+            const isLocked = isCapsuleLocked(capsule.expireDate);
+            const daysRemaining = getDaysRemaining(capsule.expireDate);
+
+            return (
+              <div
+                key={capsule.id}
+                className={`${styles.capsuleCard} ${
+                  index === currentIndex ? styles.active : styles.inactive
+                } ${isLocked ? styles.locked : ""}`}
+                style={{
+                  transform: `translateX(${
+                    (index - currentIndex) * 310
+                  }px) rotateY(${(index - currentIndex) * 15}deg) scale(${
+                    index === currentIndex ? 1 : 0.85
+                  })`,
+                  cursor: isDragging ? "grabbing" : "grab",
+                }}
+              >
+                <div className={styles.cardHeader}>
+                  <h3>{capsule.title}</h3>
+                  <button className={styles.closeBtn}>×</button>
                 </div>
-                <div className={styles.dates}>
-                  <div className={styles.dateRow}>
-                    <span>작성일자</span>
-                    <span>{capsule.createdDate}</span>
+                <div className={styles.cardImage}>
+                  <img
+                    src={capsule.image}
+                    alt={capsule.title}
+                    className={styles.cardImage}
+                  />
+                </div>
+                <div className={styles.cardFooter}>
+                  <div className={styles.hashtags}>
+                    {capsule.hashtags.map((tag, tagIndex) => (
+                      <span key={tagIndex} className={styles.hashtag}>
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                  <div className={styles.dateRow}>
-                    <span>만료일자</span>
-                    <span>{capsule.expireDate}</span>
+                  <div className={styles.dates}>
+                    <div className={styles.dateRow}>
+                      <span>작성일자</span>
+                      <span>{capsule.createdDate}</span>
+                    </div>
+                    <div className={styles.dateRow}>
+                      <span>만료일자</span>
+                      <span>{capsule.expireDate}</span>
+                    </div>
                   </div>
                 </div>
+
+                {isLocked && (
+                  <>
+                    <button className={styles.closeButton}>
+                      <img src={x_circle} alt="close" />
+                    </button>
+                    <div className={styles.lockOverlay}>
+                      <div className={styles.lockIcon}>
+                        <img src={lock} alt="lock" />
+                      </div>
+                      <div className={styles.daysRemaining}>
+                        D-{daysRemaining}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

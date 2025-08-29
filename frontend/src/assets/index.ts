@@ -12,6 +12,7 @@ export { default as lightbulb } from "./icons/lightbulb.svg";
 export { default as lock } from "./icons/lock.svg";
 export { default as map_pin } from "./icons/map_pin.svg";
 export { default as option } from "./icons/option.svg";
+export { default as x_circle } from "./icons/x_circle.svg";
 
 // Images
 export { default as capsule_img } from "./images/capsule_img.svg";
@@ -20,6 +21,7 @@ export { default as cloud_img } from "./images/cloud_img.svg";
 export { default as camera_img } from "./images/camera_img.svg";
 export { default as condition_img } from "./images/condition_img.svg";
 export { default as map_img } from "./images/map_img.svg";
+export { default as map } from "./images/map.svg";
 export { default as profile_img } from "./images/profile_img.svg";
 export { default as profile_img2 } from "./images/profile_img2.svg";
 export { default as card_ex } from "./images/card_ex.jpg";
