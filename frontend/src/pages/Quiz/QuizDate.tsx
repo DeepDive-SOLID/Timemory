@@ -10,7 +10,7 @@ import { CapsuleDateCreateApi } from "../../api/CapsuleApi";
 import { toLocalDateTimeString, formatMD } from "../../utils/datetime";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const quizData = [
   {
@@ -79,8 +79,7 @@ const QuizDate = () => {
 
   const { userInfo } = useContext(AuthContext)!;
   const memberId = userInfo?.memberId ?? "";
-  const location = useLocation() as { state?: { teamId?: number } };
-  const teamId = location.state?.teamId;
+  const { teamId } = useParams<{ teamId: string }>();
 
   const validateCurrent = () => {
     if (step === 0 && !selectedDate) return "날짜를 선택해주세요.";
@@ -109,7 +108,7 @@ const QuizDate = () => {
       }
 
       const dto: CapsuleDateDto = {
-        teamId: teamId ?? 1,
+        teamId: Number(teamId),
         memberId: memberId ?? "",
         capText: momentText.trim(),
         capEt: toLocalDateTimeString(selectedDate),

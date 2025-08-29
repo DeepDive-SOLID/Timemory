@@ -29,7 +29,7 @@ const CategoryModal = ({ isOpen, onClose, teamId }: CategoryModalProps) => {
       alert("팀 정보가 없습니다. 홈에서 다시 진입해주세요.");
       return;
     }
-    navigate(path, { state: { teamId } });
+    navigate(`${path}/${teamId}`);
     onClose();
   };
 

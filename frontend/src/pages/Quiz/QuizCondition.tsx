@@ -14,7 +14,7 @@ import { CapsuleCndtCreateApi } from "../../api/CapsuleApi";
 import { toLocalDateTimeString } from "../../utils/datetime";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const quizData = [
   {
@@ -86,8 +86,7 @@ const QuizCondition = () => {
 
   const { userInfo } = useContext(AuthContext)!;
   const memberId = userInfo?.memberId ?? "";
-  const location = useLocation() as { state?: { teamId?: number } };
-  const teamId = location.state?.teamId;
+  const { teamId } = useParams<{ teamId: string }>();
 
   const handleTextChange = (v: string) => {
     if (step === 0) setReason(v);
@@ -115,7 +114,7 @@ const QuizCondition = () => {
     }
     try {
       const dto: CapsuleCndtDto = {
-        teamId: teamId ?? 1,
+        teamId: Number(teamId),
         memberId: memberId ?? "",
         capText: `${reason}\n${momentText}`.trim(),
         capEt: toLocalDateTimeString(new Date()),
