@@ -3,6 +3,7 @@ import type { LtListDto } from "../types/map";
 import useLatLng from "./useLatLng";
 import { getLtListApi } from "../api/MapApi";
 
+// 주소값에 대한 latlng 정보를 가져오는 커스텀 훅
 const useCapsuleData = (): LtListDto[] => {
   const [data, setData] = useState<LtListDto[]>([]);
   // api 요청 후 주소값을 따로 저장
@@ -13,6 +14,8 @@ const useCapsuleData = (): LtListDto[] => {
   useEffect(() => {
     const res = async () => {
       try {
+        // 소속팀에 해당하는 지도 데이터 요청
+        // 더미 데이터
         const resData = await getLtListApi(1);
         setData(resData);
       } catch (e) {

@@ -1,10 +1,11 @@
 import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
-import CustomOverlay from "./CustomOverlay";
+import style from "../../../styles/CustomOverlay.module.scss";
 import { setLat, setLng } from "../../../store/locationSlice";
 import { getAddressForLatLng } from "./geocoder";
 import type { KakaoProps } from "../../../types/map";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import useMyLocation from "../../../hooks/useMyLocation";
+import ImgBox from "./ImgBox";
 
 const Kakao = ({ customProps }: KakaoProps) => {
   // 현재 내 위치를 가져옴 - 커스텀 훅
@@ -51,7 +52,9 @@ const Kakao = ({ customProps }: KakaoProps) => {
               }}
               yAnchor={1}
             >
-              <CustomOverlay img={items.capImg} />
+              {/* 임시 url */}
+              {/* 커스텀 오버레이 이미지 */}
+              <ImgBox img={items.capImg} className={style.customOverlay} url='home' alt='커스텀 이미지' />
             </CustomOverlayMap>
           )
       )}
