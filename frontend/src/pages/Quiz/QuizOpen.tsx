@@ -130,7 +130,7 @@ const QuizOpen = () => {
 
   return (
     <div>
-      <StatusBar to={"/home"} />
+      <StatusBar to={"/group"} />
       <QuizBox
         title={current.title}
         image={current.image}

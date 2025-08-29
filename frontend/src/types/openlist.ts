@@ -17,5 +17,5 @@ export interface OpenListDto {
   annName: string;
   annDt: number;
   teamId: number;
-  memberProfile: [];
+  memberProfiles: (string | null)[];
 }

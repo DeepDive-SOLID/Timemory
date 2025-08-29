@@ -7,6 +7,8 @@ import {
   getValidProfileImageUrl,
   useImageErrorHandler,
 } from "../../utils/imageUtils";
+import { useNavigate } from "react-router-dom";
+import { events } from "../../constants/events";
 
 const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -22,6 +24,25 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
     return "";
   };
 
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    if (isOpenGroup) {
+      // 오픈 그룹이면 이벤트 id 찾기
+      const event = events.find(
+        (e) => e.annName === group.name || e.date === group.date
+      );
+      if (event) {
+        navigate(`/openlist/${event.id}`, {
+          state: { teamId: group.id },
+        });
+      }
+    } else {
+      // 마이 그룹이면 기존처럼 이동
+      navigate(`/group/${group.id}`);
+    }
+  };
+
   const handleMenuClick = () => {
     setIsEditModalOpen(true);
   };
@@ -32,7 +53,7 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
 
   return (
     <>
-      <div className={styles.groupCard}>
+      <div className={styles.groupCard} onClick={handleCardClick}>
         <div className={styles.cardBackground}>
           <img
             src={rectangle_radius_0}
