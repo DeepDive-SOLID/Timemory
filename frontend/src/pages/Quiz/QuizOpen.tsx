@@ -53,7 +53,7 @@ const QuizOpen = () => {
       ),
       image: hashtag_img,
       input: "키워드를 입력해주세요.",
-      warning: "20자 이내로 작성해주세요. ",
+      warning: "20자 이내로 엔터를 눌러 작성해주세요.",
       svgBox: "sm" as const,
       maxTagLen: 20,
       required: false,

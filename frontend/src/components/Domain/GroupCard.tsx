@@ -77,7 +77,13 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
               )}
             </h3>
             {!isOpenGroup && (
-              <button className={styles.menuButton} onClick={handleMenuClick}>
+              <button
+                className={styles.menuButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleMenuClick();
+                }}
+              >
                 <img src={dots_three} alt="Menu" />
               </button>
             )}

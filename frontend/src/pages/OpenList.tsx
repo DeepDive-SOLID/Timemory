@@ -68,7 +68,7 @@ const OpenList = () => {
 
   return (
     <div>
-      <StatusBar to={"/home"} />
+      <StatusBar to={"/group"} />
 
       <div className={styles.stickySection}>
         <div className={styles.title}>{eventData.title}</div>

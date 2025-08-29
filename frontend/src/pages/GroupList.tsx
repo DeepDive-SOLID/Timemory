@@ -71,7 +71,7 @@ const GroupListPage = () => {
     );
 
     return {
-      id: match?.teamId ?? -1,
+      id: match ? match.teamId : -1,
       name: event.annName,
       date: event.date,
       members: [],
