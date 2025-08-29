@@ -42,10 +42,6 @@ export interface LatLngProps {
   dispatch: Dispatch;
 }
 
-export interface ActiveType {
-  search: boolean;
-  pin: boolean;
-}
 export interface UseLatLngProps {
   input: string[];
 }
