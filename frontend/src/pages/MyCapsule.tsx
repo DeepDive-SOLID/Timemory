@@ -23,6 +23,7 @@ const MyCapsule: React.FC = () => {
       createdDate: "2025.08.06",
       expireDate: "2025.08.10",
       image: card_ex,
+      isOpened: true,
     },
     {
       id: 2,
@@ -31,6 +32,7 @@ const MyCapsule: React.FC = () => {
       createdDate: "2025.07.15",
       expireDate: "2025.09.20",
       image: card_ex,
+      isOpened: false,
     },
     {
       id: 3,
@@ -39,6 +41,7 @@ const MyCapsule: React.FC = () => {
       createdDate: "2025.08.01",
       expireDate: "2025.08.15",
       image: card_ex,
+      isOpened: true,
     },
     {
       id: 4,
@@ -47,6 +50,7 @@ const MyCapsule: React.FC = () => {
       createdDate: "2025.07.20",
       expireDate: "2025.10.01",
       image: card_ex,
+      isOpened: false,
     },
   ];
 
@@ -56,9 +60,9 @@ const MyCapsule: React.FC = () => {
       message: "사실 오늘 제 생일이었어요...",
       hashtags: ["#친구", "#만남"],
       author: "user1",
-      createdDate: "2025.08.29",
+      createdDate: "2025.08.30",
       image: card_ex,
-      condition: "눈 오는 날",
+      isOpened: false,
     },
     {
       id: 2,
@@ -68,7 +72,7 @@ const MyCapsule: React.FC = () => {
       author: "user2",
       createdDate: "2025.08.07",
       image: card_ex,
-      condition: "눈 오는 날",
+      isOpened: true,
     },
     {
       id: 3,
@@ -77,7 +81,7 @@ const MyCapsule: React.FC = () => {
       author: "user3",
       createdDate: "2025.08.06",
       image: card_ex,
-      condition: "눈 오는 날",
+      isOpened: false,
     },
   ];
 

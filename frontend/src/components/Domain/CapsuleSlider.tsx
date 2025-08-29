@@ -9,6 +9,7 @@ interface Capsule {
   createdDate: string;
   expireDate: string;
   image: string;
+  isOpened: boolean;
 }
 
 interface CapsuleSliderProps {
@@ -21,13 +22,6 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
-
-  // 캡슐이 잠금 상태인지 확인하는 함수
-  const isCapsuleLocked = (expireDate: string) => {
-    const currentDate = new Date();
-    const expireDateTime = new Date(expireDate);
-    return currentDate < expireDateTime;
-  };
 
   // 남은 일수 계산
   const getDaysRemaining = (expireDate: string) => {
@@ -137,7 +131,7 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
       >
         <div className={styles.cardsContainer}>
           {capsules.map((capsule, index) => {
-            const isLocked = isCapsuleLocked(capsule.expireDate);
+            const isLocked = !capsule.isOpened;
             const daysRemaining = getDaysRemaining(capsule.expireDate);
 
             return (

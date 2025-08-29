@@ -9,6 +9,7 @@ type MessageCard = {
   author: string;
   createdDate: string; // 잠금 기준 날짜
   image: string;
+  isOpened: boolean;
 };
 
 interface MessageCardSectionProps {
@@ -16,26 +17,11 @@ interface MessageCardSectionProps {
 }
 
 const MessageCardSection: React.FC<MessageCardSectionProps> = ({ cards }) => {
-  const isCardLocked = (unlockDate: string) => {
-    const currentDate = new Date();
-    const unlockDateTime = new Date(unlockDate);
-    return currentDate < unlockDateTime;
-  };
-
-  const getDaysRemaining = (unlockDate: string) => {
-    const currentDate = new Date();
-    const unlockDateTime = new Date(unlockDate);
-    const diffTime = unlockDateTime.getTime() - currentDate.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 0 ? diffDays : 0;
-  };
-
   return (
     <div className={styles.messageCardsSection}>
       <div className={styles.messageCardsContainer}>
         {cards.map((card) => {
-          const isLocked = isCardLocked(card.createdDate);
-          const daysRemaining = getDaysRemaining(card.createdDate);
+          const isLocked = !card.isOpened;
 
           return (
             <div
@@ -92,7 +78,6 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({ cards }) => {
                   <div className={styles.lockIcon}>
                     <img src={lock} alt="lock" />
                   </div>
-                  <div className={styles.daysRemaining}>D-{daysRemaining}</div>
                 </div>
               )}
             </div>
