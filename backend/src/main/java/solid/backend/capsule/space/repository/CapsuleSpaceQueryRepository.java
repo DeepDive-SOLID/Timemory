@@ -32,8 +32,10 @@ public class CapsuleSpaceQueryRepository {
     public List<Capsule> findCapsulesByMemberId(String memberId) {
         return queryFactory
                 .selectFrom(capsule)
-                .leftJoin(capsule.team, team).fetchJoin()  // Team fetch join으로 N+1 방지
-                .leftJoin(capsule.member, member).fetchJoin()  // Member fetch join으로 N+1 방지
+                .leftJoin(capsule.team, team).fetchJoin()
+                .leftJoin(capsule.member, member).fetchJoin()
+                .leftJoin(capsule.capsuleLocation).fetchJoin()
+                .leftJoin(capsule.capsuleCondition).fetchJoin()
                 .where(capsule.member.memberId.eq(memberId))
                 .orderBy(capsule.capUt.desc())
                 .fetch();

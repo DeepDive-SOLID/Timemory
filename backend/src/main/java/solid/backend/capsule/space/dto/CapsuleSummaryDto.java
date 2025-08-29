@@ -23,6 +23,7 @@ public class CapsuleSummaryDto {
     private String teamName;
     private Boolean isOpened;
     private Boolean isAnniversary;
+    private String capsuleType;  // 캡슐 타입 추가
     
     public static CapsuleSummaryDto from(Capsule capsule) {
         LocalDateTime now = LocalDateTime.now();
@@ -33,6 +34,9 @@ public class CapsuleSummaryDto {
                  capsule.getTeam().getTeamName() != null && 
                  capsule.getTeam().getTeamName().startsWith("TIME_CAPSULE_");
         
+        // 캡슐 타입 판별
+        String capsuleType = determineCapsuleType(capsule);
+        
         return CapsuleSummaryDto.builder()
                 .capsuleId(capsule.getCapId())
                 .content(capsule.getCapText())
@@ -42,8 +46,36 @@ public class CapsuleSummaryDto {
                 .createdAt(capsule.getCapUt())
                 .isOpened(opened)
                 .isAnniversary(isAnniversary)
+                .capsuleType(capsuleType)
                 .teamId(capsule.getTeam() != null ? capsule.getTeam().getTeamId() : null)
                 .teamName(capsule.getTeam() != null ? capsule.getTeam().getTeamName() : null)
                 .build();
+    }
+    
+    /**
+     * 캡슐 타입을 판별하는 메서드
+     * @param capsule 캡슐 엔티티
+     * @return 캡슐 타입 문자열
+     */
+    private static String determineCapsuleType(Capsule capsule) {
+        // 1. 기념일 캡슐 (팀명으로 구분)
+        if (capsule.getTeam() != null && 
+            capsule.getTeam().getTeamName() != null && 
+            capsule.getTeam().getTeamName().startsWith("TIME_CAPSULE_")) {
+            return "ANNIVERSARY";
+        }
+        
+        // 2. 위치 캡슐 (OneToOne 관계 확인)
+        if (capsule.getCapsuleLocation() != null) {
+            return "LOCATION";
+        }
+        
+        // 3. 조건 캡슐 (OneToOne 관계 확인)  
+        if (capsule.getCapsuleCondition() != null) {
+            return "CONDITION";
+        }
+        
+        // 4. 기본 날짜 캡슐
+        return "DATE";
     }
 }

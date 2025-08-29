@@ -34,7 +34,8 @@
         "teamId": "Integer",
         "teamName": "String",
         "isOpened": "Boolean",
-        "isAnniversary": "Boolean"
+        "isAnniversary": "Boolean",
+        "capsuleType": "String"  // DATE, LOCATION, CONDITION, ANNIVERSARY
       }
     ]
   }
