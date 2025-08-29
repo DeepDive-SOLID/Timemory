@@ -11,6 +11,7 @@ import { toLocalDateTimeString, formatMD } from "../../utils/datetime";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const quizData = [
   {
@@ -48,7 +49,7 @@ const quizData = [
     ),
     image: hashtag_img,
     input: "키워드를 입력해주세요.",
-    warning: "20자 이내로 작성해주세요.",
+    warning: "20자 이내로 엔터를 눌러 작성해주세요.",
     svgBox: "sm" as const,
   },
   {
@@ -73,6 +74,7 @@ const QuizDate = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagText, setTagText] = useState("");
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
   const current = quizData[step];
@@ -117,6 +119,7 @@ const QuizDate = () => {
       };
       const res = await CapsuleDateCreateApi(dto);
       alert("날짜 캡슐 생성 성공: " + res);
+      navigate("/group/" + teamId);
     } catch (e) {
       console.error(e);
       alert("날짜 캡슐 생성 실패");
