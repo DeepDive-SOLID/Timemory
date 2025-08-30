@@ -11,7 +11,7 @@ const LocationCapsule = () => {
     <>
       {/* 임시 url */}
       {/* 뒤로가기 back_arrow */}
-      <ImgBox img={back_arrow} className={style.backBox} url='home' alt='뒤로가기' />
+      <ImgBox img={back_arrow} className={style.backBox} url='groupInner' alt='뒤로가기' />
       <Kakao customProps={data} />
     </>
   );

@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import index from "./store/index.ts";
 import NickName from "./pages/NickName.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
+import GroupInner from "./pages/GroupInner.tsx";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "map",
         element: <SearchLocation />,
+      },
+      {
+        path: "groupInner",
+        element: <GroupInner />,
       },
     ],
   },
