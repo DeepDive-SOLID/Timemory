@@ -62,7 +62,7 @@ public class Capsule {
     @Column(name = "cap_sent", nullable = false)
     @Builder.Default
     @Comment("메시지 발송 여부")
-    private Boolean sent = false;
+    private Boolean capSent = false;
 
     @PrePersist
     public void prePersist() {
@@ -70,8 +70,8 @@ public class Capsule {
         if (this.capOpen == null) {
             this.capOpen = false;
         }
-        if (this.sent == null) {
-            this.sent = false;
+        if (this.capSent == null) {
+            this.capSent = false;
         }
     }
 }

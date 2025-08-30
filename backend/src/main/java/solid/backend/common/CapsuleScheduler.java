@@ -29,7 +29,7 @@ public class CapsuleScheduler {
         LocalDateTime now = LocalDateTime.now();
 
         // 만료 & 미전송 캡슐 전체 조회 (로그인 여부 무관)
-        List<Capsule> targets = capsuleRepository.findByCapEtBeforeAndSentFalse(now);
+        List<Capsule> targets = capsuleRepository.findByCapEtBeforeAndCapSentFalse(now);
 
         for (Capsule c : targets) {
             boolean kakaoOk = false;
@@ -80,7 +80,7 @@ public class CapsuleScheduler {
 
             // 둘 중 하나라도 성공하면 sent 처리
             if (kakaoOk || mailOk) {
-                c.setSent(true);
+                c.setCapSent(true);
                 capsuleRepository.save(c);
             }
         }
