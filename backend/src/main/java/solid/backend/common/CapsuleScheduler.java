@@ -26,57 +26,41 @@ public class CapsuleScheduler {
     @Transactional
     @Scheduled(fixedRate = 10000) // 10초마다 체크
     public void checkCapsules() {
-        if (!tokenStore.hasToken() || !tokenStore.hasMemberId()) {
-            System.out.println("토큰 또는 memberId 없음. 전송 생략");
-            return;
-        }
-
-        String memberId = tokenStore.getMemberId();
-        List<TeamMember> teamMembers = teamMemberRepository.findByMemberMemberId(memberId);
-        if (teamMembers.isEmpty()) {
-            System.out.println("팀 미소속 사용자: " + memberId);
-            return;
-        }
-
-        // 사용자 소속 팀 ID들
-        List<Integer> teamIds = teamMembers.stream()
-                .map(tm -> tm.getTeam().getTeamId())
-                .distinct()
-                .toList();
-
-        // 해당 팀의 모든 멤버 이메일 수집
-        List<TeamMember> teamAllMembers = teamMemberRepository.findByTeam_TeamIdIn(teamIds);
-        List<String> recipientEmails = teamAllMembers.stream()
-                .map(tm -> tm.getMember())
-                .filter(m -> m != null)
-                .map(m -> m.getMemberEmail())
-                .filter(email -> email != null && !email.isBlank())
-                .distinct()
-                .toList();
-
-        if (recipientEmails.isEmpty()) {
-            System.out.println("팀 멤버 이메일이 없어 메일 전송 생략");
-        }
-
-        // 해당 팀들의 만료 & 미전송 캡슐을 한 번에 조회
         LocalDateTime now = LocalDateTime.now();
-        List<Capsule> targets =
-                capsuleRepository.findByTeam_TeamIdInAndCapEtBeforeAndSentFalse(teamIds, now);
+
+        // 만료 & 미전송 캡슐 전체 조회 (로그인 여부 무관)
+        List<Capsule> targets = capsuleRepository.findByCapEtBeforeAndSentFalse(now);
 
         for (Capsule c : targets) {
             boolean kakaoOk = false;
-            boolean mailOk = false;
+            boolean mailOk  = false;
 
-            // 카카오 메시지 전송
-            try {
-                kakaoMessage.sendMessage("캡슐이 열렸습니다 !! \\n서비스를 통해 확인해주세요. \\n http://timemory.kro.kr/");
-                kakaoOk = true;
-            } catch (Exception e) {
-                System.out.println("전송 실패: " + e.getMessage());
+            // 카카오 알림 (카카오 로그인 사용자에게만)
+            if (tokenStore.hasToken() && tokenStore.hasMemberId()) {
+                try {
+                    kakaoMessage.sendMessage(
+                            "캡슐이 열렸습니다 !! \\n서비스를 통해 확인해주세요. \\n http://timemory.kro.kr/"
+                    );
+                    kakaoOk = true;
+                } catch (Exception e) {
+                    System.out.println("카카오 전송 실패: " + e.getMessage());
+                }
+            } else {
+                System.out.println("로그인 토큰 없음 → 카카오 알림 건너뜀");
             }
 
-            // 메일 전송
+            // 메일 알림 (팀 전체 멤버에게)
             try {
+                Integer teamId = c.getTeam().getTeamId();
+                List<TeamMember> teamMembers = teamMemberRepository.findByTeam_TeamId(teamId);
+                List<String> recipientEmails = teamMembers.stream()
+                        .map(tm -> tm.getMember())
+                        .filter(m -> m != null)
+                        .map(m -> m.getMemberEmail())
+                        .filter(email -> email != null && !email.isBlank())
+                        .distinct()
+                        .toList();
+
                 if (!recipientEmails.isEmpty()) {
                     String subject = "[Timemory] 캡슐이 열렸습니다!";
                     String html = """
@@ -87,12 +71,14 @@ public class CapsuleScheduler {
                         """;
                     mailManager.sendHtmlBcc(recipientEmails, subject, html);
                     mailOk = true;
+                } else {
+                    System.out.println("팀 멤버 이메일 없음 → 메일 전송 생략");
                 }
             } catch (MessagingException e) {
                 System.out.println("메일 전송 실패: " + e.getMessage());
             }
 
-            // 둘 중 하나만 성공해도 'sent' 처리
+            // 둘 중 하나라도 성공하면 sent 처리
             if (kakaoOk || mailOk) {
                 c.setSent(true);
                 capsuleRepository.save(c);
