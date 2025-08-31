@@ -45,10 +45,11 @@ public class CapsuleCndtServiceImpl implements CapsuleCndtService {
                             capsule.getCapId(),
                             capsule.getTeam().getTeamId(),
                             capsule.getMember().getMemberId(),
+                            capsule.getMember().getMemberNickname(),
                             capsule.getCapText(),
                             capsule.getCapUt(),
                             capsule.getCapEt(),
-                            capsule.getCapImg(),
+                            capsule.getCapImg() != null ? fileManager.getFileUrl(capsule.getCapImg()) : null,
                             capsule.getCapTag(),
                             capsule.getCapOpen(),
                             capsule.getCapsuleCondition().getCapCndtCase()

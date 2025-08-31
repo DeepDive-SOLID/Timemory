@@ -13,6 +13,7 @@ public class CapsuleDateOpenDto {
     private Integer capId;
     private Integer teamId;
     private String memberId;
+    private String memberNickname;
     private String capText;
     private LocalDateTime capUt;
     private LocalDateTime capEt;

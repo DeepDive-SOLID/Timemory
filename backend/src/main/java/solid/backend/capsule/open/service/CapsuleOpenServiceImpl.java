@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import solid.backend.capsule.open.dto.CapsuleCndtOpenDto;
 import solid.backend.capsule.open.dto.CapsuleDateOpenDto;
 import solid.backend.capsule.open.dto.CapsuleLtOpenDto;
+import solid.backend.common.FileManager;
 import solid.backend.common.SentManager;
 import solid.backend.entity.Capsule;
 import solid.backend.jpaRepository.CapsuleRepository;
@@ -17,6 +18,7 @@ import java.util.List;
 public class CapsuleOpenServiceImpl implements CapsuleOpenService{
     private final CapsuleRepository capsuleRepository;
     private final SentManager sentManager;
+    private final FileManager fileManager;
 
     /**
      * 설명: 날짜 캡슐 오픈 처리 후 캡슐 데이터 반환
@@ -36,10 +38,11 @@ public class CapsuleOpenServiceImpl implements CapsuleOpenService{
                 cap.getCapId(),
                 cap.getTeam().getTeamId(),
                 cap.getMember().getMemberId(),
+                cap.getMember().getMemberNickname(),
                 cap.getCapText(),
                 cap.getCapUt(),
                 cap.getCapEt(),
-                cap.getCapImg(),
+                cap.getCapImg() != null ? fileManager.getFileUrl(cap.getCapImg()) : null,
                 cap.getCapTag(),
                 cap.getCapOpen()
         );
@@ -69,10 +72,11 @@ public class CapsuleOpenServiceImpl implements CapsuleOpenService{
                 cap.getCapId(),
                 cap.getTeam().getTeamId(),
                 cap.getMember().getMemberId(),
+                cap.getMember().getMemberNickname(),
                 cap.getCapText(),
                 cap.getCapUt(),
                 cap.getCapEt(),
-                cap.getCapImg(),
+                cap.getCapImg() != null ? fileManager.getFileUrl(cap.getCapImg()) : null,
                 cap.getCapTag(),
                 cap.getCapOpen(),
                 cap.getCapsuleCondition().getCapCndtCase()
@@ -103,10 +107,11 @@ public class CapsuleOpenServiceImpl implements CapsuleOpenService{
                 cap.getCapId(),
                 cap.getTeam().getTeamId(),
                 cap.getMember().getMemberId(),
+                cap.getMember().getMemberNickname(),
                 cap.getCapText(),
                 cap.getCapUt(),
                 cap.getCapEt(),
-                cap.getCapImg(),
+                cap.getCapImg() != null ? fileManager.getFileUrl(cap.getCapImg()) : null,
                 cap.getCapTag(),
                 cap.getCapOpen(),
                 cap.getCapsuleLocation().getCapLtAddr(),
