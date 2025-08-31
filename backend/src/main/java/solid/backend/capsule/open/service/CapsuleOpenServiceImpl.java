@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import solid.backend.capsule.open.dto.CapsuleCndtOpenDto;
 import solid.backend.capsule.open.dto.CapsuleDateOpenDto;
 import solid.backend.capsule.open.dto.CapsuleLtOpenDto;
-import solid.backend.common.CapsuleScheduler;
+import solid.backend.common.SentManager;
 import solid.backend.entity.Capsule;
 import solid.backend.jpaRepository.CapsuleRepository;
 
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CapsuleOpenServiceImpl implements CapsuleOpenService{
     private final CapsuleRepository capsuleRepository;
-    private final CapsuleScheduler capsuleScheduler;
+    private final SentManager sentManager;
 
     /**
      * 설명: 날짜 캡슐 오픈 처리 후 캡슐 데이터 반환
@@ -57,8 +57,13 @@ public class CapsuleOpenServiceImpl implements CapsuleOpenService{
         Capsule cap = capsuleRepository.findById(capId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 캡슐이 존재하지 않습니다: " + capId));
 
-        cap.setCapOpen(true);
-        capsuleRepository.save(cap);
+        if(!cap.getCapOpen()) {
+            cap.setCapOpen(true);
+            capsuleRepository.save(cap);
+        }
+
+        // 메시지 전송
+        sentManager.sentMessage(capId);
 
         CapsuleCndtOpenDto dto = new CapsuleCndtOpenDto(
                 cap.getCapId(),
@@ -86,9 +91,13 @@ public class CapsuleOpenServiceImpl implements CapsuleOpenService{
         Capsule cap = capsuleRepository.findById(capId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 캡슐이 존재하지 않습니다: " + capId));
 
-        cap.setCapOpen(true);
-        capsuleRepository.save(cap);
+        if(!cap.getCapOpen()) {
+            cap.setCapOpen(true);
+            capsuleRepository.save(cap);
+        }
 
+        // 메시지 전송
+        sentManager.sentMessage(capId);
 
         CapsuleLtOpenDto dto = new CapsuleLtOpenDto(
                 cap.getCapId(),

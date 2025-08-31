@@ -37,5 +37,5 @@ public interface CapsuleRepository extends JpaRepository<Capsule, Integer> {
     // 팀과 멤버의 캡슐 삭제
     void deleteByTeamAndMember(Team team, Member member);
     List<Capsule> findByCapEtBeforeAndCapSentFalse(LocalDateTime now);
-    List<Capsule> findByTeam_TeamIdInAndCapEtBeforeAndCapSentFalse(List<Integer> teamIds, LocalDateTime now);
+    List<Capsule> findByCapIdAndCapSentFalse(Integer capId);
 }
