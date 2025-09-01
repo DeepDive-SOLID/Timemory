@@ -3,7 +3,6 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    margin-bottom: 30px;
 }
 .capsuleList {
     width: 500px;
@@ -22,7 +21,7 @@
     border-radius: 8px;
     width: 180px;
     height: 250px;
-    background-color: #bbbbbb;
+    background-color: #bbbbbbb7;
     padding: 10px;
     scroll-snap-align: start;
     cursor: pointer;
@@ -51,7 +50,7 @@
     img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: fill;
         border-bottom: 1px solid black;
         padding-bottom: 10px;
         margin-bottom: 4px;

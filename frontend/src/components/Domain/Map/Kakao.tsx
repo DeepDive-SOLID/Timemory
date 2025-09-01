@@ -6,10 +6,11 @@ import type { KakaoProps } from "../../../types/map";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import useMyLocation from "../../../hooks/useMyLocation";
 import ImgBox from "./ImgBox";
+import { map_pin_blue } from "../../../assets/index";
 
 const Kakao = ({ customProps }: KakaoProps) => {
   // 현재 내 위치를 가져옴 - 커스텀 훅
-  const location = useMyLocation();
+  const location = useMyLocation(true);
 
   // redux를 통한 상태관리
   const check = useAppSelector((state) => state.location.check);
@@ -38,7 +39,14 @@ const Kakao = ({ customProps }: KakaoProps) => {
       onClick={(_, mouseEvent) => clickEvent(mouseEvent)}
       level={customProps ? 10 : 3}
     >
-      {!customProps && <MapMarker position={!check ? location : { lat, lng }} />}
+      <MapMarker
+        position={!check ? location : { lat, lng }}
+        zIndex={2}
+        image={{
+          src: map_pin_blue,
+          size: { width: 50, height: 40 },
+        }}
+      />
 
       {customProps?.map(
         (items) =>

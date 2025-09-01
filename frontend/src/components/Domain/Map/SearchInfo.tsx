@@ -3,6 +3,7 @@ import { setCheck } from "../../../store/locationSlice";
 import { useNavigate } from "react-router-dom";
 import { setSearchType } from "../../../store/searchTypeSlice";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { useEffect } from "react";
 
 const SearchInfo = () => {
   // redux를 통한 상태관리
@@ -17,10 +18,13 @@ const SearchInfo = () => {
     dispatch(setCheck(false));
     dispatch(setSearchType("search"));
     if (e.currentTarget.id === "submit") {
-      // 프론트 합치면 변경
-      navigate("/capsuleMap");
+      navigate(-1);
     }
   };
+
+  useEffect(() => {
+    console.log(address);
+  }, [address]);
 
   return (
     <>

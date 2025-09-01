@@ -5,14 +5,15 @@ interface ImgProps {
   className: string;
   url: string;
   alt: string;
+  groupId?: string;
 }
 
-const ImgBox = ({ img, className, url, alt }: ImgProps) => {
+const ImgBox = ({ img, className, url, alt, groupId }: ImgProps) => {
   const navigate = useNavigate();
 
   const clickEvent = () => {
     // 프론트 연동 시 변경
-    navigate(`/${url}`);
+    navigate(`/${url}/${groupId}`);
   };
   return (
     <div className={className} onClick={() => clickEvent()}>

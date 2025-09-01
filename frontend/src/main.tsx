@@ -10,7 +10,6 @@ import { Provider } from "react-redux";
 import index from "./store/index.ts";
 import NickName from "./pages/NickName.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
-import GroupInner from "./pages/GroupInner.tsx";
 import GroupList from "./pages/GroupList.tsx";
 import QuizDate from "./pages/Quiz/QuizDate.tsx";
 import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
@@ -39,16 +38,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "capsuleMap",
+        path: "capsuleMap/:groupId",
         element: <LocationCapsule />,
       },
       {
         path: "map",
         element: <SearchLocation />,
-      },
-      {
-        path: "groupInner",
-        element: <GroupInner />,
       },
       {
         path: "date/:teamId",
