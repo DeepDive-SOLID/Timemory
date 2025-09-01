@@ -3,12 +3,17 @@ import styles from "../../styles/MyCapsule.module.scss";
 import { lock, x_circle } from "../../assets/index.ts";
 import type { Capsule } from "../../types/capsule";
 import DeleteConfirm from "../UI/DeleteConfirm";
+import { deleteCapsuleApi } from "../../api/capsuleApi";
 
 interface CapsuleSliderProps {
   capsules: Capsule[];
+  onCapsuleDeleted?: () => void;
 }
 
-const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
+const CapsuleSlider: React.FC<CapsuleSliderProps> = ({
+  capsules,
+  onCapsuleDeleted,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -17,6 +22,7 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
   const [selectedCapsuleId, setSelectedCapsuleId] = useState<number | null>(
     null
   );
+  const [isDeleting, setIsDeleting] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   // 남은 일수 계산
@@ -118,13 +124,34 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
     setShowDeleteModal(true);
   };
 
-  const handleDeleteConfirm = () => {
-    if (selectedCapsuleId) {
-      // TODO: 실제 삭제 API 호출
-      console.log("캡슐 삭제:", selectedCapsuleId);
+  const handleDeleteConfirm = async () => {
+    if (selectedCapsuleId && !isDeleting) {
+      try {
+        setIsDeleting(true);
+        await deleteCapsuleApi(selectedCapsuleId);
+
+        // 삭제 성공 시 부모 컴포넌트에 알림
+        if (onCapsuleDeleted) {
+          onCapsuleDeleted();
+        }
+
+        // 모달 닫기
+        setShowDeleteModal(false);
+        setSelectedCapsuleId(null);
+
+        // 삭제 성공 메시지
+        alert("캡슐이 성공적으로 삭제되었습니다.");
+      } catch (error) {
+        // 에러 메시지 표시
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "캡슐 삭제 중 오류가 발생했습니다.";
+        alert(errorMessage);
+      } finally {
+        setIsDeleting(false);
+      }
     }
-    setShowDeleteModal(false);
-    setSelectedCapsuleId(null);
   };
 
   const handleDeleteCancel = () => {
@@ -166,7 +193,12 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
               >
                 <div className={styles.cardHeader}>
                   <h3>{capsule.content}</h3>
-                  <button className={styles.closeBtn}>×</button>
+                  <button
+                    className={styles.closeBtn}
+                    onClick={() => handleDeleteClick(capsule.capsuleId)}
+                  >
+                    ×
+                  </button>
                 </div>
                 {capsule.imageUrl && (
                   <div className={styles.cardImage}>
@@ -243,6 +275,7 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
         isOpen={showDeleteModal}
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
+        isDeleting={isDeleting}
       />
     </div>
   );

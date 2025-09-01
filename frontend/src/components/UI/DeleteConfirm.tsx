@@ -6,6 +6,7 @@ interface DeleteConfirmProps {
   onClose: () => void;
   onConfirm: () => void;
   title?: string;
+  isDeleting?: boolean;
 }
 
 const DeleteConfirm: React.FC<DeleteConfirmProps> = ({
@@ -13,6 +14,7 @@ const DeleteConfirm: React.FC<DeleteConfirmProps> = ({
   onClose,
   onConfirm,
   title = "캡슐을 삭제하시겠습니까?",
+  isDeleting = false,
 }) => {
   if (!isOpen) return null;
 
@@ -22,11 +24,19 @@ const DeleteConfirm: React.FC<DeleteConfirmProps> = ({
         <h3 className={styles.modalTitle}>{title}</h3>
         <p className={styles.modalMessage}>삭제 시 복구 불가능합니다.</p>
         <div className={styles.modalButtons}>
-          <button className={styles.cancelButton} onClick={onClose}>
+          <button
+            className={styles.cancelButton}
+            onClick={onClose}
+            disabled={isDeleting}
+          >
             취소
           </button>
-          <button className={styles.confirmButton} onClick={onConfirm}>
-            삭제
+          <button
+            className={styles.confirmButton}
+            onClick={onConfirm}
+            disabled={isDeleting}
+          >
+            {isDeleting ? "삭제 중..." : "삭제"}
           </button>
         </div>
       </div>

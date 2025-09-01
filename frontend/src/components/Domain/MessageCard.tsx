@@ -3,27 +3,54 @@ import styles from "../../styles/MyCapsule.module.scss";
 import { lock, x_circle } from "../../assets/index.ts";
 import type { MessageCard } from "../../types/capsule";
 import DeleteConfirm from "../UI/DeleteConfirm";
+import { deleteCapsuleApi } from "../../api/capsuleApi";
 
 interface MessageCardSectionProps {
   cards: MessageCard[];
+  onCapsuleDeleted?: () => void;
 }
 
-const MessageCardSection: React.FC<MessageCardSectionProps> = ({ cards }) => {
+const MessageCardSection: React.FC<MessageCardSectionProps> = ({
+  cards,
+  onCapsuleDeleted,
+}) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeleteClick = (cardId: number) => {
     setSelectedCardId(cardId);
     setShowDeleteModal(true);
   };
 
-  const handleDeleteConfirm = () => {
-    if (selectedCardId) {
-      // TODO: 실제 삭제 API 호출
-      console.log("메시지 카드 삭제:", selectedCardId);
+  const handleDeleteConfirm = async () => {
+    if (selectedCardId && !isDeleting) {
+      try {
+        setIsDeleting(true);
+        await deleteCapsuleApi(selectedCardId);
+
+        // 삭제 성공 시 부모 컴포넌트에 알림
+        if (onCapsuleDeleted) {
+          onCapsuleDeleted();
+        }
+
+        // 모달 닫기
+        setShowDeleteModal(false);
+        setSelectedCardId(null);
+
+        // 삭제 성공 메시지
+        alert("메시지가 성공적으로 삭제되었습니다.");
+      } catch (error) {
+        // 에러 메시지 표시
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "메시지 삭제 중 오류가 발생했습니다.";
+        alert(errorMessage);
+      } finally {
+        setIsDeleting(false);
+      }
     }
-    setShowDeleteModal(false);
-    setSelectedCardId(null);
   };
 
   const handleDeleteCancel = () => {
@@ -73,7 +100,10 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({ cards }) => {
               </div>
 
               <div className={styles.messageFooter}>
-                <button className={styles.deleteButton}>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => handleDeleteClick(card.id)}
+                >
                   <svg
                     width="16"
                     height="16"
@@ -108,6 +138,7 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({ cards }) => {
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
         title="메시지를 삭제하시겠습니까?"
+        isDeleting={isDeleting}
       />
     </div>
   );

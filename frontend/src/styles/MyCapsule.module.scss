@@ -202,6 +202,11 @@
     align-items: center;
     justify-content: center;
     margin-top: 0.3rem;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #ff4757;
+    }
   }
 }
 

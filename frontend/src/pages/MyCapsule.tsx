@@ -24,51 +24,50 @@ const MyCapsule: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [memberNickname, setMemberNickname] = useState<string>("");
 
+  // 캡슐 목록을 불러오는 함수
+  const fetchCapsules = async () => {
+    try {
+      setLoading(true);
+      const response = await getUserCapsulesApi();
+      setMemberNickname(response.memberNickname);
+      const filteredDateCapsules = filterDateCapsules(response.capsules);
+      const filteredConditionCapsules = filterConditionCapsules(
+        response.capsules
+      );
+
+      // DATE 타입 캡슐들을 열림일자 가까운 순으로 정렬
+      const sortedDateCapsules = filteredDateCapsules.sort((a, b) => {
+        const dateA = new Date(a.openDate).getTime();
+        const dateB = new Date(b.openDate).getTime();
+        return dateA - dateB; // 오름차순 (가까운 순)
+      });
+
+      // CONDITION 타입 캡슐 정렬: (1) 열린 캡슐 먼저, (2) 최신 작성일 내림차순
+      const sortedConditionCapsules = filteredConditionCapsules.sort((a, b) => {
+        if (a.isOpened !== b.isOpened) {
+          return a.isOpened ? -1 : 1;
+        }
+        const aCreated = new Date(a.createdAt).getTime();
+        const bCreated = new Date(b.createdAt).getTime();
+        return aCreated - bCreated; // 오름차순
+      });
+
+      setDateCapsules(sortedDateCapsules);
+      setConditionCapsules(sortedConditionCapsules);
+      setError(null);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "캡슐을 불러오는 중 오류가 발생했습니다."
+      );
+      console.error("캡슐 조회 오류:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchCapsules = async () => {
-      try {
-        setLoading(true);
-        const response = await getUserCapsulesApi();
-        setMemberNickname(response.memberNickname);
-        const filteredDateCapsules = filterDateCapsules(response.capsules);
-        const filteredConditionCapsules = filterConditionCapsules(
-          response.capsules
-        );
-
-        // DATE 타입 캡슐들을 열림일자 가까운 순으로 정렬
-        const sortedDateCapsules = filteredDateCapsules.sort((a, b) => {
-          const dateA = new Date(a.openDate).getTime();
-          const dateB = new Date(b.openDate).getTime();
-          return dateA - dateB; // 오름차순 (가까운 순)
-        });
-
-        // CONDITION 타입 캡슐 정렬: (1) 열린 캡슐 먼저, (2) 최신 작성일 내림차순
-        const sortedConditionCapsules = filteredConditionCapsules.sort(
-          (a, b) => {
-            if (a.isOpened !== b.isOpened) {
-              return a.isOpened ? -1 : 1;
-            }
-            const aCreated = new Date(a.createdAt).getTime();
-            const bCreated = new Date(b.createdAt).getTime();
-            return aCreated - bCreated; // 오름차순
-          }
-        );
-
-        setDateCapsules(sortedDateCapsules);
-        setConditionCapsules(sortedConditionCapsules);
-        setError(null);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "캡슐을 불러오는 중 오류가 발생했습니다."
-        );
-        console.error("캡슐 조회 오류:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCapsules();
   }, []);
 
@@ -96,6 +95,12 @@ const MyCapsule: React.FC = () => {
 
   const messageCards =
     convertConditionCapsulesToMessageCards(conditionCapsules);
+
+  // 캡슐 삭제 핸들러
+  const handleCapsuleDeleted = () => {
+    // 삭제 완료 후 전체 캡슐 목록을 새로고침
+    fetchCapsules();
+  };
 
   return (
     <div className={styles.container}>
@@ -125,11 +130,19 @@ const MyCapsule: React.FC = () => {
         </div>
       ) : (
         <>
-          {dateCapsules.length > 0 && <CapsuleSlider capsules={dateCapsules} />}
+          {dateCapsules.length > 0 && (
+            <CapsuleSlider
+              capsules={dateCapsules}
+              onCapsuleDeleted={handleCapsuleDeleted}
+            />
+          )}
         </>
       )}
 
-      <MessageCardSection cards={messageCards} />
+      <MessageCardSection
+        cards={messageCards}
+        onCapsuleDeleted={handleCapsuleDeleted}
+      />
 
       <LocationSection />
 
