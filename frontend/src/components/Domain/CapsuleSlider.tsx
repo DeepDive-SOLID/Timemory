@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "../../styles/MyCapsule.module.scss";
 import { lock, x_circle } from "../../assets/index.ts";
 import type { Capsule } from "../../types/capsule";
+import DeleteConfirm from "../UI/DeleteConfirm";
 
 interface CapsuleSliderProps {
   capsules: Capsule[];
@@ -12,6 +13,10 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedCapsuleId, setSelectedCapsuleId] = useState<number | null>(
+    null
+  );
   const sliderRef = useRef<HTMLDivElement>(null);
 
   // 남은 일수 계산
@@ -108,6 +113,25 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
     }
   }, [isDragging]);
 
+  const handleDeleteClick = (capsuleId: number) => {
+    setSelectedCapsuleId(capsuleId);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (selectedCapsuleId) {
+      // TODO: 실제 삭제 API 호출
+      console.log("캡슐 삭제:", selectedCapsuleId);
+    }
+    setShowDeleteModal(false);
+    setSelectedCapsuleId(null);
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setSelectedCapsuleId(null);
+  };
+
   return (
     <div className={styles.capsuleSection}>
       <div
@@ -181,7 +205,10 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
 
                 {isLocked && (
                   <>
-                    <button className={styles.closeButton}>
+                    <button
+                      className={styles.closeButton}
+                      onClick={() => handleDeleteClick(capsule.capsuleId)}
+                    >
                       <img src={x_circle} alt="close" />
                     </button>
                     <div className={styles.lockOverlay}>
@@ -211,6 +238,12 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
           ></span>
         ))}
       </div>
+
+      <DeleteConfirm
+        isOpen={showDeleteModal}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };

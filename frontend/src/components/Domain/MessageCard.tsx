@@ -1,13 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../../styles/MyCapsule.module.scss";
 import { lock, x_circle } from "../../assets/index.ts";
 import type { MessageCard } from "../../types/capsule";
+import DeleteConfirm from "../UI/DeleteConfirm";
 
 interface MessageCardSectionProps {
   cards: MessageCard[];
 }
 
 const MessageCardSection: React.FC<MessageCardSectionProps> = ({ cards }) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+
+  const handleDeleteClick = (cardId: number) => {
+    setSelectedCardId(cardId);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (selectedCardId) {
+      // TODO: 실제 삭제 API 호출
+      console.log("메시지 카드 삭제:", selectedCardId);
+    }
+    setShowDeleteModal(false);
+    setSelectedCardId(null);
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setSelectedCardId(null);
+  };
   return (
     <div className={styles.messageCardsSection}>
       <div className={styles.messageCardsContainer}>
@@ -22,7 +44,10 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({ cards }) => {
               }`}
             >
               {isLocked && (
-                <button className={styles.closeButton}>
+                <button
+                  className={styles.closeButton}
+                  onClick={() => handleDeleteClick(card.id)}
+                >
                   <img src={x_circle} alt="close" />
                 </button>
               )}
@@ -77,6 +102,13 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({ cards }) => {
           );
         })}
       </div>
+
+      <DeleteConfirm
+        isOpen={showDeleteModal}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="메시지를 삭제하시겠습니까?"
+      />
     </div>
   );
 };
