@@ -21,7 +21,7 @@ export interface LtAddDto {
   teamId: number;
   memberId: string;
   capText: string;
-  capUt: Date;
+  capUt: string;
   capImg: File;
   capTag: string;
   capLtAddr: string;
