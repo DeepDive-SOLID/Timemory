@@ -26,16 +26,16 @@ public class CapsuleSummaryDto {
     private String capsuleType;  // 캡슐 타입 추가
     
     public static CapsuleSummaryDto from(Capsule capsule) {
-        LocalDateTime now = LocalDateTime.now();
-        boolean opened = capsule.getCapEt().isBefore(now) || capsule.getCapEt().isEqual(now);
+        // 캡슐 타입 먼저 판별
+        String capsuleType = determineCapsuleType(capsule);
+        
+        // 타입에 따라 열림 여부 계산
+        boolean opened = calculateIsOpened(capsule, capsuleType);
         
         // TIME_CAPSULE_ 접두어로 기념일 캡슐 판단
         boolean isAnniversary = capsule.getTeam() != null && 
                  capsule.getTeam().getTeamName() != null && 
                  capsule.getTeam().getTeamName().startsWith("TIME_CAPSULE_");
-        
-        // 캡슐 타입 판별
-        String capsuleType = determineCapsuleType(capsule);
         
         return CapsuleSummaryDto.builder()
                 .capsuleId(capsule.getCapId())
@@ -50,6 +50,32 @@ public class CapsuleSummaryDto {
                 .teamId(capsule.getTeam() != null ? capsule.getTeam().getTeamId() : null)
                 .teamName(capsule.getTeam() != null ? capsule.getTeam().getTeamName() : null)
                 .build();
+    }
+    
+    /**
+     * 캡슐 타입에 따라 열림 여부를 계산하는 메서드
+     * @param capsule 캡슐 엔티티
+     * @param capsuleType 캡슐 타입
+     * @return 열림 여부
+     */
+    private static boolean calculateIsOpened(Capsule capsule, String capsuleType) {
+        switch (capsuleType) {
+            case "DATE":
+            case "ANNIVERSARY":
+                // 날짜/기념일 캡슐: 만료일자와 현재 시간 비교
+                LocalDateTime now = LocalDateTime.now();
+                return capsule.getCapEt().isBefore(now) || capsule.getCapEt().isEqual(now);
+                
+            case "LOCATION":
+            case "CONDITION":
+                // 위치/조건 캡슐: DB의 cap_open 값 사용
+                return capsule.getCapOpen() != null && capsule.getCapOpen();
+                
+            default:
+                // 기본값: 날짜 기반 계산
+                LocalDateTime defaultNow = LocalDateTime.now();
+                return capsule.getCapEt().isBefore(defaultNow) || capsule.getCapEt().isEqual(defaultNow);
+        }
     }
     
     /**
