@@ -2,7 +2,6 @@ import api from "./axios";
 import type { LtAddDto, LtListDto } from "../types/map";
 
 export const getLtListApi = async (teamId: number) => {
-  console.log(teamId);
   const res = await api.post<LtListDto[]>("/capsule/lt/getLtList", teamId, {
     headers: { "Content-Type": "application/json" },
   });
@@ -19,7 +18,9 @@ export const saveLtApi = async (ltDto: LtAddDto) => {
   formData.append("capTag", ltDto.capTag);
   formData.append("capLtAddr", ltDto.capLtAddr);
   formData.append("capLtDetail", ltDto.capLtDetail);
-  formData.append("capImg", ltDto.capImg);
+  if (ltDto.capImg) {
+    formData.append("capImg", ltDto.capImg);
+  }
 
   const res = await api.post("/capsule/lt/addLtDto", formData, {
     headers: {

@@ -33,6 +33,7 @@ const GroupCapsule = () => {
       if (!groupId) return;
       try {
         const data = await CapsuleDateListApi(Number(groupId));
+        console.log(data);
         setCapsuleDate(data);
       } catch (e) {
         console.error("날짜 캡슐 조회 실패:", e);
@@ -42,6 +43,7 @@ const GroupCapsule = () => {
       if (!groupId) return;
       try {
         const data = await CapsuleCndtListApi(Number(groupId));
+        console.log(data);
         setCapsuleCndt(data);
       } catch (e) {
         console.error("조건 캡슐 조회 실패:", e);

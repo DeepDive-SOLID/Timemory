@@ -27,7 +27,7 @@ const ConditionCapsule = ({ capsuleCndt }: ConditionCapsuleProps) => {
             <div className={style.capsuleContent}>
               <img src={items.capImg ? items.capImg : mini_logo} alt='조건 사진' />
               <span>{items.capEt}</span>
-              <span>{items.memberId}</span>
+              <span>{items.memberNickname}</span>
             </div>
           </div>
         ))}

@@ -13,6 +13,7 @@ export interface CapsuleCndtListDto {
   capId: number;
   teamId: number;
   memberId: string;
+  memberNickname: string;
   capText: string;
   capUt: string;
   capEt: string;
@@ -26,6 +27,7 @@ export interface CapsuleDateListDto {
   capId: number;
   teamId: number;
   memberId: string;
+  memberNickname: string;
   capText: string;
   capUt: string;
   capEt: string;
