@@ -11,6 +11,7 @@ import QuizDate from "./pages/Quiz/QuizDate.tsx";
 import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
 import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
 import GroupCapsule from "./pages/GroupCapsule.tsx";
+import CapsuleDetail from "./pages/CapsuleDetail.tsx";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "group/:groupId",
         element: <GroupCapsule />,
+      },
+      {
+        path: "detail",
+        element: <CapsuleDetail />,
       },
     ],
   },

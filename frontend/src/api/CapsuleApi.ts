@@ -1,11 +1,24 @@
 import axios from "axios";
+import api from "./axios.ts";
+
 import type {
   CapsuleCndtDto,
   CapsuleListDto,
   CapsuleDateDto,
+  CapsuleDetailDto,
 } from "../types/capsule";
 
-// 캡슐 조회
+// 캡슐 상세 조회
+export const capsuleDetailApi = async (capsuleId: number): Promise<CapsuleDetailDto> => {
+  try {
+    const res = await api.post<CapsuleDetailDto>("/capsule/detail", capsuleId);
+    return res.data;
+  } catch {
+    throw new Error("캡슐 조회중 오류가 발생했습니다.");
+  }
+};
+
+// 캡슐 리스트 조회
 export const CapsuleListApi = async (
   teamId: number
 ): Promise<CapsuleListDto[]> => {
@@ -27,7 +40,6 @@ export const CapsuleListApi = async (
 };
 
 // 조건 캡슐 생성
-
 export const CapsuleCndtCreateApi = async (
   dto: CapsuleCndtDto
 ): Promise<string> => {

@@ -31,3 +31,14 @@ export interface CapsuleDateDto {
   capImg: File;
   capTag: string;
 }
+
+// 상세 정보
+export interface CapsuleDetailDto {
+  capText: string;
+  capUt: string;
+  capImg: string;
+  capTag: string;
+  teamId: number;
+  teamName: string;
+  memberProfiles: string[]
+}
