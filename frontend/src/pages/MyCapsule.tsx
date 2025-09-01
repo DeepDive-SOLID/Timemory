@@ -74,15 +74,24 @@ const MyCapsule: React.FC = () => {
 
   // CONDITION 타입 캡슐을 MessageCard 형태로 변환하는 함수
   const convertConditionCapsulesToMessageCards = (capsules: Capsule[]) => {
-    return capsules.map((capsule) => ({
-      id: capsule.capsuleId,
-      message: capsule.content,
-      hashtags: [`#${capsule.tag}`],
-      author: memberNickname,
-      createdDate: new Date(capsule.createdAt).toLocaleDateString("ko-KR"),
-      image: capsule.imageUrl || "",
-      isOpened: capsule.isOpened,
-    }));
+    return capsules.map((capsule) => {
+      // 태그를 쉼표로 분리하고 #을 붙여서 hashtags 배열 생성
+      const hashtags = capsule.tag
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag.length > 0)
+        .map((tag) => `#${tag}`);
+
+      return {
+        id: capsule.capsuleId,
+        message: capsule.content,
+        hashtags: hashtags,
+        author: memberNickname,
+        createdDate: new Date(capsule.createdAt).toLocaleDateString("ko-KR"),
+        image: capsule.imageUrl || "",
+        isOpened: capsule.isOpened,
+      };
+    });
   };
 
   const messageCards =

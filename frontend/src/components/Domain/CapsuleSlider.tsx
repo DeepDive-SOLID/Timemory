@@ -155,7 +155,11 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({ capsules }) => {
                 )}
                 <div className={styles.cardFooter}>
                   <div className={styles.hashtags}>
-                    <span className={styles.hashtag}>#{capsule.tag}</span>
+                    {capsule.tag.split(",").map((tag, tagIndex) => (
+                      <span key={tagIndex} className={styles.hashtag}>
+                        #{tag.trim()}
+                      </span>
+                    ))}
                   </div>
                   <div className={styles.dates}>
                     <div className={styles.dateRow}>
