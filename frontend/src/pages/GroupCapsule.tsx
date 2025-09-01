@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import StatusBar from "../components/APP/StatusBar";
 import { plus_circle } from "../assets";
 import CategoryModal from "../components/UI/CategoryModal";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { getTeamById } from "../api/groupApi";
 import type { TeamResponseDto } from "../types/group";
 import { profile_img } from "../assets";
@@ -11,6 +11,7 @@ const GroupCapsule = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { groupId } = useParams<{ groupId: string }>();
   const [team, setTeam] = useState<TeamResponseDto | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -25,6 +26,12 @@ const GroupCapsule = () => {
 
     fetchTeam();
   }, [groupId]);
+
+  // 캡슐 리스트 구현 대체
+  const handleCardClick = () => {
+    const capsuleId = 8;
+    navigate("/detail", { state: { id: capsuleId} });
+  };
 
   return (
     <div>
@@ -41,6 +48,10 @@ const GroupCapsule = () => {
         alt="플러스 아이콘"
         onClick={() => setIsModalOpen(true)}
       />
+
+      <div>
+        <div onClick={handleCardClick}>캡슐 내용 보기</div>
+      </div>
 
       <CategoryModal
         isOpen={isModalOpen}
