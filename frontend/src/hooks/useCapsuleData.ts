@@ -3,8 +3,11 @@ import type { LtListDto } from "../types/map";
 import useLatLng from "./useLatLng";
 import { getLtListApi } from "../api/MapApi";
 
+interface useCapsuleDataProps {
+  groupId: string | undefined;
+}
 // 주소값에 대한 latlng 정보를 가져오는 커스텀 훅
-const useCapsuleData = (): LtListDto[] => {
+const useCapsuleData = ({ groupId }: useCapsuleDataProps): LtListDto[] => {
   const [data, setData] = useState<LtListDto[]>([]);
   // api 요청 후 주소값을 따로 저장
   const addressList = useMemo(() => data.map((item) => item.capLtAddr), [data]);
@@ -14,16 +17,16 @@ const useCapsuleData = (): LtListDto[] => {
   useEffect(() => {
     const res = async () => {
       try {
+        if (!groupId) return;
         // 소속팀에 해당하는 지도 데이터 요청
-        // 더미 데이터
-        const resData = await getLtListApi(1);
+        const resData = await getLtListApi(Number(groupId));
         setData(resData);
       } catch (e) {
         console.error(e);
       }
     };
     res();
-  }, []);
+  }, [groupId]);
 
   // 해당하는 data 내부에 주소값에 latlng 값을 추가
   const filterData = useMemo(() => {
