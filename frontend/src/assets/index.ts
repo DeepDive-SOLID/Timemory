@@ -16,6 +16,7 @@ export { default as option } from "./icons/option.svg";
 export { default as search } from "./icons/search.svg";
 export { default as xcircle } from "./icons/XCircle.svg";
 export { default as map_pin_white } from "./icons/map_pin_white.svg";
+export { default as map_pin_blue } from "./icons/map_pin_blue.svg";
 export { default as lightbulb_white } from "./icons/lightbulb_white.svg";
 export { default as calendar_white } from "./icons/calendar_white.svg";
 export { default as plus_circle } from "./icons/plus_circle.svg";
