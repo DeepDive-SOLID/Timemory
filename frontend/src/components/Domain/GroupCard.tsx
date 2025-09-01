@@ -7,10 +7,12 @@ import {
   getValidProfileImageUrl,
   useImageErrorHandler,
 } from "../../utils/imageUtils";
+import { useNavigate } from "react-router-dom";
 
 const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { imageErrors, handleImageError } = useImageErrorHandler();
+  const navigate = useNavigate();
 
   const getSubtitle = () => {
     if (isOpenGroup && group.date) {
@@ -22,7 +24,8 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
     return "";
   };
 
-  const handleMenuClick = () => {
+  const handleMenuClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsEditModalOpen(true);
   };
 
@@ -30,9 +33,13 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
     setIsEditModalOpen(false);
   };
 
+  const handleCardClick = () => {
+    navigate(`/group/${group.id}`);
+  };
+
   return (
     <>
-      <div className={styles.groupCard}>
+      <div className={styles.groupCard} onClick={handleCardClick}>
         <div className={styles.cardBackground}>
           <img
             src={rectangle_radius_0}
