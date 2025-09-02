@@ -52,7 +52,7 @@ const DateCapsule = ({ capsuleDate }: DateCapsuleProps) => {
               )}
               <h4>{items.capText}</h4>
               <div className={style.capsuleContent}>
-                <span>{items.capEt}</span>
+                <span>{items.capEt.substring(0, 10)}</span>
                 <span>{items.memberNickname}</span>
               </div>
             </div>
