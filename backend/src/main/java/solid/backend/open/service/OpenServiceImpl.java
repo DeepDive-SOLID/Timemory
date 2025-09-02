@@ -83,6 +83,7 @@ public class OpenServiceImpl implements OpenService {
         capsule.setCapEt(capsuleDto.getCapUt().plusYears(1));
         capsule.setCapTag(capsuleDto.getCapTag());
         capsule.setCapOpen(false);
+        capsule.setCapSent(false);
 
         // 파일을 로컬 디렉토리에 저장
         String capImg = fileManager.addFile(capsuleDto.getCapImg(), "capsule");
