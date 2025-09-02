@@ -3,13 +3,14 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    margin-bottom: 10px;
+    h2 {
+        margin: 0.5rem 0;
+    }
 }
 .capsuleList {
-    width: 500px;
     display: flex;
     overflow: auto;
-    gap: 12px;
+    gap: 1rem;
     scroll-snap-type: x mandatory;
 
     &::-webkit-scrollbar {
@@ -23,24 +24,38 @@
     flex-direction: column;
     flex-shrink: 0;
     border-radius: 8px;
-    width: 40%;
-    height: 80px;
+    width: 200px;
     background-color: #bbbbbb;
     padding: 10px;
     scroll-snap-align: start;
     cursor: pointer;
     h4 {
         margin: 0;
-        padding-bottom: 10px;
+        padding: 5px 0 10px 0;
         border-bottom: 1px solid black;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
     }
-}
 
-.capsuleBox:last-child {
-    margin-right: 40px;
+    .screen {
+        z-index: 99;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 200px;
+        height: 84.5px;
+        color: #5497ff;
+        font-size: 14px;
+        left: 0;
+        top: 0;
+        border-radius: 8px;
+        backdrop-filter: blur(4px);
+        background: rgba(255, 255, 255, 0.5); /* 살짝 반투명 흰색 덮기 */
+        pointer-events: none; /* 클릭 방지 */
+    }
 }
 
 .capsuleContent {
@@ -49,24 +64,4 @@
     align-items: flex-end;
     justify-content: center;
     font-size: 12px;
-    padding: 4px 0;
-}
-
-.screen {
-    z-index: 99;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 200px;
-    height: 80px;
-    color: #5497ff;
-    font-size: 14px;
-    left: 0;
-    top: 0;
-    border-radius: 8px;
-    backdrop-filter: blur(4px);
-    background: rgba(255, 255, 255, 0.5); /* 살짝 반투명 흰색 덮기 */
-    pointer-events: none; /* 클릭 방지 */
 }

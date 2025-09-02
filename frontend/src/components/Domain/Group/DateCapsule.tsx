@@ -43,13 +43,14 @@ const DateCapsule = ({ capsuleDate }: DateCapsuleProps) => {
         {sortCapsuleDate?.map((items) => {
           const dDay = getRemainingDays(items.capEt);
           return (
-            <div className={style.capsuleBox} onClick={() => clickEvent()}>
+            <div className={style.capsuleBox} key={items.capId} onClick={() => clickEvent()}>
               {dDay > 0 && (
                 <div className={style.screen}>
                   <img src={lock} alt='잠김' />
                   {"D-" + dDay}
                 </div>
               )}
+
               <h4>{items.capText}</h4>
               <div className={style.capsuleContent}>
                 <span>{items.capEt.substring(0, 10)}</span>

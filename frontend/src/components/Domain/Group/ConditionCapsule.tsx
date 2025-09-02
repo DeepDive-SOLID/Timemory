@@ -20,17 +20,21 @@ const ConditionCapsule = ({ capsuleCndt }: ConditionCapsuleProps) => {
   return (
     <div className={style.wrapper}>
       <h2>CONDITION CAPSULE</h2>
-      <div ref={scrollRef} className={style.capsuleList}>
-        {capsuleCndt?.map((items) => (
-          <div className={style.capsuleBox} key={items.capId} onClick={() => clickEvent()}>
-            <h4>{items.capText}</h4>
-            <div className={style.capsuleContent}>
-              <img src={items.capImg ? items.capImg : mini_logo} alt='조건 사진' />
-              <span>{items.capEt.substring(0, 10)}</span>
-              <span>{items.memberNickname}</span>
+      <div className={style.contentBox}>
+        <div ref={scrollRef} className={style.capsuleList}>
+          {capsuleCndt?.map((items) => (
+            <div className={style.capsuleBox} key={items.capId} onClick={() => clickEvent()}>
+              <h4>{items.capText}</h4>
+              <div className={style.capsuleContent}>
+                <div className={style.imgBox}>
+                  <img src={items.capImg ? items.capImg : mini_logo} alt='조건 사진' />
+                </div>
+                <span>{items.capEt.substring(0, 10)}</span>
+                <span>{items.memberNickname}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <ProgressBar scrollProgress={scrollProgress} />
     </div>

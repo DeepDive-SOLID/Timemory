@@ -55,7 +55,7 @@ const GroupCapsule = () => {
   }, [groupId]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
       {team && <StatusBar to='/group' title={`${team.teamName} (${team.members.length})`} members={team.members.map((m) => m.profileImg ?? profile_img)} />}
 
       <DateCapsule capsuleDate={capsuleDate} />
