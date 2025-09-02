@@ -67,7 +67,7 @@ const OpenList = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <StatusBar to={"/group"} />
 
       <div className={styles.stickySection}>

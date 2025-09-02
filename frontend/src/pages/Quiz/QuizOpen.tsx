@@ -129,7 +129,7 @@ const QuizOpen = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <StatusBar to={"/group"} />
       <QuizBox
         title={current.title}
