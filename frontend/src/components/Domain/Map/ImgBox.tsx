@@ -6,15 +6,15 @@ interface ImgProps {
   url?: string;
   alt: string;
   groupId?: string;
+  capId?: number;
 }
 
-const ImgBox = ({ img, className, url, alt, groupId }: ImgProps) => {
+const ImgBox = ({ img, className, url, alt, groupId, capId }: ImgProps) => {
   const navigate = useNavigate();
 
   const clickEvent = () => {
     if (!url) return;
-    // 프론트 연동 시 변경
-    navigate(`/${url}/${groupId}`);
+    navigate(`/${url}/${capId ? capId : groupId}`);
   };
   return (
     <div className={className} onClick={() => clickEvent()}>

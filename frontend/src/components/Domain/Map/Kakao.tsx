@@ -112,7 +112,7 @@ const Kakao = ({ customProps }: KakaoProps) => {
               {/* 커스텀 오버레이 이미지 */}
 
               {items.capOpen ? (
-                <ImgBox img={items.capImg ? items.capImg : mini_logo} className={style.customOverlay} url='home' alt='커스텀 이미지' />
+                <ImgBox img={items.capImg ? items.capImg : mini_logo} className={style.customOverlay} url='home' alt='커스텀 이미지' capId={items.capId} />
               ) : (
                 <ImgBox img={lock} className={style.customOverlay} alt='오픈전 사진' />
               )}
