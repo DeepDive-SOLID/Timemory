@@ -11,7 +11,7 @@ interface ConditionCapsuleProps {
 }
 
 const ConditionCapsule = ({ capsuleCndt }: ConditionCapsuleProps) => {
-  const { scrollRef, scrollProgress } = useProgress();
+  const { scrollRef, scrollProgress, progressBarRef, handleProgressClick, handleMouseDown } = useProgress();
   const navigate = useNavigate();
   const clickEvent = () => {
     // 상세창 만들면 연동
@@ -36,7 +36,9 @@ const ConditionCapsule = ({ capsuleCndt }: ConditionCapsuleProps) => {
           ))}
         </div>
       </div>
-      <ProgressBar scrollProgress={scrollProgress} />
+      <div ref={progressBarRef} onClick={handleProgressClick} onMouseDown={handleMouseDown} className={style.progressWrapper}>
+        <ProgressBar scrollProgress={scrollProgress} />
+      </div>
     </div>
   );
 };

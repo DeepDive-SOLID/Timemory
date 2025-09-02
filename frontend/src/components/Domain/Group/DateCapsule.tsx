@@ -9,7 +9,7 @@ interface DateCapsuleProps {
 }
 const DateCapsule = ({ capsuleDate }: DateCapsuleProps) => {
   // 프로그래스바에 대한 커스텀 훅
-  const { scrollRef, scrollProgress } = useProgress();
+  const { scrollRef, scrollProgress, progressBarRef, handleProgressClick, handleMouseDown } = useProgress();
   const navigate = useNavigate();
   // 받아온 배열을 정렬해 새로운 변수에 저장
   const sortCapsuleDate = capsuleDate?.sort((a, b) => new Date(a.capEt).getTime() - new Date(b.capEt).getTime());
@@ -62,7 +62,9 @@ const DateCapsule = ({ capsuleDate }: DateCapsuleProps) => {
           })}
         </div>
       </div>
-      <ProgressBar scrollProgress={scrollProgress} />
+      <div ref={progressBarRef} onClick={handleProgressClick} onMouseDown={handleMouseDown} className={style.progressWrapper}>
+        <ProgressBar scrollProgress={scrollProgress} />
+      </div>
     </div>
   );
 };
