@@ -74,7 +74,7 @@ const GroupListPage = () => {
       id: match ? match.teamId : -1,
       name: event.annName,
       date: event.date,
-      members: [],
+      members: match ? match.memberProfiles.map(() => "멤버") : [],
       profiles: match ? match.memberProfiles.map((p) => p ?? profile_img) : [],
     };
   });
@@ -108,9 +108,6 @@ const GroupListPage = () => {
 
   return (
     <div className={styles.container}>
-      {/* 상태바 영역 - 간격만 제공 */}
-      <div className={styles.statusBar}></div>
-
       {/* 탭 영역 */}
       <GroupTabs
         activeTab={activeTab}

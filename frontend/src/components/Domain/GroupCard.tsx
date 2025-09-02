@@ -54,13 +54,7 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
     <>
       <div className={styles.groupCard} onClick={handleCardClick}>
         <div className={styles.cardBackground}>
-          <img
-            src={rectangle_radius_0}
-            alt=""
-            className={`${styles.borderImage} ${
-              isOpenGroup ? styles.openGroupBorder : ""
-            }`}
-          />
+          <img src={rectangle_radius_0} className={styles.borderImage} />
         </div>
         <div className={styles.cardContent}>
           <div className={styles.groupHeader}>
@@ -89,29 +83,29 @@ const GroupCard = ({ group, isOpenGroup = false }: GroupCardProps) => {
             )}
           </div>
           <div className={styles.memberAvatars}>
-            {group.members.map((member, index) => {
-              const profileUrl =
-                group.profiles && group.profiles[index]
-                  ? getValidProfileImageUrl(group.profiles[index])
-                  : null;
+            {(group.members?.length ? group.members : group.profiles ?? []).map(
+              (_, index) => {
+                const profileUrl =
+                  group.profiles && group.profiles[index]
+                    ? getValidProfileImageUrl(group.profiles[index])
+                    : null;
 
-              return (
-                <div key={index} className={styles.avatar}>
-                  {profileUrl && !imageErrors[index] ? (
-                    <img
-                      src={profileUrl}
-                      alt={member}
-                      className={styles.profileImage}
-                      onError={() => handleImageError(index)}
-                    />
-                  ) : (
-                    <div className={styles.defaultAvatar}>
-                      {member.charAt(0)}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                return (
+                  <div key={index} className={styles.avatar}>
+                    {profileUrl && !imageErrors[index] ? (
+                      <img
+                        src={profileUrl}
+                        alt="member"
+                        className={styles.profileImage}
+                        onError={() => handleImageError(index)}
+                      />
+                    ) : (
+                      <div className={styles.defaultAvatar}>?</div>
+                    )}
+                  </div>
+                );
+              }
+            )}
           </div>
         </div>
       </div>
