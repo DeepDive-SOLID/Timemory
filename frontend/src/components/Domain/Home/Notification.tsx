@@ -1,9 +1,10 @@
+import { useAlarm } from "../../../contexts/AlarmContext";
 import style from "../../../styles/Notification.module.scss";
 
-// 캡슐 api 연동시 변경 예정
-// 
 const Notification = () => {
-  return <div className={style.wrapper}>{1}</div>;
+  const { data } = useAlarm();
+  const count = data.map((a) => a.click === false);
+  return <div className={style.wrapper}>{count.length}</div>;
 };
 
 export default Notification;
