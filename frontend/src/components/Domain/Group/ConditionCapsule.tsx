@@ -24,12 +24,12 @@ const ConditionCapsule = ({ capsuleCndt }: ConditionCapsuleProps) => {
         <div ref={scrollRef} className={style.capsuleList}>
           {capsuleCndt?.map((items) => (
             <div className={style.capsuleBox} key={items.capId} onClick={() => clickEvent()}>
-              <h4>{items.capText}</h4>
+              <h4>{items.capCndtCase}</h4>
               <div className={style.capsuleContent}>
                 <div className={style.imgBox}>
                   <img src={items.capImg ? items.capImg : mini_logo} alt='조건 사진' />
                 </div>
-                <span>{items.capEt.substring(0, 10)}</span>
+                <span>{items.capEt.substring(0, 10).replaceAll("-", ".")}</span>
                 <span>{items.memberNickname}</span>
               </div>
             </div>

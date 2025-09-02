@@ -11,6 +11,7 @@ import ConditionCapsule from "../components/Domain/Group/ConditionCapsule";
 import { CapsuleCndtListApi, CapsuleDateListApi } from "../api/CapsuleApi";
 import type { CapsuleCndtListDto, CapsuleDateListDto } from "../types/capsule";
 import PlusButton from "../components/Domain/Group/PlusButton";
+import style from "../styles/GroupCapsule.module.scss";
 
 const GroupCapsule = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,7 +56,8 @@ const GroupCapsule = () => {
   }, [groupId]);
 
   return (
-    <div style={{ position: "relative", maxHeight: "1366px", overflow: "hidden", display: "flex", flexDirection: "column", flexGrow: "1" }}>
+    <div className={`${style.wrapper}`}>
+      {isModalOpen && <div className={style.screen}></div>}
       {team && <StatusBar to='/group' title={`${team.teamName} (${team.members.length})`} members={team.members.map((m) => m.profileImg ?? profile_img)} />}
 
       <DateCapsule capsuleDate={capsuleDate} />

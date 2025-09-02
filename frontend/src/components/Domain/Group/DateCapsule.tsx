@@ -39,26 +39,28 @@ const DateCapsule = ({ capsuleDate }: DateCapsuleProps) => {
   return (
     <div className={style.wrapper}>
       <h2>DATE CAPSULE</h2>
-      <div ref={scrollRef} className={style.capsuleList}>
-        {sortCapsuleDate?.map((items) => {
-          const dDay = getRemainingDays(items.capEt);
-          return (
-            <div className={style.capsuleBox} key={items.capId} onClick={() => clickEvent()}>
-              {dDay > 0 && (
-                <div className={style.screen}>
-                  <img src={lock} alt='잠김' />
-                  {"D-" + dDay}
-                </div>
-              )}
+      <div className={style.contentBox}>
+        <div ref={scrollRef} className={style.capsuleList}>
+          {sortCapsuleDate?.map((items) => {
+            const dDay = getRemainingDays(items.capEt);
+            return (
+              <div className={style.capsuleBox} key={items.capId} onClick={() => clickEvent()}>
+                {dDay > 0 && (
+                  <div className={style.screen}>
+                    <img src={lock} alt='잠김' />
+                    {"D-" + dDay}
+                  </div>
+                )}
 
-              <h4>{items.capText}</h4>
-              <div className={style.capsuleContent}>
-                <span>{items.capEt.substring(0, 10)}</span>
-                <span>{items.memberNickname}</span>
+                <h4>{items.capText}</h4>
+                <div className={style.capsuleContent}>
+                  <span>{items.capEt.substring(0, 10).replaceAll("-", ".")}</span>
+                  <span>{items.memberNickname}</span>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
       <ProgressBar scrollProgress={scrollProgress} />
     </div>

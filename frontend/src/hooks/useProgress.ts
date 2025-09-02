@@ -7,18 +7,28 @@ const useProgress = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (!scrollRef.current) return;
+
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      const progress = (scrollLeft / (scrollWidth - clientWidth)) * 100;
+      const maxScroll = Math.max(scrollWidth - clientWidth, 1); // 0 방지
+      const progress = Math.min(Math.max((scrollLeft / maxScroll) * 100, 0), 100);
+
       setScrollProgress(progress);
     };
 
     const el = scrollRef.current;
-    el?.addEventListener("scroll", handleScroll);
+    if (!el) return;
+
+    // 스크롤 이벤트 등록
+    el.addEventListener("scroll", handleScroll);
+
+    // 초기값 계산
+    handleScroll();
 
     return () => {
-      el?.removeEventListener("scroll", handleScroll);
+      el.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   return { scrollRef, scrollProgress };
 };
 
