@@ -15,7 +15,6 @@
     overflow-y: hidden;
     gap: 1rem;
     flex-grow: 1;
-    max-height: 300px;
     &::-webkit-scrollbar {
         display: none;
     }
@@ -24,7 +23,6 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    max-height: 300px;
 }
 
 .capsuleBox {
@@ -50,7 +48,6 @@
 
 .capsuleContent {
     display: flex;
-    width: 160px;
     flex-grow: 1;
     flex-direction: column;
     align-items: flex-end;

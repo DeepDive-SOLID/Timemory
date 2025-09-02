@@ -3,6 +3,7 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    flex-grow: 1;
     h2 {
         margin: 0.35rem 0;
     }
@@ -53,7 +54,7 @@
         justify-content: center;
         flex-direction: column;
         width: 200px;
-        height: 80.5px;
+        height: 85px;
         color: #5497ff;
         font-size: 14px;
         left: 0;
@@ -75,6 +76,6 @@
 
 @media (max-height: 668px) {
     .screen {
-        height: 80.5px !important;
+        height: 85px !important;
     }
 }
