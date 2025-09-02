@@ -8,6 +8,7 @@ src/main/java/solid/backend
 - open : 오픈 그룹 관리
 - common : 공통 기능
   - FileManager : 파일 관리 모듈
+  - SimpleMultipartFile : MultipartFile 구현체
 - config: 설정파일
   - QueryDSLConfig: QueryDSL 빈 등록
   - FileStorageConfig : 파일 설정 값 관리
@@ -27,4 +28,5 @@ src/main/java/solid/backend
   - TeamRepository : 팀
   - TeamMemberRepository : 팀 멤버
   - CapsuleRepository : 캡슐
+  - CapsuleLtRepository : 캡슐 위치
 - Jwt
