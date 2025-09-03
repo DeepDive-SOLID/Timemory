@@ -23,7 +23,6 @@ public class CapsuleDateServiceImpl implements CapsuleDateService {
     private final TeamMemberRepository teamMemberRepository;
     private final FileManager fileManager;
 
-
     /**
      * 설명: 캡슐 조회
      * @param teamId
@@ -41,10 +40,11 @@ public class CapsuleDateServiceImpl implements CapsuleDateService {
                         capsule.getCapId(),
                         capsule.getTeam().getTeamId(),
                         capsule.getMember().getMemberId(),
+                        capsule.getMember().getMemberNickname(),
                         capsule.getCapText(),
                         capsule.getCapUt(),
                         capsule.getCapEt(),
-                        capsule.getCapImg(),
+                        capsule.getCapImg() != null ? fileManager.getFileUrl(capsule.getCapImg()) : null,
                         capsule.getCapTag(),
                         capsule.getCapOpen()
                 ))
