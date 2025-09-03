@@ -3,7 +3,13 @@ import styles from "../../styles/Quiz.module.scss";
 import { cloud_img, hashtag_img, map_img, camera_img } from "../../assets";
 import InputBox from "../../components/UI/InputBox";
 import StatusBar from "../../components/APP/StatusBar";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppSelector } from "../../hooks/hooks";
+import type { LtAddDto } from "../../types/map";
+import { AuthContext } from "../../contexts/AuthContext";
+import { saveLtApi } from "../../api/MapApi";
+import { toLocalDateTimeString } from "../../utils/datetime";
 
 const quizData = [
   {
@@ -63,32 +69,36 @@ const quizData = [
 const QuizLocation = () => {
   const [step, setStep] = useState(0);
 
-  const [address, setAddress] = useState("");
   const [detail, setDetail] = useState("");
   const [momentText, setMomentText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagText, setTagText] = useState("");
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
-
+  const address = useAppSelector((state) => state.location.address_name);
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
 
   const current = quizData[step];
 
+  const { userInfo } = useContext(AuthContext)!;
+  const memberId = userInfo?.memberId ?? "";
+  const { teamId } = useParams<{ teamId: string }>();
+
+  const navigate = useNavigate();
+
   const handleFindLocation = () => {
     // TODO: 실제 지도/주소 검색 연동
-    setAddress("경기 성남시 분당구 판교역로 166 카카오");
+    navigate("/map");
   };
 
   const validateCurrent = () => {
-    if (step === 0 && !address.trim()) return "주소를 입력해주세요.";
+    if (step === 0 && !address?.trim()) return "주소를 입력해주세요.";
     if (step === 1 && !momentText.trim()) return "기억을 작성해주세요.";
-    if (step === 2 && tags.length === 0)
-      return "키워드를 한 개 이상 추가해주세요.";
+    if (step === 2 && tags.length === 0) return "키워드를 한 개 이상 추가해주세요.";
     return null;
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < quizData.length - 1) {
       const msg = validateCurrent();
       if (msg) {
@@ -101,6 +111,28 @@ const QuizLocation = () => {
     }
 
     // TODO: 제출 로직 추가
+    try {
+      if (!address) {
+        alert("지도를 선택해주세요.");
+        return;
+      }
+      const dto: LtAddDto = {
+        teamId: Number(teamId),
+        memberId: memberId,
+        capText: momentText.trim(),
+        capImg: file as File,
+        capTag: tags.join(","),
+        capUt: toLocalDateTimeString(new Date()),
+        capLtAddr: address,
+        capLtDetail: detail,
+      };
+      const res = await saveLtApi(dto);
+      alert("지도 캡슐 생성 성공: " + res);
+      navigate("/group/" + teamId);
+    } catch (e) {
+      console.error(e);
+      alert("지도 캡슐 생성 실패");
+    }
   };
 
   return (
@@ -116,30 +148,13 @@ const QuizLocation = () => {
                 위치 찾기
               </button>
 
-              <InputBox
-                type="text"
-                label="주소"
-                svgBox="sm"
-                value={address}
-                onChangeText={setAddress}
-                input={current.input}
-                warning={current.warning}
-                required
-                forceShowWarning={forceWarnStep === step}
-              />
+              <InputBox type='text' label='주소' svgBox='sm' value={address} input={current.input} warning={current.warning} required forceShowWarning={forceWarnStep === step} />
 
-              <InputBox
-                type="text"
-                label="상세 주소"
-                svgBox="sm"
-                value={detail}
-                onChangeText={setDetail}
-                input="상세 주소를 입력해주세요."
-              />
+              <InputBox type='text' label='상세 주소' svgBox='sm' value={detail} onChangeText={setDetail} input='상세 주소를 입력해주세요.' />
             </>
           ) : current.type === "keyword" ? (
             <InputBox
-              type="keyword"
+              type='keyword'
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
@@ -155,14 +170,10 @@ const QuizLocation = () => {
               forceShowWarning={forceWarnStep === step}
             />
           ) : current.type === "file" ? (
-            <InputBox
-              type="file"
-              warning={current.warning}
-              onFileChange={(e) => setFile(e.target.files?.[0] ?? null)}
-            />
+            <InputBox type='file' warning={current.warning} onFileChange={(e) => setFile(e.target.files?.[0] ?? null)} />
           ) : (
             <InputBox
-              type="text"
+              type='text'
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
