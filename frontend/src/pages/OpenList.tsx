@@ -51,14 +51,18 @@ const OpenList = () => {
 
   const cardItems: CardItem[] = useMemo(
     () =>
-      capsules.map((c, idx) => ({
-        title: c.capText,
-        date: fmt(c.capUt),
-        user: c.memberNickname,
-        isOpen: true, // 서버에서 상태가 오면 매핑
-        //캡슐 상세로 이동
-        onClick: () => navigate(`/capsule/${idx}`, { state: { teamId } }),
-      })),
+      capsules.map((c, idx) => {
+        const isOpen = c.capEt ? new Date(c.capEt) <= new Date() : false;
+        return {
+          title: c.capText,
+          date: fmt(c.capUt),
+          user: c.memberNickname,
+          isOpen,
+          onClick: isOpen
+            ? () => navigate(`/capsule/${idx}`, { state: { teamId } })
+            : undefined,
+        };
+      }),
     [capsules, navigate, teamId]
   );
 
