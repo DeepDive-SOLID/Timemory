@@ -1,11 +1,6 @@
 import QuizBox from "../../components/UI/QuizBox";
 import styles from "../../styles/Quiz.module.scss";
-import {
-  cloud_img,
-  hashtag_img,
-  condition_img,
-  camera_img,
-} from "../../assets";
+import { cloud_img, hashtag_img, condition_img, camera_img } from "../../assets";
 import InputBox from "../../components/UI/InputBox";
 import StatusBar from "../../components/APP/StatusBar";
 import { useState } from "react";
@@ -98,8 +93,7 @@ const QuizCondition = () => {
   const validateCurrent = () => {
     if (step === 0 && !reason.trim()) return "이유를 입력해주세요.";
     if (step === 1 && !momentText.trim()) return "기억을 입력해주세요.";
-    if (step === 2 && tags.length === 0)
-      return "키워드를 한 개 이상 추가해주세요.";
+    if (step === 2 && tags.length === 0) return "키워드를 한 개 이상 추가해주세요.";
     return null;
   };
 
@@ -118,7 +112,7 @@ const QuizCondition = () => {
       const dto: CapsuleCndtDto = {
         teamId: Number(teamId),
         memberId: memberId ?? "",
-        capText: `${reason}\n${momentText}`.trim(),
+        capText: `${momentText}`.trim(),
         capEt: toLocalDateTimeString(new Date()),
         capImg: file as File,
         capTag: tags.join(","),
@@ -143,7 +137,7 @@ const QuizCondition = () => {
         answer={
           current.type === "keyword" ? (
             <InputBox
-              type="keyword"
+              type='keyword'
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
@@ -159,14 +153,10 @@ const QuizCondition = () => {
               forceShowWarning={forceWarnStep === step}
             />
           ) : current.type === "file" ? (
-            <InputBox
-              type="file"
-              warning={current.warning}
-              onFileChange={(e) => setFile(e.target.files?.[0] ?? null)}
-            />
+            <InputBox type='file' warning={current.warning} onFileChange={(e) => setFile(e.target.files?.[0] ?? null)} />
           ) : (
             <InputBox
-              type="text"
+              type='text'
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}

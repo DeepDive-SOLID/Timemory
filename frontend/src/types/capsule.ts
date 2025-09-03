@@ -9,10 +9,11 @@ export interface CapsuleCndtDto {
   capCndtCase: string;
 }
 
-export interface CapsuleListDto {
+export interface CapsuleCndtListDto {
   capId: number;
   teamId: number;
   memberId: string;
+  memberNickname: string;
   capText: string;
   capUt: string;
   capEt: string;
@@ -20,6 +21,19 @@ export interface CapsuleListDto {
   capTag: string;
   capOpen: boolean;
   capCndtCase: string;
+}
+
+export interface CapsuleDateListDto {
+  capId: number;
+  teamId: number;
+  memberId: string;
+  memberNickname: string;
+  capText: string;
+  capUt: string;
+  capEt: string;
+  capImg: string;
+  capTag: string;
+  capOpen: boolean;
 }
 
 // date 날짜
