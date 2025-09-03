@@ -9,7 +9,7 @@ import ImgBox from "./ImgBox";
 import { map_pin_blue, lock, mini_logo } from "../../../assets/index";
 import { useEffect, useState } from "react";
 import { getDistance } from "./getDistance";
-import { getCapsuleLtListApi } from "../../../api/open";
+// import { getCapsuleLtListApi } from "../../../api/open";
 
 const Kakao = ({ customProps }: KakaoProps) => {
   // 현재 내 위치를 가져옴 - 커스텀 훅
@@ -57,7 +57,7 @@ const Kakao = ({ customProps }: KakaoProps) => {
             try {
               // 거리가 같아지면 api 요청을 하여 open 을 TRUE 로 만듬
               // 오픈 되었을 때 사용할 애니메이션이 있다면 사용 아니면 대응책을 생각해야함
-              const res = await getCapsuleLtListApi(item.capId);
+              // const res = await getCapsuleLtListApi(item.capId);
               alert(`${item.capId} 가 오픈되었습니다.`);
             } catch (e) {
               console.error(e);
