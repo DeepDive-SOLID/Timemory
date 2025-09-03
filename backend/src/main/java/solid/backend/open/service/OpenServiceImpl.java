@@ -80,7 +80,7 @@ public class OpenServiceImpl implements OpenService {
         capsule.setMember(member);
         capsule.setCapText(capsuleDto.getCapText());
         capsule.setCapUt(capsuleDto.getCapUt());
-        capsule.setCapEt(capsuleDto.getCapUt().plusYears(1));
+        capsule.setCapEt(capsuleDto.getCapEt());
         capsule.setCapTag(capsuleDto.getCapTag());
         capsule.setCapOpen(false);
         capsule.setCapSent(false);

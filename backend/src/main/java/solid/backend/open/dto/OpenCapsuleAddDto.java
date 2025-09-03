@@ -16,6 +16,7 @@ public class OpenCapsuleAddDto {
     private String memberId;
     private String capText;
     private LocalDateTime capUt;
+    private LocalDateTime capEt;
     private MultipartFile capImg;
     private String capTag;
 }
