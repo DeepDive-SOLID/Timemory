@@ -1,17 +1,18 @@
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { CapsuleDetailDto } from "../types/capsule.ts";
 import { capsuleDetailApi } from "../api/CapsuleApi.ts";
 import StatusBar from "../components/APP/StatusBar.tsx";
-import { inputbox_lg, profile_img } from "../assets";
+import { inputbox_lg, mini_logo, profile_img } from "../assets";
 import TagAnimation from "../components/UI/TagAnimation.tsx";
 import styles from "../styles/CapsuleDetail.module.scss";
-import {getValidProfileImageUrl} from "../utils/imageUtils.ts";
+import { getValidProfileImageUrl } from "../utils/imageUtils.ts";
 
 const CapsuleDetail = () => {
-    const capsuleId = useLocation().state?.id;
+    const { capId } = useParams<{ capId: string }>();
     const [capsule, setCapsule] = useState<CapsuleDetailDto>();
     const [tags, setTags] = useState<string[]>([]);
+    const capsuleId = Number(capId);
 
     useEffect(() => {
         const fetchCapsule = async () => {
@@ -37,7 +38,7 @@ const CapsuleDetail = () => {
             )}
             <div className={styles.container}>
                 <img
-                    src={capsule?.capImg}
+                    src={capsule?.capImg ?? mini_logo}
                     alt="캡슐 이미지"
                     className={styles.capsuleImage}
                 />

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import StatusBar from "../components/APP/StatusBar";
 import CategoryModal from "../components/UI/CategoryModal";
-import {useNavigate, useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getTeamById } from "../api/groupApi";
 import type { TeamResponseDto } from "../types/group";
 import { profile_img } from "../assets";
@@ -19,7 +19,6 @@ const GroupCapsule = () => {
   const [team, setTeam] = useState<TeamResponseDto | null>(null);
   const [capsuleDate, setCapsuleDate] = useState<CapsuleDateListDto[] | undefined>();
   const [capsuleCndt, setCapsuleCndt] = useState<CapsuleCndtListDto[] | undefined>();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -57,19 +56,10 @@ const GroupCapsule = () => {
     fetchCndtCapsule();
   }, [groupId]);
 
-  // 캡슐 리스트 구현 대체
-  const handleCardClick = () => {
-    const capsuleId = 8;
-    navigate("/detail", { state: { id: capsuleId} });
-  };
-
   return (
     <div className={`${style.wrapper}`}>
       {isModalOpen && <div className={style.screen}></div>}
       {team && <StatusBar to='/group' title={`${team.teamName} (${team.members.length})`} members={team.members.map((m) => m.profileImg ?? profile_img)} />}
-        <div>
-            <div onClick={handleCardClick}>캡슐 내용 보기</div>
-        </div>
       <DateCapsule capsuleDate={capsuleDate} />
       <MapCapsule groupId={groupId} />
       <ConditionCapsule capsuleCndt={capsuleCndt} />

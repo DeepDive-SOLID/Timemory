@@ -67,7 +67,7 @@ const router = createBrowserRouter([
         element: <GroupCapsule />,
       },
       {
-        path: "detail",
+        path: "detail/:capId",
         element: <CapsuleDetail />,
       },
     ],

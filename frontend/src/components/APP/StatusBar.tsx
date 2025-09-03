@@ -28,8 +28,7 @@ const StatusBar = ({ to, title, subtitle, members }: StatusBarProps) => {
                 // 바로 전 화면
                 if (to === -1) {
                     navigate(-1);
-
-                    // 특정 경로
+                // 특정 경로
                 } else if (typeof to === "string") {
                     navigate(to);
                 }
