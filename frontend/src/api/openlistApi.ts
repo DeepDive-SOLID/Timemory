@@ -29,8 +29,11 @@ export const addOpenCapsuleDto = async (
   fd.append("teamId", String(payload.teamId));
   fd.append("memberId", payload.memberId);
   fd.append("capText", payload.capText);
+  fd.append("capEt", payload.capEt);
   fd.append("capUt", payload.capUt);
-  fd.append("capImg", payload.capImg);
+  if (payload.capImg) {
+    fd.append("capImg", payload.capImg);
+  }
   fd.append("capTag", payload.capTag);
 
   const response = await api.post("/open/addOpenCapsuleDto", fd, {
