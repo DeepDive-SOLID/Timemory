@@ -6,7 +6,7 @@ import StatusBar from "../../components/APP/StatusBar";
 import { useState } from "react";
 import type { OpenCapsuleAddDto } from "../../types/openlist";
 import { addOpenCapsuleDto } from "../../api/openlistApi";
-import { toLocalDateTimeString, parseAnniversary } from "../../utils/datetime";
+import { toLocalDateTimeString } from "../../utils/datetime";
 import { events } from "../../constants/events";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -114,7 +114,7 @@ const QuizOpen = () => {
         teamId,
         memberId: memberId ?? "",
         capText: momentText.trim(),
-        capEt: toLocalDateTimeString(parseAnniversary(eventData.date)),
+        capEt: toLocalDateTimeString(new Date(eventData.annDt)),
         capUt: toLocalDateTimeString(new Date()),
         capImg: file as File,
         capTag: tags.join(","),
