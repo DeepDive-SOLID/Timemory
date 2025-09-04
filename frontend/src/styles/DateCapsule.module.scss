@@ -1,0 +1,81 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    flex-grow: 1;
+    h2 {
+        margin: 0.35rem 0;
+    }
+}
+.capsuleList {
+    display: flex;
+    overflow: auto;
+    gap: 1rem;
+    flex-grow: 1;
+    max-height: 85px;
+    // scroll-snap-type: x mandatory;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+.contentBox {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    max-height: 85px;
+}
+
+.capsuleBox {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex-shrink: 0;
+    border-radius: 8px;
+    width: 200px;
+    background-color: #bbbbbb;
+    padding: 0.5rem;
+    scroll-snap-align: start;
+    cursor: pointer;
+    h4 {
+        margin: 0;
+        padding: 5px 0 10px 0;
+        border-bottom: 1px solid black;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .screen {
+        z-index: 99;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 200px;
+        height: 85px;
+        color: #5497ff;
+        font-size: 14px;
+        left: 0;
+        top: 0;
+        border-radius: 8px;
+        backdrop-filter: blur(4px);
+        background: rgba(255, 255, 255, 0.5); /* 살짝 반투명 흰색 덮기 */
+        pointer-events: none; /* 클릭 방지 */
+    }
+}
+
+.capsuleContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    font-size: 12px;
+}
+
+@media (max-height: 668px) {
+    .screen {
+        height: 85px !important;
+    }
+}
