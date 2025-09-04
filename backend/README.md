@@ -4,8 +4,10 @@
 src/main/java/solid/backend
 
 - login : 회원 관리
+- capsule : 캡슐 관리
 - common : 공통 기능
   - FileManager : 파일 관리 모듈
+  - SimpleMultipartFile : MultipartFile 구현체
 - config: 설정파일
   - QueryDSLConfig: QueryDSL 빈 등록
   - FileStorageConfig : 파일 설정 값 관리
@@ -22,4 +24,7 @@ src/main/java/solid/backend
   - Anniversary : 기념일
 - jpaRepository : JPA Repository
   - MemberRepository : 회원
+  - CapsuleRepository : 캡슐
+  - CapsuleLtRepository : 캡슐 위치
+  - TeamRepository : 팀
 - Jwt
