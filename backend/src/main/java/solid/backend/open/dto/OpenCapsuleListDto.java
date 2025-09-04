@@ -14,4 +14,5 @@ public class OpenCapsuleListDto {
     private String capText;
     private LocalDateTime capUt;
     private String memberNickname;
+    private LocalDateTime capEt;
 }

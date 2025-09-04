@@ -79,7 +79,8 @@ public class OpenQueryRepository {
                 .select(Projections.bean(OpenCapsuleListDto.class,
                         capsule.capText,
                         capsule.capUt,
-                        capsule.member.memberNickname))
+                        capsule.member.memberNickname,
+                        capsule.capEt))
                 .from(capsule)
                 .where(capsule.team.teamId.eq(teamId))
                 .fetch();
