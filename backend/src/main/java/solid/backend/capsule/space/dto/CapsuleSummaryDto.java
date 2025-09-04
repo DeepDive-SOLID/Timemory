@@ -24,6 +24,8 @@ public class CapsuleSummaryDto {
     private Boolean isOpened;
     private Boolean isAnniversary;
     private String capsuleType;  // 캡슐 타입 추가
+    private String locationAddress;  // 위치 주소
+    private String locationDetail;  // 상세 주소
     
     public static CapsuleSummaryDto from(Capsule capsule) {
         // 캡슐 타입 먼저 판별
@@ -37,6 +39,14 @@ public class CapsuleSummaryDto {
                  capsule.getTeam().getTeamName() != null && 
                  capsule.getTeam().getTeamName().startsWith("TIME_CAPSULE_");
         
+        // 위치 캡슐인 경우 주소 정보 추가
+        String locationAddress = null;
+        String locationDetail = null;
+        if ("LOCATION".equals(capsuleType) && capsule.getCapsuleLocation() != null) {
+            locationAddress = capsule.getCapsuleLocation().getCapLtAddr();
+            locationDetail = capsule.getCapsuleLocation().getCapLtDetail();
+        }
+        
         return CapsuleSummaryDto.builder()
                 .capsuleId(capsule.getCapId())
                 .content(capsule.getCapText())
@@ -49,6 +59,8 @@ public class CapsuleSummaryDto {
                 .capsuleType(capsuleType)
                 .teamId(capsule.getTeam() != null ? capsule.getTeam().getTeamId() : null)
                 .teamName(capsule.getTeam() != null ? capsule.getTeam().getTeamName() : null)
+                .locationAddress(locationAddress)
+                .locationDetail(locationDetail)
                 .build();
     }
     
