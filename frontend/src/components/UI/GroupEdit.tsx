@@ -20,6 +20,10 @@ import type {
   GroupEditProps as GroupProps,
   EditableMemberItem as Member,
 } from "../../types/groupModals";
+import {
+  getValidProfileImageUrl,
+  useImageErrorHandler,
+} from "../../utils/imageUtils";
 
 const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
   const [groupName, setGroupName] = useState("");
@@ -29,6 +33,7 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const { imageErrors, handleImageError } = useImageErrorHandler();
 
   useEffect(() => {
     const fetchTeamDetail = async () => {
@@ -41,7 +46,7 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
         const mapped = (data.members || []).map((m) => ({
           id: m.memberId,
           name: m.nickname,
-          avatar: m.profileImg,
+          avatar: getValidProfileImageUrl(m.profileImg) || undefined,
           isRemovable: currentId ? m.memberId === currentId : false,
         }));
         mapped.sort((a, b) => {
@@ -71,7 +76,7 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
       const newMember: Member = {
         id: created.memberId,
         name: created.nickname,
-        avatar: created.profileImg,
+        avatar: getValidProfileImageUrl(created.profileImg) || undefined,
         isRemovable: currentId ? created.memberId === currentId : false,
       };
       setMembers((prev) => [...prev, newMember]);
@@ -94,10 +99,10 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
       .then(() => {
         setConfirmOpen(false);
         onClose();
-        if (location.pathname === "/groups") {
+        if (location.pathname === "/group") {
           navigate(0);
         } else {
-          navigate("/groups", { replace: true });
+          navigate("/group", { replace: true });
         }
       })
       .catch(() => {
@@ -121,7 +126,7 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
       setGroupName(updated.teamName);
       // 닫고 목록 새로고침
       onClose();
-      if (location.pathname === "/groups") {
+      if (location.pathname === "/group") {
         navigate(0);
       }
     } finally {
@@ -214,17 +219,20 @@ const GroupModal = ({ isOpen, onClose, teamId }: GroupProps) => {
               />
               <div className={styles.membersContent}>
                 <div className={styles.membersList}>
-                  {members.map((member) => (
+                  {members.map((member, index) => (
                     <div key={member.id} className={styles.memberItem}>
                       <div className={styles.memberAvatar}>
-                        {member.avatar ? (
+                        {member.avatar && !imageErrors[index] ? (
                           <img
                             src={member.avatar}
                             alt={member.name}
                             className={styles.avatarImage}
+                            onError={() => handleImageError(index)}
                           />
                         ) : (
-                          <div className={styles.avatarPlaceholder}></div>
+                          <div className={styles.avatarPlaceholder}>
+                            {member.name.charAt(0)}
+                          </div>
                         )}
                       </div>
                       <span className={styles.memberName}>{member.name}</span>

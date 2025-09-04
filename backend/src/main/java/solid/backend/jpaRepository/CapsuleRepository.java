@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface CapsuleRepository extends JpaRepository<Capsule, Integer> {
+    List<Capsule> findByTeamTeamId(Integer teamId);
     
     // 팀의 모든 캡슐 조회
     List<Capsule> findByTeam(Team team);
