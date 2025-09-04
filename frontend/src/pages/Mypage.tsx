@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { profile_cloud, option } from "../assets";
 import TabBar from "../components/APP/TabBar";
-import styles from "../styles/mypage.module.scss";
+import styles from "../styles/Mypage.module.scss";
 import { useNavigate } from "react-router-dom";
 import { getMemberDto } from "../api/mypageApi";
 import type { MypageDto } from "../types/mypage";
@@ -96,7 +96,7 @@ const Mypage = () => {
 
   if (err) {
     return (
-      <div>
+      <div className={styles.container}>
         <p className={styles.header}>MY PAGE</p>
         <div className={styles.errorBox}>{err}</div>
         <TabBar />
@@ -106,50 +106,55 @@ const Mypage = () => {
 
   return (
     <div>
-      <p className={styles.header}>MY PAGE</p>
+      <div className={styles.container}>
+        <div className={styles.mainContent}>
+          <p className={styles.header}>MY PAGE</p>
 
-      <div className={styles.profile}>
-        <img
-          src={profileSrc}
-          alt="profile"
-          className={styles.profileImg}
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = profile_cloud;
-          }}
-        />
+          <div className={styles.profile}>
+            <img
+              src={profileSrc}
+              alt="profile"
+              className={styles.profileImg}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = profile_cloud;
+              }}
+            />
 
-        <div className={styles.nicknameWrapper}>
-          <p className={styles.nickname}>{data?.memberNickname ?? "-"}</p>
+            <div className={styles.nicknameWrapper}>
+              <p className={styles.nickname}>{data?.memberNickname ?? "-"}</p>
+            </div>
+
+            <img
+              src={option}
+              alt="option"
+              className={styles.option}
+              onClick={() =>
+                navigate("/editinfo", { state: { initial: data } })
+              }
+              title="정보 수정"
+            />
+          </div>
+
+          <div className={styles.infoContents}>
+            <div className={styles.info}>
+              <div className={styles.title}>NAME</div>
+              <div className={styles.content}>{data?.memberName ?? "-"}</div>
+            </div>
+            <div className={styles.info}>
+              <div className={styles.title}>EMAIL</div>
+              <div className={styles.content}>{data?.memberEmail ?? "-"}</div>
+            </div>
+            <div className={styles.info}>
+              <div className={styles.title}>PHONE</div>
+              <div className={styles.content}>{data?.memberPhone ?? "-"}</div>
+            </div>
+            <div className={styles.info}>
+              <div className={styles.title}>BIRTH</div>
+              <div className={styles.content}>{data?.memberBirth ?? "-"}</div>
+            </div>
+          </div>
         </div>
-
-        <img
-          src={option}
-          alt="option"
-          className={styles.option}
-          onClick={() => navigate("/editinfo", { state: { initial: data } })}
-          title="정보 수정"
-        />
       </div>
-
-      <div className={styles.infoContents}>
-        <div className={styles.info}>
-          <div className={styles.title}>NAME</div>
-          <div className={styles.content}>{data?.memberName ?? "-"}</div>
-        </div>
-        <div className={styles.info}>
-          <div className={styles.title}>EMAIL</div>
-          <div className={styles.content}>{data?.memberEmail ?? "-"}</div>
-        </div>
-        <div className={styles.info}>
-          <div className={styles.title}>PHONE</div>
-          <div className={styles.content}>{data?.memberPhone ?? "-"}</div>
-        </div>
-        <div className={styles.info}>
-          <div className={styles.title}>BIRTH</div>
-          <div className={styles.content}>{data?.memberBirth ?? "-"}</div>
-        </div>
-      </div>
-
       <TabBar />
     </div>
   );

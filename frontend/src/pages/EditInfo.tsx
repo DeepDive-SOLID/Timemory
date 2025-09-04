@@ -177,124 +177,139 @@ const EditInfo = () => {
   }
 
   return (
-    <div className={styles.page}>
-      <p className={styles.header}>MY PAGE</p>
+    <div>
+      <div className={styles.container}>
+        <div className={styles.mainContent}>
+          <p className={styles.header}>MY PAGE</p>
 
-      <div className={styles.profile}>
-        <div className={styles.imgWrapper} onClick={onPickImage}>
-          <img
-            src={preview || profile_cloud}
-            alt="profile"
-            className={styles.profileImg}
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src = profile_cloud;
-            }}
-          />
-          <img src={camera} alt="camera" className={styles.camera} />
+          <div className={styles.profile}>
+            <div className={styles.imgWrapper} onClick={onPickImage}>
+              <img
+                src={preview || profile_cloud}
+                alt="profile"
+                className={styles.profileImg}
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = profile_cloud;
+                }}
+              />
+              <img src={camera} alt="camera" className={styles.camera} />
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={(e) => {
+                const f = e.target.files?.[0] ?? null;
+                setValue("memberProfile", f, {
+                  shouldDirty: true,
+                  shouldValidate: true,
+                });
+              }}
+            />
+            <p className={styles.nickname}>
+              {initial?.memberNickname ?? "닉네임"}
+            </p>
+            {errors.memberProfile?.message && (
+              <p className={styles.error}>
+                {String(errors.memberProfile.message)}
+              </p>
+            )}
+          </div>
+
+          <form
+            className={styles.form}
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+          >
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="memberName">
+                NAME
+              </label>
+              <input
+                id="memberName"
+                className={styles.input}
+                {...register("memberName")}
+                placeholder="이름"
+              />
+              {errors.memberName?.message && (
+                <p className={styles.error}>
+                  {String(errors.memberName.message)}
+                </p>
+              )}
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="memberEmail">
+                EMAIL
+              </label>
+              <input
+                id="memberEmail"
+                className={styles.input}
+                type="email"
+                {...register("memberEmail")}
+                placeholder="example@email.com"
+              />
+              {errors.memberEmail?.message && (
+                <p className={styles.error}>
+                  {String(errors.memberEmail.message)}
+                </p>
+              )}
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="memberPhone">
+                PHONE
+              </label>
+              <input
+                id="memberPhone"
+                className={styles.input}
+                {...register("memberPhone")}
+                placeholder="010-1234-5678"
+              />
+              {errors.memberPhone?.message && (
+                <p className={styles.error}>
+                  {String(errors.memberPhone.message)}
+                </p>
+              )}
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="memberBirth">
+                BIRTH
+              </label>
+              <input
+                id="memberBirth"
+                className={styles.input}
+                type="date"
+                {...register("memberBirth")}
+              />
+              {errors.memberBirth?.message && (
+                <p className={styles.error}>
+                  {String(errors.memberBirth.message)}
+                </p>
+              )}
+            </div>
+
+            <button
+              className={styles.saveButton}
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "저장 중..." : "저장하기"}
+            </button>
+          </form>
+
+          <div className={styles.actions}>
+            <button className={styles.logoutButton} onClick={logout}>
+              로그아웃
+            </button>
+            <button className={styles.deleteButton} onClick={onDelete}>
+              회원탈퇴
+            </button>
+          </div>
         </div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          hidden
-          onChange={(e) => {
-            const f = e.target.files?.[0] ?? null;
-            setValue("memberProfile", f, {
-              shouldDirty: true,
-              shouldValidate: true,
-            });
-          }}
-        />
-        <p className={styles.nickname}>{initial?.memberNickname ?? "닉네임"}</p>
-        {errors.memberProfile?.message && (
-          <p className={styles.error}>{String(errors.memberProfile.message)}</p>
-        )}
       </div>
-
-      <form
-        className={styles.form}
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="memberName">
-            NAME
-          </label>
-          <input
-            id="memberName"
-            className={styles.input}
-            {...register("memberName")}
-            placeholder="이름"
-          />
-          {errors.memberName?.message && (
-            <p className={styles.error}>{String(errors.memberName.message)}</p>
-          )}
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="memberEmail">
-            EMAIL
-          </label>
-          <input
-            id="memberEmail"
-            className={styles.input}
-            type="email"
-            {...register("memberEmail")}
-            placeholder="example@email.com"
-          />
-          {errors.memberEmail?.message && (
-            <p className={styles.error}>{String(errors.memberEmail.message)}</p>
-          )}
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="memberPhone">
-            PHONE
-          </label>
-          <input
-            id="memberPhone"
-            className={styles.input}
-            {...register("memberPhone")}
-            placeholder="010-1234-5678"
-          />
-          {errors.memberPhone?.message && (
-            <p className={styles.error}>{String(errors.memberPhone.message)}</p>
-          )}
-        </div>
-
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="memberBirth">
-            BIRTH
-          </label>
-          <input
-            id="memberBirth"
-            className={styles.input}
-            type="date"
-            {...register("memberBirth")}
-          />
-          {errors.memberBirth?.message && (
-            <p className={styles.error}>{String(errors.memberBirth.message)}</p>
-          )}
-        </div>
-
-        <button
-          className={styles.saveButton}
-          type="submit"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "저장 중..." : "저장하기"}
-        </button>
-      </form>
-
-      <div className={styles.actions}>
-        <button className={styles.logoutButton} onClick={logout}>
-          로그아웃
-        </button>
-        <button className={styles.deleteButton} onClick={onDelete}>
-          회원탈퇴
-        </button>
-      </div>
-
       <TabBar />
     </div>
   );
