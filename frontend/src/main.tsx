@@ -14,6 +14,8 @@ import GroupList from "./pages/GroupList.tsx";
 import QuizDate from "./pages/Quiz/QuizDate.tsx";
 import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
 import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
+import OpenList from "./pages/OpenList.tsx";
+import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
 import GroupCapsule from "./pages/GroupCapsule.tsx";
 
 const router = createBrowserRouter([
@@ -60,6 +62,14 @@ const router = createBrowserRouter([
       {
         path: "group",
         element: <GroupList />,
+      },
+      {
+        path: "openlist/:eventId",
+        element: <OpenList />,
+      },
+      {
+        path: "quiz/:eventId",
+        element: <QuizOpen />,
       },
       {
         path: "group/:groupId",
