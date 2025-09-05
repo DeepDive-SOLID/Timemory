@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "../../styles/InputBox.module.scss";
 import { inputbox_lg, inputbox_sm } from "../../assets";
 import TagAnimation from "./TagAnimation";
+import { checkCensorship } from "../../api/censorshipApi";
 
 export interface InputBoxProps {
   type: "text" | "file" | "keyword" | "date";
@@ -30,6 +31,7 @@ export interface InputBoxProps {
   required?: boolean;
   forceShowWarning?: boolean;
   maxLength?: number;
+  onAiCheck?: (blocked: boolean) => void;
 }
 
 const InputBox = ({
@@ -49,17 +51,36 @@ const InputBox = ({
   required = false,
   forceShowWarning = false,
   maxLength,
+  onAiCheck,
 }: InputBoxProps) => {
   const [innerText, setInnerText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [touched, setTouched] = useState(false);
+  const [aiWarning, setAiWarning] = useState<string | null>(null);
 
   const src = svgBox === "sm" ? inputbox_sm : inputbox_lg;
 
   const currentText = value ?? innerText;
-  const setCurrentText = (v: string): void => {
+
+  const setCurrentText = async (v: string): Promise<void> => {
     if (onChangeText) onChangeText(v);
     else setInnerText(v);
+
+    if (type === "text") {
+      if (!v.trim()) {
+        setAiWarning(null);
+        onAiCheck?.(false);
+        return;
+      }
+      const blocked = await checkCensorship(v);
+      if (blocked) {
+        setAiWarning("금지된 내용이 포함되어 있습니다.");
+        onAiCheck?.(true);
+      } else {
+        setAiWarning(null);
+        onAiCheck?.(false);
+      }
+    }
   };
 
   // 유효성 체크
@@ -184,6 +205,13 @@ const InputBox = ({
       {shouldWarn && warning && (
         <div className={styles.warningMessage}>
           <p>{warning}</p>
+        </div>
+      )}
+
+      {/* AI 검열 경고 */}
+      {aiWarning && (
+        <div className={styles.warningMessage}>
+          <p>{aiWarning}</p>
         </div>
       )}
     </div>

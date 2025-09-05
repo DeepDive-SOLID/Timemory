@@ -18,7 +18,8 @@ const quizData = [
     type: "date" as const,
     title: (
       <>
-        <span className={styles.QuizTitleStrong}>기억하고 싶은 날</span>을 <br />
+        <span className={styles.QuizTitleStrong}>기억하고 싶은 날</span>을{" "}
+        <br />
         골라주세요
       </>
     ),
@@ -74,6 +75,7 @@ const QuizDate = () => {
   const [tagText, setTagText] = useState("");
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
   const navigate = useNavigate();
+  const [isAiBlocked, setIsAiBlocked] = useState(false);
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
   const current = quizData[step];
@@ -85,12 +87,18 @@ const QuizDate = () => {
   const validateCurrent = () => {
     if (step === 0 && !selectedDate) return "날짜를 선택해주세요.";
     if (step === 1 && !momentText.trim()) return "기억을 입력해주세요.";
-    if (step === 2 && tags.length === 0) return "키워드를 한 개 이상 추가해주세요.";
+    if (step === 2 && tags.length === 0)
+      return "키워드를 한 개 이상 추가해주세요.";
     return null;
   };
 
   const handleNext = async () => {
     if (step < quizData.length - 1) {
+      if (isAiBlocked) {
+        alert("금지된 내용이 포함되어 있습니다. 수정 후 진행해주세요.");
+        return;
+      }
+
       const msg = validateCurrent();
       if (msg) {
         setForceWarnStep(step);
@@ -133,20 +141,23 @@ const QuizDate = () => {
         answer={
           current.type === "date" ? (
             <>
-              <Calendar value={selectedDate ?? undefined} onChange={setSelectedDate} />
+              <Calendar
+                value={selectedDate ?? undefined}
+                onChange={setSelectedDate}
+              />
               <InputBox
-                type='date'
+                type="date"
                 warning={current.warning}
                 svgBox={current.svgBox}
                 displayValue={formatMD(selectedDate)}
-                displayPlaceholder='날짜를 선택하세요'
+                displayPlaceholder="날짜를 선택하세요"
                 required
                 forceShowWarning={forceWarnStep === step}
               />
             </>
           ) : current.type === "keyword" ? (
             <InputBox
-              type='keyword'
+              type="keyword"
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
@@ -162,10 +173,14 @@ const QuizDate = () => {
               forceShowWarning={forceWarnStep === step}
             />
           ) : current.type === "file" ? (
-            <InputBox type='file' warning={current.warning} onFileChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+            <InputBox
+              type="file"
+              warning={current.warning}
+              onFileChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
           ) : (
             <InputBox
-              type='text'
+              type="text"
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
@@ -173,6 +188,7 @@ const QuizDate = () => {
               value={momentText}
               onChangeText={setMomentText}
               forceShowWarning={forceWarnStep === step}
+              onAiCheck={setIsAiBlocked}
             />
           )
         }

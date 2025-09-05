@@ -1,6 +1,11 @@
 import QuizBox from "../../components/UI/QuizBox";
 import styles from "../../styles/Quiz.module.scss";
-import { cloud_img, hashtag_img, condition_img, camera_img } from "../../assets";
+import {
+  cloud_img,
+  hashtag_img,
+  condition_img,
+  camera_img,
+} from "../../assets";
 import InputBox from "../../components/UI/InputBox";
 import StatusBar from "../../components/APP/StatusBar";
 import { useState } from "react";
@@ -77,6 +82,7 @@ const QuizCondition = () => {
   const [file, setFile] = useState<File | null>(null);
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
   const navigate = useNavigate();
+  const [isAiBlocked, setIsAiBlocked] = useState(false);
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
   const current = quizData[step];
@@ -93,12 +99,18 @@ const QuizCondition = () => {
   const validateCurrent = () => {
     if (step === 0 && !reason.trim()) return "이유를 입력해주세요.";
     if (step === 1 && !momentText.trim()) return "기억을 입력해주세요.";
-    if (step === 2 && tags.length === 0) return "키워드를 한 개 이상 추가해주세요.";
+    if (step === 2 && tags.length === 0)
+      return "키워드를 한 개 이상 추가해주세요.";
     return null;
   };
 
   const handleNext = async () => {
     if (step < quizData.length - 1) {
+      if (isAiBlocked) {
+        alert("금지된 내용이 포함되어 있습니다. 수정 후 진행해주세요.");
+        return;
+      }
+
       const msg = validateCurrent();
       if (msg) {
         setForceWarnStep(step);
@@ -137,7 +149,7 @@ const QuizCondition = () => {
         answer={
           current.type === "keyword" ? (
             <InputBox
-              type='keyword'
+              type="keyword"
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
@@ -153,10 +165,14 @@ const QuizCondition = () => {
               forceShowWarning={forceWarnStep === step}
             />
           ) : current.type === "file" ? (
-            <InputBox type='file' warning={current.warning} onFileChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+            <InputBox
+              type="file"
+              warning={current.warning}
+              onFileChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
           ) : (
             <InputBox
-              type='text'
+              type="text"
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
@@ -164,6 +180,7 @@ const QuizCondition = () => {
               value={step === 0 ? reason : momentText}
               onChangeText={handleTextChange}
               forceShowWarning={forceWarnStep === step}
+              onAiCheck={setIsAiBlocked}
             />
           )
         }
