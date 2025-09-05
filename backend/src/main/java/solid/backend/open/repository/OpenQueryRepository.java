@@ -4,11 +4,14 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Repository;
 import solid.backend.entity.*;
 import solid.backend.open.dto.OpenCapsuleListDto;
 import solid.backend.open.dto.OpenListDto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -84,5 +87,28 @@ public class OpenQueryRepository {
                 .from(capsule)
                 .where(capsule.team.teamId.eq(teamId))
                 .fetch();
+    }
+
+
+    /**
+     * 설명 : 기념일 날짜 조회
+     * @param teamId
+     * @return LocalDate
+     */
+    public LocalDateTime getAnnDt(Integer teamId) {
+        QAnniversary anniversary = QAnniversary.anniversary;
+        QTeam team = QTeam.team;
+        LocalDate annDt = queryFactory
+                .select(anniversary.annDt)
+                .from(team)
+                .join(anniversary).on(team.teamName.eq(Expressions.stringTemplate("concat('TIME_CAPSULE_', {0})", anniversary.annName)))
+                .where(team.teamId.eq(teamId))
+                .fetchOne();
+
+        LocalDateTime result = null;
+        if (annDt != null) {
+            result = annDt.atStartOfDay();
+        }
+        return result;
     }
 }
