@@ -114,7 +114,6 @@ const QuizOpen = () => {
         teamId,
         memberId: memberId ?? "",
         capText: momentText.trim(),
-        capEt: toLocalDateTimeString(new Date(eventData.annDt)),
         capUt: toLocalDateTimeString(new Date()),
         capImg: file as File,
         capTag: tags.join(","),
