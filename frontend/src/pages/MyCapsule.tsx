@@ -5,7 +5,7 @@ import MessageCardSection from "../components/Domain/MessageCard";
 import LocationSection from "../components/Domain/LocationSection";
 import styles from "../styles/MyCapsule.module.scss";
 import type { Capsule } from "../types/capsule";
-import { getUserCapsulesApi } from "../api/capsuleApi";
+import { getUserCapsulesApi } from "../api/MyCapsuleApi";
 
 // DATE 타입 캡슐만 필터링하는 헬퍼 함수
 const filterDateCapsules = (capsules: Capsule[]): Capsule[] => {

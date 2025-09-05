@@ -3,7 +3,7 @@ import styles from "../../styles/MyCapsule.module.scss";
 import { lock, x_circle } from "../../assets/index.ts";
 import type { MessageCard } from "../../types/capsule";
 import DeleteConfirm from "../UI/DeleteConfirm";
-import { deleteCapsuleApi } from "../../api/capsuleApi";
+import { deleteCapsuleApi } from "../../api/MyCapsuleApi";
 
 interface MessageCardSectionProps {
   cards: MessageCard[];
