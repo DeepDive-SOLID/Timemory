@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Integer> {
-    
+
     /**
      * 기념일용 팀을 제외한 일반 팀 목록 조회
      * 팀 이름이 'TIME_CAPSULE_'로 시작하는 기념일용 팀 제외
@@ -23,5 +23,5 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
      */
     @Query("SELECT t FROM Team t WHERE t.teamName NOT LIKE 'TIME_CAPSULE_%'")
     List<Team> findAllNonAnniversaryTeams();
-    
+
 }
