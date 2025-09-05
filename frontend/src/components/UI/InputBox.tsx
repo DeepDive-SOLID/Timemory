@@ -69,8 +69,9 @@ const InputBox = ({
         return !file;
       case "date":
         return !displayValue?.trim();
-      case "text":
       case "keyword":
+        return (tags?.length ?? 0) === 0;
+      case "text":
       default:
         return !currentText.trim();
     }
