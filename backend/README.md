@@ -10,6 +10,7 @@ src/main/java/solid/backend
 - censorship : 캡슐 내용 검열
 - common : 공통 기능
   - FileManager : 파일 관리 모듈
+  - SimpleMultipartFile : MultipartFile 구현체
 - config: 설정파일
   - QueryDSLConfig: QueryDSL 빈 등록
   - FileStorageConfig : 파일 설정 값 관리
@@ -26,4 +27,8 @@ src/main/java/solid/backend
   - Anniversary : 기념일
 - jpaRepository : JPA Repository
   - MemberRepository : 회원
+  - TeamRepository : 팀
+  - TeamMemberRepository : 팀 멤버
+  - CapsuleRepository : 캡슐
+  - CapsuleLtRepository : 캡슐 위치
 - Jwt
