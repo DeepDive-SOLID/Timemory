@@ -36,7 +36,6 @@ export { default as map_img } from "./images/map_img.svg";
 export { default as map } from "./images/map.svg";
 export { default as profile_img } from "./images/profile_img.svg";
 export { default as profile_img2 } from "./images/profile_img2.svg";
-export { default as card_ex } from "./images/card_ex.jpg";
 
 // Event Day
 export { default as april_fools_day } from "./images/april_fools_day.svg";
