@@ -23,6 +23,7 @@ public class CapsuleSummaryDto {
     private String teamName;
     private Boolean isOpened;
     private Boolean isAnniversary;
+    private Boolean isSent;  // 전송 여부
     private String capsuleType;  // 캡슐 타입 추가
     private String locationAddress;  // 위치 주소
     private String locationDetail;  // 상세 주소
@@ -56,6 +57,7 @@ public class CapsuleSummaryDto {
                 .createdAt(capsule.getCapUt())
                 .isOpened(opened)
                 .isAnniversary(isAnniversary)
+                .isSent(capsule.getCapSent() != null ? capsule.getCapSent() : false)
                 .capsuleType(capsuleType)
                 .teamId(capsule.getTeam() != null ? capsule.getTeam().getTeamId() : null)
                 .teamName(capsule.getTeam() != null ? capsule.getTeam().getTeamName() : null)
