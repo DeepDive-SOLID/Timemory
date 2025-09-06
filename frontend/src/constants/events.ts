@@ -89,7 +89,7 @@ export const events: EventData[] = [
   },
   {
     annName: "크리스마스",
-    annDt: "2026-12-25",
+    annDt: "2025-12-25",
     id: "christmas",
     title: "메리 크리스마스 🎅",
     date: "12월 25일",
