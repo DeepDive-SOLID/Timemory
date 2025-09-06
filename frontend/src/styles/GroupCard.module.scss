@@ -1,6 +1,7 @@
 .groupCard {
   position: relative;
-  margin-bottom: 36px;
+  margin-bottom: 20px;
+  min-height: 120px;
 }
 
 .groupCard:hover {
@@ -9,10 +10,7 @@
 
 .cardBackground {
   position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
+  inset: -5px;
   z-index: 1;
 }
 
@@ -20,31 +18,21 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transform: scale(1.08);
-  transition: transform 0.2s ease;
-}
-
-.openGroupBorder {
-  transform: scale(1.08);
-}
-
-/* Hover: slightly enlarge the rectangle image */
-.groupCard:hover .borderImage {
-  transform: scale(1.1);
 }
 
 .cardContent {
   position: relative;
   z-index: 2;
-  padding: 16px;
-  margin: 6px;
+  padding: 20px;
+  min-height: 110px;
 }
 
 .groupHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+
+  min-height: 48px;
 }
 
 .groupName {
@@ -67,8 +55,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+  padding: 8px;
+  border-radius: 8px;
   transition: background-color 0.2s ease;
   display: flex;
   align-items: center;
@@ -76,8 +64,8 @@
   transform: translateX(-3px);
 
   img {
-    width: 18px;
-    height: 18px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
   }
 
