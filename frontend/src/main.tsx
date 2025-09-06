@@ -17,7 +17,7 @@ import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
 import OpenList from "./pages/OpenList.tsx";
 import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
 import GroupCapsule from "./pages/GroupCapsule.tsx";
-import SplashScreen from "./pages/Splash.tsx";
+import Splash from "./pages/Splash.tsx";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <SplashScreen />,
+        element: <Splash />,
       },
       {
         path: "login",
