@@ -35,7 +35,9 @@ const useMyCapsuleData = ({
           capLtAddr: capsule.locationAddress || "", // 주소 → 좌표 변환용
           capLtDetail: capsule.locationDetail || "", // 상세주소
           capImg: capsule.imageUrl || "", // 마커 이미지
-          capOpen: capsule.isOpened.toString(), // 열림 여부 (마커 표시용)
+          // 열림 여부 (boolean 값을 string으로 타입 단언)
+          // items.capOpen을 boolean으로 비교할 때 정상 작동
+          capOpen: capsule.isOpened as unknown as string,
           // 지도에서 사용하지 않는 필드들은 기본값으로 설정
           teamId: capsule.teamId,
           memberId: "",

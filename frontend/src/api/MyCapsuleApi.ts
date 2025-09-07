@@ -1,11 +1,36 @@
 import api from "./axios";
 import type { Capsule, CapsuleSpaceResponse } from "../types/capsule";
 
+// 이미지 URL을 완전한 URL로 변환하는 함수
+const convertImageUrl = (imageUrl: string | null): string | null => {
+  if (!imageUrl) return null;
+
+  // 이미 완전한 URL인 경우 (http:// 또는 https://로 시작)
+  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+    return imageUrl;
+  }
+
+  // 상대 경로인 경우 백엔드 서버의 완전한 URL로 변환
+  // 백엔드의 FileManager.getFileUrl()과 동일한 로직
+  // 8080 포트 직접 접근
+  return `http://localhost:8080/solid${imageUrl}`;
+};
+
 // 사용자의 모든 캡슐 조회
 export const getUserCapsulesApi = async (): Promise<CapsuleSpaceResponse> => {
   try {
     const response = await api.get<CapsuleSpaceResponse>("/capsule-space");
-    return response.data;
+
+    // 이미지 URL 변환 처리
+    const processedData = {
+      ...response.data,
+      capsules: response.data.capsules.map((capsule) => ({
+        ...capsule,
+        imageUrl: convertImageUrl(capsule.imageUrl),
+      })),
+    };
+
+    return processedData;
   } catch (error: unknown) {
     const axiosError = error as {
       response?: { status?: number; data?: { errorCode?: string } };
