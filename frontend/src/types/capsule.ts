@@ -52,7 +52,6 @@ export interface CapsuleDetailDto {
   capUt: string;
   capImg: string;
   capTag: string;
-  teamId: number;
   teamName: string;
   memberProfiles: string[]
 }

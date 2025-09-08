@@ -28,7 +28,7 @@ const CapsuleDetail = () => {
     }, []);
 
     return (
-        <div>
+        <div className={styles.container}>
             {capsule && (
                 <StatusBar
                     to={-1}
@@ -36,7 +36,7 @@ const CapsuleDetail = () => {
                     members={capsule.memberProfiles.map((m) => getValidProfileImageUrl(m) ?? profile_img)}
                 />
             )}
-            <div className={styles.container}>
+            <div className={styles.content}>
                 <img
                     src={capsule?.capImg ?? mini_logo}
                     alt="캡슐 이미지"
@@ -52,7 +52,6 @@ const CapsuleDetail = () => {
                         {capsule?.capText}
                     </div>
                 </div>
-
             </div>
         </div>
     );

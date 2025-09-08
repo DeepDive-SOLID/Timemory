@@ -1,8 +1,11 @@
 .container {
+  padding: 20px;
+}
+
+.content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
 }
 
 .capsuleImage {
@@ -20,6 +23,7 @@
 }
 
 .tagBox {
+  width: 100%;
   margin: 8px 0 30px;
 }
 
