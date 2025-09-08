@@ -21,7 +21,7 @@ const MyCapsuleMap = () => {
       <div className={style.backBox} onClick={handleBackClick}>
         <img src={back_arrow} alt="뒤로가기" />
       </div>
-      <Kakao customProps={data} />
+      <Kakao customProps={data} showDeleteButton={true} />
     </>
   );
 };
