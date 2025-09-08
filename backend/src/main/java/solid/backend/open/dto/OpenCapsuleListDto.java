@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OpenCapsuleListDto {
 
+    private Number capId;
     private String capText;
     private LocalDateTime capUt;
     private String memberNickname;

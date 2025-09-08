@@ -16,7 +16,6 @@ public class CapsuleDetailDto {
     private LocalDateTime capUt;
     private String capTag;
     private String capImg;
-    private Integer teamId;
     private String teamName;
     private List<String> memberProfiles;
 }

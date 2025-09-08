@@ -6,6 +6,8 @@ import solid.backend.capsule.detail.dto.CapsuleDetailDto;
 import solid.backend.common.FileManager;
 import solid.backend.jpaRepository.CapsuleRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CapsuleDetailServiceImpl implements CapsuleDetailService{
@@ -26,8 +28,12 @@ public class CapsuleDetailServiceImpl implements CapsuleDetailService{
                         capsule.getCapUt(),
                         capsule.getCapTag(),
                         capsule.getCapImg() != null ? fileManager.getFileUrl(capsule.getCapImg()) : null,
-                        capsule.getTeam().getTeamId(),
-                        capsule.getTeam().getTeamName(),
+                        Optional.ofNullable(capsule.getTeam().getTeamName())
+                                .map(name -> name.startsWith("TIME_CAPSULE_")
+                                        ? name.replaceFirst("^TIME_CAPSULE_", "")
+                                        : name
+                                )
+                                .orElse(null),
                         capsule.getTeam().getTeamMembers().stream()
                                 .map(teamMember -> {
                                     String profile = teamMember.getMember().getMemberProfile();

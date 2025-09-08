@@ -80,6 +80,7 @@ public class OpenQueryRepository {
 
         return queryFactory
                 .select(Projections.bean(OpenCapsuleListDto.class,
+                        capsule.capId,
                         capsule.capText,
                         capsule.capUt,
                         capsule.member.memberNickname,
