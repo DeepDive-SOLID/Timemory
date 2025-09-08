@@ -127,19 +127,28 @@ const MyCapsule: React.FC = () => {
         ) : (
           <>
             {dateCapsules.length > 0 && (
-              <CapsuleSlider
-                capsules={dateCapsules}
-                onCapsuleDeleted={handleCapsuleDeleted}
-              />
+              <>
+                <div className={styles.sectionTitle}>DATE CAPSULE</div>
+                <CapsuleSlider
+                  capsules={dateCapsules}
+                  onCapsuleDeleted={handleCapsuleDeleted}
+                />
+              </>
             )}
           </>
         )}
 
-        <MessageCardSection
-          cards={messageCards}
-          onCapsuleDeleted={handleCapsuleDeleted}
-        />
+        {messageCards.length > 0 && (
+          <>
+            <div className={styles.sectionTitle}>CONDITION CAPSULE</div>
+            <MessageCardSection
+              cards={messageCards}
+              onCapsuleDeleted={handleCapsuleDeleted}
+            />
+          </>
+        )}
 
+        <div className={styles.sectionTitle}>LOCATION CAPSULE</div>
         <LocationSection />
       </div>
 
