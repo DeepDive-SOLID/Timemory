@@ -5,6 +5,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  padding: 20px;
 }
 
 .safeArea {
@@ -34,18 +35,18 @@
 
   h1 {
     font-size: 35px;
-    color: #3C3C3C;
+    color: #3c3c3c;
     margin: 0px;
     font-weight: bold;
   }
 
   .brand {
-    color: #5497FF;
+    color: #5497ff;
   }
 
   .subtitle {
     font-size: 15px;
-    color: #3C3C3C;
+    color: #3c3c3c;
     margin-bottom: 150px;
   }
 }
@@ -59,7 +60,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #FEE500;
+  background-color: #fee500;
   border: none;
   border-radius: 8px;
   padding: 14px 0;
@@ -81,4 +82,3 @@
     margin-right: 8px;
   }
 }
-

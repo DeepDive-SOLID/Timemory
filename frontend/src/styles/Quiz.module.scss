@@ -1,6 +1,18 @@
+.container {
+  padding: 20px;
+}
+
 .QuizTitleStrong {
   color: #5497ff;
-  font-family: "Pretendard Variable";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.875rem;
+  letter-spacing: -0.03rem;
+}
+
+.QuizTitleStrong2 {
+  color: #e86a5a;
   font-size: 1.5rem;
   font-style: normal;
   font-weight: 600;

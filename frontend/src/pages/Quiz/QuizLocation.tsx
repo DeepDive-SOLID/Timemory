@@ -77,6 +77,7 @@ const QuizLocation = () => {
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
   const address = useAppSelector((state) => state.location.address_name);
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
+  const [isAiBlocked, setIsAiBlocked] = useState(false);
 
   const current = quizData[step];
 
@@ -94,12 +95,18 @@ const QuizLocation = () => {
   const validateCurrent = () => {
     if (step === 0 && !address?.trim()) return "주소를 입력해주세요.";
     if (step === 1 && !momentText.trim()) return "기억을 작성해주세요.";
-    if (step === 2 && tags.length === 0) return "키워드를 한 개 이상 추가해주세요.";
+    if (step === 2 && tags.length === 0)
+      return "키워드를 한 개 이상 추가해주세요.";
     return null;
   };
 
   const handleNext = async () => {
     if (step < quizData.length - 1) {
+      if (isAiBlocked) {
+        alert("금지된 내용이 포함되어 있습니다. 수정 후 진행해주세요.");
+        return;
+      }
+
       const msg = validateCurrent();
       if (msg) {
         setForceWarnStep(step);
@@ -148,13 +155,29 @@ const QuizLocation = () => {
                 위치 찾기
               </button>
 
-              <InputBox type='text' label='주소' svgBox='sm' value={address} input={current.input} warning={current.warning} required forceShowWarning={forceWarnStep === step} />
+              <InputBox
+                type="text"
+                label="주소"
+                svgBox="sm"
+                value={address}
+                input={current.input}
+                warning={current.warning}
+                required
+                forceShowWarning={forceWarnStep === step}
+              />
 
-              <InputBox type='text' label='상세 주소' svgBox='sm' value={detail} onChangeText={setDetail} input='상세 주소를 입력해주세요.' />
+              <InputBox
+                type="text"
+                label="상세 주소"
+                svgBox="sm"
+                value={detail}
+                onChangeText={setDetail}
+                input="상세 주소를 입력해주세요."
+              />
             </>
           ) : current.type === "keyword" ? (
             <InputBox
-              type='keyword'
+              type="keyword"
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
@@ -170,10 +193,14 @@ const QuizLocation = () => {
               forceShowWarning={forceWarnStep === step}
             />
           ) : current.type === "file" ? (
-            <InputBox type='file' warning={current.warning} onFileChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+            <InputBox
+              type="file"
+              warning={current.warning}
+              onFileChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
           ) : (
             <InputBox
-              type='text'
+              type="text"
               input={current.input}
               warning={current.warning}
               svgBox={current.svgBox}
@@ -181,6 +208,7 @@ const QuizLocation = () => {
               value={momentText}
               onChangeText={setMomentText}
               forceShowWarning={forceWarnStep === step}
+              onAiCheck={setIsAiBlocked}
             />
           )
         }
