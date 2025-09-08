@@ -1,18 +1,21 @@
 .container {
-  min-height: 100vh;
-  background-color: #fffdf8;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  background-color: #fffdf8;
   font-family: "Pretendard";
+}
+
+.scrollArea {
+  flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-  margin: -20px;
-  padding-bottom: 103px; /* TabBar 높이(83px) + 여유 공간(20px) */
 }
 
 /* Chrome, Safari, Opera */
-.container::-webkit-scrollbar {
+.scrollArea::-webkit-scrollbar {
   width: 0px;
   height: 0px;
 }

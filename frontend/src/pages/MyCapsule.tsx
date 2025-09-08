@@ -104,47 +104,50 @@ const MyCapsule: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>MY CAPSULE</h1>
-        <div className={styles.description}>
-          <p>
-            내가 작성한 <span className={styles.highlight}>타임캡슐</span>이에요
-          </p>
-          <p>
-            <span className={styles.highlight}>추억</span>을 돌아보며
-          </p>
-          <p>
-            곧 <span className={styles.highlight}>열릴 타임캡슐</span>도 함께
-            기다려봐요!
-          </p>
+      <div className={styles.scrollArea}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>MY CAPSULE</h1>
+          <div className={styles.description}>
+            <p>
+              내가 작성한 <span className={styles.highlight}>타임캡슐</span>
+              이에요
+            </p>
+            <p>
+              <span className={styles.highlight}>추억</span>을 돌아보며
+            </p>
+            <p>
+              곧 <span className={styles.highlight}>열릴 타임캡슐</span>도 함께
+              기다려봐요!
+            </p>
+          </div>
         </div>
+
+        {loading ? (
+          <div className={styles.loadingContainer}>
+            <p>캡슐을 불러오는 중...</p>
+          </div>
+        ) : error ? (
+          <div className={styles.errorContainer}>
+            <p>오류: {error}</p>
+          </div>
+        ) : (
+          <>
+            {dateCapsules.length > 0 && (
+              <CapsuleSlider
+                capsules={dateCapsules}
+                onCapsuleDeleted={handleCapsuleDeleted}
+              />
+            )}
+          </>
+        )}
+
+        <MessageCardSection
+          cards={messageCards}
+          onCapsuleDeleted={handleCapsuleDeleted}
+        />
+
+        <LocationSection />
       </div>
-
-      {loading ? (
-        <div className={styles.loadingContainer}>
-          <p>캡슐을 불러오는 중...</p>
-        </div>
-      ) : error ? (
-        <div className={styles.errorContainer}>
-          <p>오류: {error}</p>
-        </div>
-      ) : (
-        <>
-          {dateCapsules.length > 0 && (
-            <CapsuleSlider
-              capsules={dateCapsules}
-              onCapsuleDeleted={handleCapsuleDeleted}
-            />
-          )}
-        </>
-      )}
-
-      <MessageCardSection
-        cards={messageCards}
-        onCapsuleDeleted={handleCapsuleDeleted}
-      />
-
-      <LocationSection />
 
       <TabBar />
     </div>
