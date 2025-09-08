@@ -16,5 +16,35 @@
   overflow-y: auto;
   width: 100%;
   max-width: 500px;
-  padding: 20px;
+  overflow-x: hidden;
+}
+
+/* ===== Scrollbar Global Style ===== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c0c0c0 transparent;
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0;
+  border-radius: 6px;
+  border: 2px solid transparent;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #a0a0a0;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
