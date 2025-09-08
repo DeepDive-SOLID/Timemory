@@ -2,6 +2,7 @@ package solid.backend.open.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import solid.backend.common.FileManager;
 import solid.backend.entity.*;
@@ -28,10 +29,14 @@ public class OpenServiceImpl implements OpenService {
     private final CapsuleRepository capsuleRepository;
 
     /**
-     * 설명 : 오픈 그룹 리스트 정보
-     * @return List<OpenDto>
+     * 오픈 그룹/기념일 리스트 조회
+     * 캐싱: 오픈 그룹 리스트는 자주 변경되지 않으므로 캐싱하여 성능 향상
+     * 캐시 키: 고정값 'openList' 사용 (파라미터가 없는 메서드이므로)
+     * 
+     * @return 오픈 그룹 리스트 (멤버 프로필 포함)
      */
     @Override
+    @Cacheable(value = "anniversaries", key = "'openList'")  // 캐시명: anniversaries, 키: 'openList'
     public List<OpenListDto> getOpenList() {
         List<OpenListDto> list = openQueryRepository.getOpenList();
         list.forEach(dto -> {

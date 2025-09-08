@@ -2,6 +2,7 @@ package solid.backend.member.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import solid.backend.common.FileManager;
@@ -38,11 +39,14 @@ public class MemberServiceImpl implements MemberService {
     
     /**
      * 회원 정보 조회
+     * 캐싱: 회원 정보는 자주 변경되지 않으므로 캐싱하여 DB 조회 최소화
+     * 
      * @param memberId 카카오 회원 ID
      * @return 회원 정보 DTO
      * @throws CustomException 회원이 존재하지 않을 경우
      */
     @Override
+    @Cacheable(value = "memberInfo", key = "#memberId")  // 캐시명: memberInfo, 키: memberId
     public MemberResponseDto getMember(String memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
@@ -51,11 +55,18 @@ public class MemberServiceImpl implements MemberService {
     
     /**
      * 회원이 속한 팀 목록 조회 (상세 정보 포함)
+     * 캐싱: 팀 목록은 자주 조회되지만 변경 빈도가 낮아 캐싱 효과가 높음
+     * 
+     * 참고: 이 캐시는 다른 서비스에서 팀 관련 변경 시 자동으로 무효화됩니다
+     * - TeamService.createTeam(): 팀 생성자의 memberTeams 캐시 삭제
+     * - TeamService.leaveTeam(): 탈퇴한 회원의 memberTeams 캐시 삭제
+     * 
      * @param memberId 카카오 회원 ID
      * @return 회원이 속한 팀 목록 (멤버 수, 멤버 프로필 포함)
      * @throws CustomException 회원이 존재하지 않을 경우
      */
     @Override
+    @Cacheable(value = "memberTeams", key = "#memberId")  // 캐시명: memberTeams, 키: memberId
     public List<TeamResponseDto> getMemberTeams(String memberId) {
         if (!memberRepository.existsById(memberId)) {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);

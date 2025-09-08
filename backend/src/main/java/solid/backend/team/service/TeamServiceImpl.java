@@ -2,6 +2,9 @@ package solid.backend.team.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import solid.backend.common.FileManager;
@@ -52,6 +55,7 @@ public class TeamServiceImpl implements TeamService {
      */
     @Override
     @Transactional
+    @CacheEvict(value = "memberTeams", key = "#creatorId")
     public TeamResponseDto createTeam(TeamCreateRequestDto requestDto, String creatorId) {
         // 생성자 확인
         Member creator = memberRepository.findById(creatorId)
@@ -108,11 +112,15 @@ public class TeamServiceImpl implements TeamService {
     
     /**
      * 팀에 속한 멤버 목록 조회
+     * 캐싱: 팀 멤버 목록은 자주 조회되므로 캐싱하여 성능 향상
+     * 캐시 무효화: 팀 멤버 추가/탈퇴 시 자동으로 캐시 삭제됨
+     * 
      * @param teamId 팀 ID
      * @return 팀 멤버 목록
      * @throws CustomException 팀이 존재하지 않을 경우
      */
     @Override
+    @Cacheable(value = "teams", key = "#teamId")  // 캐시명: teams, 키: teamId
     public List<TeamMemberDto> getTeamMembers(Integer teamId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
@@ -132,6 +140,10 @@ public class TeamServiceImpl implements TeamService {
      * 팀 탈퇴 처리
      * - 본인만 탈퇴 가능 (그룹장 개념 없음)
      * - 팀 멤버가 0명이 되면 팀 자동 삭제
+     * 캐시 무효화: 
+     * - teams 캐시: 해당 팀의 멤버 목록이 변경되므로 캐시 삭제
+     * - memberTeams 캐시: 탈퇴한 멤버의 팀 목록이 변경되므로 캐시 삭제
+     * 
      * @param teamId 팀 ID
      * @param memberId 탈퇴할 회원 ID
      * @param requesterId 요청자 ID (JWT 토큰에서 추출)
@@ -139,6 +151,10 @@ public class TeamServiceImpl implements TeamService {
      */
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "teams", key = "#teamId"),        // 팀 멤버 목록 캐시 삭제
+        @CacheEvict(value = "memberTeams", key = "#memberId")  // 멤버의 팀 목록 캐시 삭제
+    })
     public void leaveTeam(Integer teamId, String memberId, String requesterId) {
         // 본인 확인 (보안 검증)
         if (!memberId.equals(requesterId)) {
@@ -175,6 +191,9 @@ public class TeamServiceImpl implements TeamService {
     
     /**
      * 팀에 새로운 멤버 추가 (닉네임으로)
+     * 캐시 무효화: 팀 멤버 목록이 변경되므로 해당 팀의 캐시 삭제
+     * Note: 추가된 멤버의 memberTeams 캐시는 해당 멤버가 다음 조회 시 갱신됨
+     * 
      * @param teamId 팀 ID
      * @param nickname 추가할 회원의 닉네임
      * @return 추가된 멤버의 프로필 정보 (닉네임, 프로필 이미지 포함)
@@ -182,6 +201,7 @@ public class TeamServiceImpl implements TeamService {
      */
     @Override
     @Transactional
+    @CacheEvict(value = "teams", key = "#teamId")  // 팀 멤버 목록 캐시 삭제
     public MemberProfileDto addTeamMemberByNickname(Integer teamId, String nickname) {
         // 팀 존재 확인
         Team team = teamRepository.findById(teamId)
