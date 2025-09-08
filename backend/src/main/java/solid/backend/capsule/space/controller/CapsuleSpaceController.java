@@ -39,7 +39,7 @@ public class CapsuleSpaceController {
     @DeleteMapping("/{capsuleId}")
     public ResponseEntity<Void> deleteCapsule(
             @AuthenticationPrincipal String memberId,
-            @PathVariable Integer capsuleId) {
+            @PathVariable("capsuleId") Integer capsuleId) {
         capsuleSpaceService.deleteCapsule(memberId, capsuleId);
         return ResponseEntity.noContent().build();
     }
