@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../../styles/MyCapsule.module.scss";
 import { lock, x_circle } from "../../assets/index.ts";
 import type { Capsule } from "../../types/capsule";
@@ -14,6 +15,7 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({
   capsules,
   onCapsuleDeleted,
 }) => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -159,6 +161,13 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({
     setSelectedCapsuleId(null);
   };
 
+  // 캡슐 클릭 핸들러 (열린 캡슐만 상세 페이지로 이동)
+  const handleCapsuleClick = (capsule: Capsule) => {
+    if (capsule.isOpened) {
+      navigate(`/detail/${capsule.capsuleId}`);
+    }
+  };
+
   return (
     <div className={styles.capsuleSection}>
       <div
@@ -188,14 +197,22 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({
                   }px) rotateY(${(index - currentIndex) * 15}deg) scale(${
                     index === currentIndex ? 1 : 0.85
                   })`,
-                  cursor: isDragging ? "grabbing" : "grab",
+                  cursor: isDragging
+                    ? "grabbing"
+                    : capsule.isOpened
+                    ? "pointer"
+                    : "grab",
                 }}
+                onClick={() => !isDragging && handleCapsuleClick(capsule)}
               >
                 <div className={styles.cardHeader}>
                   <h3>{capsule.content}</h3>
                   <button
                     className={styles.closeBtn}
-                    onClick={() => handleDeleteClick(capsule.capsuleId)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteClick(capsule.capsuleId);
+                    }}
                   >
                     ×
                   </button>
@@ -239,7 +256,10 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({
                   <>
                     <button
                       className={styles.closeButton}
-                      onClick={() => handleDeleteClick(capsule.capsuleId)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteClick(capsule.capsuleId);
+                      }}
                     >
                       <img src={x_circle} alt="close" />
                     </button>

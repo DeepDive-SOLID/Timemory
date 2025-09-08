@@ -80,3 +80,8 @@ export const filterDateCapsules = (capsules: Capsule[]): Capsule[] => {
 export const filterLocationCapsules = (capsules: Capsule[]): Capsule[] => {
   return capsules.filter((capsule) => capsule.capsuleType === "LOCATION");
 };
+
+// CONDITION 타입 캡슐만 필터링하는 헬퍼 함수
+export const filterConditionCapsules = (capsules: Capsule[]): Capsule[] => {
+  return capsules.filter((capsule) => capsule.capsuleType === "CONDITION");
+};

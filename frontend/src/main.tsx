@@ -85,6 +85,10 @@ const router = createBrowserRouter([
         path: "mycapsule",
         element: <MyCapsule />,
       },
+      {
+        path: "detail/:capId",
+        element: <div>캡슐 상세 페이지</div>,
+      },
     ],
   },
 ]);

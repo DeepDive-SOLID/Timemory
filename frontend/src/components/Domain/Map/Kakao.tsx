@@ -23,13 +23,19 @@ const Kakao = ({ customProps }: KakaoProps) => {
   const dispatch = useAppDispatch();
 
   // 맵 중심 (center를 구함)
-  const center = !check ? { lat: location.lat, lng: location.lng } : { lat, lng };
+  const center = !check
+    ? { lat: location.lat, lng: location.lng }
+    : { lat, lng };
 
   const clickEvent = (e: kakao.maps.event.MouseEvent) => {
     if (type === "pin") {
       dispatch(setLat(e.latLng.getLat()));
       dispatch(setLng(e.latLng.getLng()));
-      getAddressForLatLng({ lat: e.latLng.getLat(), lng: e.latLng.getLng(), dispatch });
+      getAddressForLatLng({
+        lat: e.latLng.getLat(),
+        lng: e.latLng.getLng(),
+        dispatch,
+      });
     }
   };
   const [calledApiIds, setCalledApiIds] = useState<number[]>([]);
@@ -53,7 +59,9 @@ const Kakao = ({ customProps }: KakaoProps) => {
           // 500미터 이내이고 아직 API를 호출하지 않은 경우
           if (distance <= 100 && !calledApiIds.includes(item.capId)) {
             // 여기에 API 호출 로직 작성
-            console.log(`위치가 ${item.capId}와 ${distance}m 이내입니다. API를 호출합니다.`);
+            console.log(
+              `위치가 ${item.capId}와 ${distance}m 이내입니다. API를 호출합니다.`
+            );
             try {
               // 거리가 같아지면 api 요청을 하여 open 을 TRUE 로 만듬
               // 오픈 되었을 때 사용할 애니메이션이 있다면 사용 아니면 대응책을 생각해야함
@@ -112,9 +120,19 @@ const Kakao = ({ customProps }: KakaoProps) => {
               {/* 커스텀 오버레이 이미지 */}
 
               {items.capOpen ? (
-                <ImgBox img={items.capImg ? items.capImg : mini_logo} className={style.customOverlay} url='home' alt='커스텀 이미지' capId={items.capId} />
+                <ImgBox
+                  img={items.capImg ? items.capImg : mini_logo}
+                  className={style.customOverlay}
+                  url="detail"
+                  alt="커스텀 이미지"
+                  capId={items.capId}
+                />
               ) : (
-                <ImgBox img={lock} className={style.customOverlay} alt='오픈전 사진' />
+                <ImgBox
+                  img={lock}
+                  className={style.customOverlay}
+                  alt="오픈전 사진"
+                />
               )}
             </CustomOverlayMap>
           )

@@ -5,17 +5,11 @@ import MessageCardSection from "../components/Domain/MessageCard";
 import LocationSection from "../components/Domain/LocationSection";
 import styles from "../styles/MyCapsule.module.scss";
 import type { Capsule } from "../types/capsule";
-import { getUserCapsulesApi } from "../api/MyCapsuleApi";
-
-// DATE 타입 캡슐만 필터링하는 헬퍼 함수
-const filterDateCapsules = (capsules: Capsule[]): Capsule[] => {
-  return capsules.filter((capsule) => capsule.capsuleType === "DATE");
-};
-
-// CONDITION 타입 캡슐만 필터링하는 헬퍼 함수
-const filterConditionCapsules = (capsules: Capsule[]): Capsule[] => {
-  return capsules.filter((capsule) => capsule.capsuleType === "CONDITION");
-};
+import {
+  getUserCapsulesApi,
+  filterDateCapsules,
+  filterConditionCapsules,
+} from "../api/MyCapsuleApi";
 
 const MyCapsule: React.FC = () => {
   const [dateCapsules, setDateCapsules] = useState<Capsule[]>([]);

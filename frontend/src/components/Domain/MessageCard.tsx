@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../../styles/MyCapsule.module.scss";
 import { lock, x_circle } from "../../assets/index.ts";
 import type { MessageCard } from "../../types/capsule";
@@ -14,6 +15,7 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({
   cards,
   onCapsuleDeleted,
 }) => {
+  const navigate = useNavigate();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -57,6 +59,13 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({
     setShowDeleteModal(false);
     setSelectedCardId(null);
   };
+
+  // 캡슐 클릭 핸들러 (열린 캡슐만 상세 페이지로 이동)
+  const handleCardClick = (card: MessageCard) => {
+    if (card.isOpened) {
+      navigate(`/detail/${card.id}`);
+    }
+  };
   return (
     <div className={styles.messageCardsSection}>
       <div className={styles.messageCardsContainer}>
@@ -69,11 +78,18 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({
               className={`${styles.messageCard} ${
                 isLocked ? styles.locked : ""
               }`}
+              style={{
+                cursor: card.isOpened ? "pointer" : "default",
+              }}
+              onClick={() => handleCardClick(card)}
             >
               {isLocked && (
                 <button
                   className={styles.closeButton}
-                  onClick={() => handleDeleteClick(card.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteClick(card.id);
+                  }}
                 >
                   <img src={x_circle} alt="close" />
                 </button>
@@ -102,7 +118,10 @@ const MessageCardSection: React.FC<MessageCardSectionProps> = ({
               <div className={styles.messageFooter}>
                 <button
                   className={styles.deleteButton}
-                  onClick={() => handleDeleteClick(card.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteClick(card.id);
+                  }}
                 >
                   <svg
                     width="16"
