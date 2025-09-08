@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import solid.backend.capsule.space.dto.CapsuleSpaceResponseDto;
 import solid.backend.capsule.space.dto.CapsuleSummaryDto;
 import solid.backend.capsule.space.repository.CapsuleSpaceQueryRepository;
+import solid.backend.capsule.date.service.CapsuleDateService;
+import solid.backend.capsule.cndt.service.CapsuleCndtService;
+import solid.backend.common.FileManager;
 import solid.backend.entity.Capsule;
 import solid.backend.entity.Member;
 import solid.backend.jpaRepository.CapsuleRepository;
@@ -26,6 +29,9 @@ public class CapsuleSpaceServiceImpl implements CapsuleSpaceService {
     private final MemberRepository memberRepository;
     private final CapsuleRepository capsuleRepository;
     private final CapsuleSpaceQueryRepository capsuleSpaceQueryRepository;
+    private final CapsuleDateService capsuleDateService;
+    private final CapsuleCndtService capsuleCndtService;
+    private final FileManager fileManager;
     
     @Override
     public CapsuleSpaceResponseDto getCapsuleSpace(String memberId) {
@@ -68,10 +74,28 @@ public class CapsuleSpaceServiceImpl implements CapsuleSpaceService {
         }
         
         // 캡슐 삭제 로그
-        log.info("캡슐 삭제 - capsuleId: {}, teamId: {}, memberId: {}", 
+        log.info("캡슐 삭제 시작 - capsuleId: {}, teamId: {}, memberId: {}", 
                 capsuleId, capsule.getTeam().getTeamId(), memberId);
         
-        // 캡슐 삭제
-        capsuleRepository.delete(capsule);
+        // 캡슐 타입에 따른 삭제 처리
+        if (capsule.getCapsuleLocation() != null) {
+            // 위치 캡슐인 경우 - 파일 삭제 후 캡슐 삭제
+            log.debug("위치 캡슐 삭제 - capsuleId: {}", capsuleId);
+            if (capsule.getCapImg() != null) {
+                fileManager.deleteFile(capsule.getCapImg());
+                log.debug("캡슐 이미지 파일 삭제 완료 - file: {}", capsule.getCapImg());
+            }
+            capsuleRepository.delete(capsule);
+        } else if (capsule.getCapsuleCondition() != null) {
+            // 조건 캡슐인 경우 - CapsuleCndtService 사용 (파일 삭제 포함)
+            log.debug("조건 캡슐 삭제 - capsuleId: {}", capsuleId);
+            capsuleCndtService.deleteCapsuleDate(capsuleId);
+        } else {
+            // 날짜 캡슐인 경우 - CapsuleDateService 사용 (파일 삭제 포함)
+            log.debug("날짜 캡슐 삭제 - capsuleId: {}", capsuleId);
+            capsuleDateService.deleteCapsuleDate(capsuleId);
+        }
+        
+        log.info("캡슐 삭제 완료 - capsuleId: {}", capsuleId);
     }
 }
