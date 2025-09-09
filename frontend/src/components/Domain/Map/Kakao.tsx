@@ -9,9 +9,9 @@ import ImgBox from "./ImgBox";
 import { map_pin_blue, lock, mini_logo } from "../../../assets/index";
 import { useEffect, useState } from "react";
 import { getDistance } from "./getDistance";
-// import { getCapsuleLtListApi } from "../../../api/open";
+import { getCapsuleLtListApi } from "../../../api/open";
 
-const Kakao = ({ customProps }: KakaoProps) => {
+const Kakao = ({ customProps, showDeleteButton = false }: KakaoProps) => {
   // 현재 내 위치를 가져옴 - 커스텀 훅
   const location = useMyLocation(true);
 
@@ -23,13 +23,19 @@ const Kakao = ({ customProps }: KakaoProps) => {
   const dispatch = useAppDispatch();
 
   // 맵 중심 (center를 구함)
-  const center = !check ? { lat: location.lat, lng: location.lng } : { lat, lng };
+  const center = !check
+    ? { lat: location.lat, lng: location.lng }
+    : { lat, lng };
 
   const clickEvent = (e: kakao.maps.event.MouseEvent) => {
     if (type === "pin") {
       dispatch(setLat(e.latLng.getLat()));
       dispatch(setLng(e.latLng.getLng()));
-      getAddressForLatLng({ lat: e.latLng.getLat(), lng: e.latLng.getLng(), dispatch });
+      getAddressForLatLng({
+        lat: e.latLng.getLat(),
+        lng: e.latLng.getLng(),
+        dispatch,
+      });
     }
   };
   const [calledApiIds, setCalledApiIds] = useState<number[]>([]);
@@ -53,11 +59,13 @@ const Kakao = ({ customProps }: KakaoProps) => {
           // 500미터 이내이고 아직 API를 호출하지 않은 경우
           if (distance <= 100 && !calledApiIds.includes(item.capId)) {
             // 여기에 API 호출 로직 작성
-            console.log(`위치가 ${item.capId}와 ${distance}m 이내입니다. API를 호출합니다.`);
+            console.log(
+              `위치가 ${item.capId}와 ${distance}m 이내입니다. API를 호출합니다.`
+            );
             try {
               // 거리가 같아지면 api 요청을 하여 open 을 TRUE 로 만듬
               // 오픈 되었을 때 사용할 애니메이션이 있다면 사용 아니면 대응책을 생각해야함
-              // const res = await getCapsuleLtListApi(item.capId);
+              await getCapsuleLtListApi(item.capId);
               alert(`${item.capId} 가 오픈되었습니다.`);
             } catch (e) {
               console.error(e);
@@ -108,10 +116,26 @@ const Kakao = ({ customProps }: KakaoProps) => {
               }}
               yAnchor={1}
             >
+              {/* 임시 url */}
+              {/* 커스텀 오버레이 이미지 */}
+
               {items.capOpen ? (
-                <ImgBox img={items.capImg ? items.capImg : mini_logo} className={style.customOverlay} url='detail' alt='커스텀 이미지' capId={items.capId} />
+                <ImgBox
+                  img={items.capImg ? items.capImg : mini_logo}
+                  className={style.customOverlay}
+                  url="detail"
+                  alt="커스텀 이미지"
+                  capId={items.capId}
+                  showDeleteButton={showDeleteButton}
+                />
               ) : (
-                <ImgBox img={lock} className={style.customOverlay} alt='오픈전 사진' />
+                <ImgBox
+                  img={lock}
+                  className={style.customOverlay}
+                  alt="오픈전 사진"
+                  capId={items.capId}
+                  showDeleteButton={showDeleteButton}
+                />
               )}
             </CustomOverlayMap>
           )

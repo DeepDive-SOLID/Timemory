@@ -1,3 +1,36 @@
+export interface Capsule {
+  capsuleId: number;
+  content: string;
+  imageUrl: string | null;
+  tag: string;
+  openDate: string;
+  createdAt: string;
+  isOpened: boolean;
+  isAnniversary: boolean;
+  isSent: boolean;
+  capsuleType: "DATE" | "LOCATION" | "CONDITION" | "ANNIVERSARY";
+  teamId: number;
+  teamName: string;
+  locationAddress?: string; // 위치 주소 (cap_lt_addr)
+  locationDetail?: string; // 상세 주소 (cap_lt_detail)
+}
+
+export interface CapsuleSpaceResponse {
+  memberId: string;
+  memberNickname: string;
+  totalCapsules: number;
+  capsules: Capsule[];
+}
+
+export interface MessageCard {
+  id: number;
+  message: string;
+  hashtags: string[];
+  author: string;
+  createdDate: string;
+  image: string;
+  isOpened: boolean;
+}
 // condition 조건
 export interface CapsuleCndtDto {
   teamId: number;
@@ -54,4 +87,9 @@ export interface CapsuleDetailDto {
   capTag: string;
   teamName: string;
   memberProfiles: string[]
+}
+// useMyCapsuleData 훅 props
+export interface useMyCapsuleDataProps {
+  groupId: string | undefined;
+  customParam?: string;
 }
