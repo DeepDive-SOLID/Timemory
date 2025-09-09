@@ -5,8 +5,11 @@ import GroupTabs from "../components/Domain/GroupTab";
 import GroupCard from "../components/Domain/GroupCard";
 import GroupModal from "../components/UI/GroupCreate";
 import TabBar from "../components/APP/TabBar";
-import { cloud_img, profile_img, profile_img2 } from "../assets";
+import { cloud_img, profile_img } from "../assets";
 import { getUserTeams } from "../api/groupApi";
+import { getOpenList } from "../api/openlistApi";
+import type { OpenListDto } from "../types/openlist";
+import { events } from "../constants/events";
 
 const GroupListPage = () => {
   const [activeTab, setActiveTab] = useState<"my" | "all">("my");
@@ -14,6 +17,7 @@ const GroupListPage = () => {
   const [userTeams, setUserTeams] = useState<TeamResponseDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [openGroups, setOpenGroups] = useState<OpenListDto[]>([]);
 
   // 컴포넌트 마운트 시 사용자의 그룹 목록과 전체 그룹 목록 조회
   useEffect(() => {
@@ -30,6 +34,15 @@ const GroupListPage = () => {
           console.error("사용자 그룹 목록 조회 실패:", userTeamsError);
           // 사용자 그룹 목록 조회 실패는 전체 목록 표시에 영향을 주지 않음
           setUserTeams([]);
+        }
+
+        // 전체 그룹(open list) 조회
+        try {
+          const openData = await getOpenList();
+          setOpenGroups(openData);
+        } catch (openErr) {
+          console.error("전체 그룹 목록 조회 실패:", openErr);
+          setOpenGroups([]);
         }
       } finally {
         setLoading(false);
@@ -48,86 +61,23 @@ const GroupListPage = () => {
     profiles: team.members.map((member) => member.profileImg),
   }));
 
-  const allGroups: Group[] = [
-    {
-      id: 1,
-      name: "새해",
-      date: "1/1",
-      members: ["김김김", "이이이", "박박박", "정정정", "최최최"],
-      profiles: [
-        profile_img,
-        profile_img2,
-        profile_img,
-        profile_img2,
-        profile_img,
-      ],
-    },
-    {
-      id: 2,
-      name: "화이트데이",
-      date: "2/14",
-      members: ["김김김", "이이이", "박박박", "정정정", "최최최"],
-      profiles: [
-        profile_img,
-        profile_img2,
-        profile_img,
-        profile_img2,
-        profile_img,
-      ],
-    },
-    {
-      id: 3,
-      name: "발렌타인데이",
-      date: "3/14",
-      members: ["김김김", "이이이", "박박박", "정정정", "최최최"],
-      profiles: [
-        profile_img,
-        profile_img2,
-        profile_img,
-        profile_img2,
-        profile_img,
-      ],
-    },
-    {
-      id: 4,
-      name: "만우절",
-      date: "4/1",
-      members: ["김김김", "이이이", "박박박", "정정정", "최최최"],
-      profiles: [
-        profile_img,
-        profile_img2,
-        profile_img,
-        profile_img2,
-        profile_img,
-      ],
-    },
-    {
-      id: 5,
-      name: "빼빼로데이",
-      date: "11/11",
-      members: ["김김김", "이이이", "박박박", "정정정", "최최최"],
-      profiles: [
-        profile_img,
-        profile_img2,
-        profile_img,
-        profile_img2,
-        profile_img,
-      ],
-    },
-    {
-      id: 6,
-      name: "크리스마스",
-      date: "12/25",
-      members: ["김김김", "이이이", "박박박", "정정정", "최최최"],
-      profiles: [
-        profile_img,
-        profile_img2,
-        profile_img,
-        profile_img2,
-        profile_img,
-      ],
-    },
-  ];
+  const uniqueOpenGroups = Array.from(
+    new Map(openGroups.map((g) => [g.teamId, g])).values()
+  );
+
+  const allGroups: Group[] = events.map((event) => {
+    const match = uniqueOpenGroups.find(
+      (g) => g.annName === event.annName || String(g.annDt) === event.annDt
+    );
+
+    return {
+      id: match ? match.teamId : -1,
+      name: event.annName,
+      date: event.date,
+      members: match ? match.memberProfiles.map(() => "멤버") : [],
+      profiles: match ? match.memberProfiles.map((p) => p ?? profile_img) : [],
+    };
+  });
 
   const currentGroups = activeTab === "my" ? myGroups : allGroups;
 
@@ -158,9 +108,6 @@ const GroupListPage = () => {
 
   return (
     <div className={styles.container}>
-      {/* 상태바 영역 - 간격만 제공 */}
-      <div className={styles.statusBar}></div>
-
       {/* 탭 영역 */}
       <GroupTabs
         activeTab={activeTab}
@@ -195,7 +142,7 @@ const GroupListPage = () => {
         <div className={styles.groupList}>
           {currentGroups.map((group) => (
             <GroupCard
-              key={group.id}
+              key={`${group.id}-${group.name}`}
               group={group}
               isOpenGroup={activeTab === "all"}
             />

@@ -59,11 +59,19 @@ public class Capsule {
     @OneToOne(mappedBy = "capsule", cascade = CascadeType.ALL)
     private CapsuleCNDT capsuleCondition;
 
+    @Column(name = "cap_sent", nullable = false)
+    @Builder.Default
+    @Comment("메시지 발송 여부")
+    private Boolean capSent = false;
+
     @PrePersist
     public void prePersist() {
         this.capUt = LocalDateTime.now();
         if (this.capOpen == null) {
             this.capOpen = false;
+        }
+        if (this.capSent == null) {
+            this.capSent = false;
         }
     }
 }

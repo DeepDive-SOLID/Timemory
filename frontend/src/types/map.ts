@@ -53,4 +53,5 @@ export interface Location {
 
 export interface KakaoProps {
   customProps?: LtListDto[];
+  showDeleteButton?: boolean;
 }

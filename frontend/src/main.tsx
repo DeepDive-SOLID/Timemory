@@ -9,12 +9,16 @@ import SearchLocation from "./pages/SearchLocation.tsx";
 import { Provider } from "react-redux";
 import index from "./store/index.ts";
 import NickName from "./pages/NickName.tsx";
+import MyCapsule from "./pages/MyCapsule.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import GroupList from "./pages/GroupList.tsx";
 import QuizDate from "./pages/Quiz/QuizDate.tsx";
 import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
 import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
+import OpenList from "./pages/OpenList.tsx";
+import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
 import GroupCapsule from "./pages/GroupCapsule.tsx";
+import MyCapsuleMap from "./pages/MyCapsuleMap.tsx";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +46,10 @@ const router = createBrowserRouter([
         element: <LocationCapsule />,
       },
       {
+        path: "myCapsuleMap",
+        element: <MyCapsuleMap />,
+      },
+      {
         path: "map",
         element: <SearchLocation />,
       },
@@ -62,8 +70,24 @@ const router = createBrowserRouter([
         element: <GroupList />,
       },
       {
+        path: "openlist/:eventId",
+        element: <OpenList />,
+      },
+      {
+        path: "quiz/:eventId",
+        element: <QuizOpen />,
+      },
+      {
         path: "group/:groupId",
         element: <GroupCapsule />,
+      },
+      {
+        path: "mycapsule",
+        element: <MyCapsule />,
+      },
+      {
+        path: "detail/:capId",
+        element: <div>캡슐 상세 페이지</div>,
       },
     ],
   },

@@ -1,17 +1,18 @@
 .wrapper {
-    position: relative;
-    min-height: 627px;
-    max-height: 1366px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+  position: relative;
+  min-height: 627px;
+  max-height: 1366px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 20px;
 }
 
 .screen {
-    position: absolute;
-    width: 500px;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 100;
+  position: absolute;
+  width: 500px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
 }
