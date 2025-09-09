@@ -15,6 +15,7 @@ const Home = () => {
     setData((prevData) => prevData.map((item) => (item.capId === id ? { ...item, click: true } : item)));
   };
   useEffect(() => {
+    if (data.length !== 0) return;
     const fetchAlarm = async () => {
       try {
         const res = await getAlarmsApi(userInfo?.memberId);
@@ -31,10 +32,11 @@ const Home = () => {
   }, [userInfo, setData]);
   return (
     <AlarmContext.Provider value={{ data, handleLinkClick }}>
-      <div>
-        {true ? <HasCapsule /> : <NoCapsule />}
+      <>
+        {/* 캡슐이 하나라도 안열렸으면 캡슐 열리는 컴포넌트 렌더링 */}
+        {data.some((item) => !item.capOpen) ? <HasCapsule /> : <NoCapsule />}
         <TabBar />
-      </div>
+      </>
     </AlarmContext.Provider>
   );
 };

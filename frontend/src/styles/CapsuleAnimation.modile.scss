@@ -1,0 +1,313 @@
+// 변수 정의
+$primary-blue: #3b82f6;
+$hover-blue: #2563eb;
+$text-gray: #6b7280;
+$light-gray: #f9fafb;
+$medium-gray: #f3f4f6;
+$border-gray: #e5e7eb;
+
+$capsule-size: 31.25rem; // 160px
+$capsule-container-size: 20rem; // 320px
+
+// 믹스인
+@mixin transition($property: all, $duration: 0.3s, $easing: ease-in-out) {
+    transition: $property $duration $easing;
+}
+
+@mixin glow-effect($color, $blur: 15px, $opacity: 0.3) {
+    filter: blur($blur);
+    background-color: rgba($color, $opacity);
+}
+
+// 메인 컨테이너
+.capsule-container {
+    z-index: 200;
+    max-width: 500px;
+    width: 100%;
+    height: 100%;
+    // background: linear-gradient(to bottom, $light-gray, $medium-gray);
+    background: rgba($color: #000000, $alpha: 0.3);
+    position: absolute;
+
+    padding: 20px;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.capsule-content {
+    text-align: center;
+}
+
+// 애니메이션 컨테이너
+.animation-container {
+    position: relative;
+    width: $capsule-container-size;
+    // width: 100%;
+    height: $capsule-container-size;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// 글로우 효과들
+.glow-effect {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    @include transition(all, 1s, ease-in-out);
+    @include glow-effect(#bfdbfe, 15px); // blue-200
+    opacity: 0;
+    transform: scale(1);
+
+    &.closed {
+        width: 100%;
+        opacity: 0.2;
+        // transform: scale(1.05);
+    }
+
+    &.opening,
+    &.open {
+        background-color: rgba(#fef08a, 0.4); // yellow-200
+        opacity: 0.4;
+        // transform: scale(1.25);
+    }
+}
+
+.yellow-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    @include transition(all, 0.8s);
+    @include glow-effect(#fde047, 25px); // yellow-300
+    opacity: 0;
+    transform: scale(1);
+    animation-delay: 0.3s;
+
+    &.opening,
+    &.open {
+        opacity: 0.3;
+        // transform: scale(1.4);
+    }
+}
+
+// 캡슐 부분들
+.capsule-bottom {
+    position: absolute;
+    @include transition(all, 0.8s, ease-in-out);
+    width: 100%;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    &.opening,
+    &.open {
+        width: 100%;
+        top: 80%;
+        left: 50%;
+        transform: translate(-50%, -50%); // 16px
+    }
+}
+
+.capsule-top {
+    position: absolute;
+    z-index: 10;
+    @include transition(all, 0.8s, ease-in-out);
+    width: 100%;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    &.opening,
+    &.open {
+        width: 100%;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.capsule-image {
+    width: $capsule-size;
+    height: auto;
+    object-fit: contain;
+
+    .capsule-bottom & {
+        filter: drop-shadow(0 4px 20px rgba($primary-blue, 0.3));
+    }
+
+    .capsule-top & {
+        filter: drop-shadow(0 -4px 20px rgba(#000, 0.1));
+    }
+}
+
+// 캡슐 내용물
+.capsule-contents {
+    position: absolute;
+    @include transition(all, 1s);
+    opacity: 0;
+    transform: scale(0);
+
+    &.open {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .pill {
+        position: absolute;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        animation: bounce 1s infinite;
+
+        &.pink {
+            background-color: #f472b6;
+            top: -10px;
+            left: -20px;
+            animation-delay: 0s;
+        }
+
+        &.yellow {
+            background-color: #facc15;
+            top: -15px;
+            right: -15px;
+            animation-delay: 0.2s;
+        }
+
+        &.green {
+            background-color: #4ade80;
+            bottom: -10px;
+            left: -10px;
+            animation-delay: 0.4s;
+        }
+
+        &.purple {
+            background-color: #a855f7;
+            bottom: -8px;
+            right: -18px;
+            animation-delay: 0.6s;
+        }
+    }
+}
+
+// 상태 메시지
+.status-message {
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .message {
+        font-size: 1.125rem; // text-lg
+        margin: 0;
+
+        &.closed {
+            color: $text-gray;
+            animation: pulse 2s infinite;
+        }
+
+        &.opening {
+            color: $primary-blue;
+            font-weight: 600;
+        }
+
+        &.open {
+            color: #16a34a; // green-600
+            font-weight: 600;
+        }
+    }
+}
+
+// 버튼
+.capsule-button {
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    @include transition(all, 0.3s);
+
+    &.closed {
+        background-color: $primary-blue;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+            background-color: $hover-blue;
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+
+    &.opening,
+    &.open {
+        background-color: #9ca3af; // gray-400
+        cursor: not-allowed;
+    }
+}
+
+// 키프레임 애니메이션
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes bounce {
+    0%,
+    20%,
+    53%,
+    80%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+    40%,
+    43% {
+        transform: translate3d(0, -8px, 0);
+    }
+    70% {
+        transform: translate3d(0, -4px, 0);
+    }
+    90% {
+        transform: translate3d(0, -1px, 0);
+    }
+}
+
+// 반응형 디자인
+@media (max-width: 640px) {
+    .capsule-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    // .animation-container {
+    //     width: 16rem;
+    //     height: 16rem;
+    // }
+
+    // .capsule-image {
+    //     width: 8rem;
+    // }
+}

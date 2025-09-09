@@ -25,7 +25,7 @@ const AlarmModal = ({ modalOpen, setModalOpen }: AlarmModalProps) => {
           </div>
           <div className={style.titlebox}>
             {data.map((items) => (
-              <Link to={`/test-${items.capId}`} key={items.capId} id='link' className={style.title} onClick={() => handleClick(items.capId)}>
+              <Link to={`/detail/${items.capId}`} key={items.capId} id='link' className={style.title} onClick={() => handleClick(items.capId)}>
                 <div>{`${items.teamName}팀의 캡슐이 열렸습니다.`}</div>
               </Link>
             ))}

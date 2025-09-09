@@ -8,7 +8,7 @@ export interface HomeAlarm {
   teamName: string;
   capOpen: boolean;
   capId: number;
-  click: boolean;
+  click?: boolean;
 }
 
 export interface AlarmModalProps {

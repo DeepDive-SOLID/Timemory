@@ -9,7 +9,9 @@ const NoCapsule = () => {
   const navigate = useNavigate();
 
   return (
-    <>
+    <div className={style.wrapper}>
+      <div className={style.statusBar}></div>
+
       <HeaderWithAlarm
         title={
           <>
@@ -19,11 +21,11 @@ const NoCapsule = () => {
           </>
         }
       />
-      <HomeImg img={capsule_img} alt='메인 이미지' className={style.imgBox} />
+      <HomeImg img={capsule_img} alt='메인 이미지' className={style.NoCapsuleBox} />
       <div className={style.buttonBox}>
-        <StartButton onClick={() => navigate("/")} className={style.button} />
+        <StartButton onClick={() => navigate("/group")} className={style.button} />
       </div>
-    </>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ interface ImgProps {
   img: string;
   alt: string;
   className: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
 }
 
 const HomeImg = ({ img, alt, className, onClick }: ImgProps) => {
