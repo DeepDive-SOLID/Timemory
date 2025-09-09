@@ -1,16 +1,24 @@
 import { Link } from "react-router-dom";
 import style from "../../../styles/Alarm.module.scss";
-import type { AlarmModalProps } from "../../../types/home";
+import type { AlarmDto, AlarmModalProps } from "../../../types/home";
 import { useAlarm } from "../../../contexts/AlarmContext";
+import { useEffect, useState } from "react";
 
 // api 연동 후 클릭 시 리스트에서 삭제하거나, 순서 변경 예정
 const AlarmModal = ({ modalOpen, setModalOpen }: AlarmModalProps) => {
-  const { data, handleLinkClick } = useAlarm();
-  if (!modalOpen) return null;
+  const { data } = useAlarm();
+  const [filter, setFilter] = useState<AlarmDto[]>();
 
+  useEffect(() => {
+    setFilter(data);
+  }, [data]);
+
+  if (!modalOpen) return null;
   const closeModal = () => setModalOpen(false);
   const handleClick = (capId: number) => {
-    handleLinkClick(capId);
+
+    const newFilter = filter?.filter((item) => item.capId !== capId);
+    setFilter(newFilter);
     closeModal(); // 클릭 후 모달 닫기
   };
   return (
@@ -24,7 +32,7 @@ const AlarmModal = ({ modalOpen, setModalOpen }: AlarmModalProps) => {
             </button>
           </div>
           <div className={style.titlebox}>
-            {data.map((items) => (
+            {filter?.map((items) => (
               <Link to={`/detail/${items.capId}`} key={items.capId} id='link' className={style.title} onClick={() => handleClick(items.capId)}>
                 <div>{`${items.teamName}팀의 캡슐이 열렸습니다.`}</div>
               </Link>

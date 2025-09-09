@@ -29,8 +29,6 @@ const HasCapsule = () => {
 
   return (
     <div className={style.wrapper}>
-      <div className={style.statusBar}></div>
-
       {modal && openData && <CapsuleAnimation data={openData} />}
 
       <HeaderWithAlarm

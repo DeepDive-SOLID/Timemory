@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import "../../../styles/CapsuleAnimation.modile.scss";
 import { capsule_top, capsule_bottom } from "../../../assets/index";
 import { useNavigate } from "react-router-dom";
-import type { CapsuleDateOpenDto } from "../../../types/openCapsule";
+import type { CapsuleDateOpenDto, CapsuleLtOpenDto } from "../../../types/openCapsule";
 
 interface CapsuleAnimationProps {
-  data: CapsuleDateOpenDto;
+  data: CapsuleDateOpenDto | CapsuleLtOpenDto;
 }
 const CapsuleAnimation = ({ data }: CapsuleAnimationProps) => {
   const [animationState, setAnimationState] = useState("closed"); // 'closed', 'opening', 'open'
@@ -17,7 +17,7 @@ const CapsuleAnimation = ({ data }: CapsuleAnimationProps) => {
 
     setAnimationState("opening");
 
-    // 캡슐이 완전히 열린 후 1초 뒤에 페이지 이동
+    // 캡슐이 완전히 열린 후 2초 뒤에 페이지 이동
     setTimeout(() => {
       setAnimationState("open");
 
@@ -63,7 +63,6 @@ const CapsuleAnimation = ({ data }: CapsuleAnimationProps) => {
 
         {/* 상태 메시지 */}
         <div className='status-message'>
-          {/* {animationState === "closed" && <p className='message closed'>캡슐을 클릭해보세요!</p>} */}
           {animationState === "opening" && <p className='message opening'>캡슐이 열리고 있어요...</p>}
           {animationState === "open" && <p className='message open'>캡슐 상세 페이지로 이동중...</p>}
         </div>

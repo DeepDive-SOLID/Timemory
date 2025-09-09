@@ -1,0 +1,42 @@
+.wrapper {
+    z-index: 300;
+    max-width: 500px;
+    width: 100%;
+    height: 100%;
+    background: rgba($color: #000000, $alpha: 0.3);
+    position: absolute;
+
+    padding: 20px;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contentBox {
+    padding: 2rem;
+    max-width: 350px;
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+}
+
+.button {
+    background-color: #5497ff;
+    border-radius: 0.75rem;
+    max-width: 280px;
+    padding: 0.75rem 1.4rem;
+    min-width: 280px;
+    font-weight: 700;
+    border: none;
+    box-shadow: 0 8px 20px rgba(100, 156, 255, 0.35);
+    border-radius: 8px;
+    background-color: #5497ff;
+    color: white;
+    cursor: pointer;
+}

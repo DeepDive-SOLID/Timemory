@@ -7,6 +7,7 @@
 .wrapper {
     @include box(center, none);
     flex-direction: column;
+    padding: 20px;
     height: calc(100vh - 123px);
     flex: 1;
     p {
@@ -24,6 +25,7 @@
     @include box(space-between, center);
     position: relative;
     width: 100%;
+    padding-top: 3rem;
     h1 {
         margin: 0;
     }
@@ -52,7 +54,6 @@
 
 .buttonBox {
     @include box(center, center);
-    padding-bottom: 5rem;
 }
 .button {
     width: 100%;

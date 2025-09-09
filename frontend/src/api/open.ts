@@ -2,7 +2,7 @@ import type { CapsuleCndtOpenDto, CapsuleDateOpenDto, CapsuleLtOpenDto } from ".
 import api from "./axios";
 
 export const getCapsuleLtListApi = async (capId: number) => {
-  const res = await api.post<CapsuleLtOpenDto>("/capsule/open/lt", capId);
+  const res = await api.post<CapsuleLtOpenDto[]>("/capsule/open/lt", capId);
   return res.data;
 };
 

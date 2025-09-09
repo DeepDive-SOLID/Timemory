@@ -10,8 +10,6 @@ const NoCapsule = () => {
 
   return (
     <div className={style.wrapper}>
-      <div className={style.statusBar}></div>
-
       <HeaderWithAlarm
         title={
           <>

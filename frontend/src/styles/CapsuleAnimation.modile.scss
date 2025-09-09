@@ -21,7 +21,7 @@ $capsule-container-size: 20rem; // 320px
 
 // 메인 컨테이너
 .capsule-container {
-    z-index: 200;
+    z-index: 300;
     max-width: 500px;
     width: 100%;
     height: 100%;
@@ -226,7 +226,7 @@ $capsule-container-size: 20rem; // 320px
         }
 
         &.open {
-            color: #16a34a; // green-600
+            color: #5497ff; // green-600
             font-weight: 600;
         }
     }

@@ -4,7 +4,6 @@ import type { HomeAlarm } from "../types/home";
 
 interface AlarmContextProps {
   data: HomeAlarm[];
-  handleLinkClick: (id: number) => void;
 }
 
 export const AlarmContext = createContext<AlarmContextProps | null>(null);
