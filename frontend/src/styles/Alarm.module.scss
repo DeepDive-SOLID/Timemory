@@ -63,3 +63,16 @@ a:active {
 a:visited {
     color: #a1a1a1;
 }
+
+.alarmList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deleteButton {
+    border: none;
+    background-color: #f4faff;
+    overflow: hidden;
+    cursor: pointer;
+}

@@ -15,11 +15,10 @@ const AlarmModal = ({ modalOpen, setModalOpen }: AlarmModalProps) => {
 
   if (!modalOpen) return null;
   const closeModal = () => setModalOpen(false);
-  const handleClick = (capId: number) => {
 
+  const buttonEvent = (capId: number) => {
     const newFilter = filter?.filter((item) => item.capId !== capId);
     setFilter(newFilter);
-    closeModal(); // 클릭 후 모달 닫기
   };
   return (
     <>
@@ -33,9 +32,14 @@ const AlarmModal = ({ modalOpen, setModalOpen }: AlarmModalProps) => {
           </div>
           <div className={style.titlebox}>
             {filter?.map((items) => (
-              <Link to={`/detail/${items.capId}`} key={items.capId} id='link' className={style.title} onClick={() => handleClick(items.capId)}>
-                <div>{`${items.teamName}팀의 캡슐이 열렸습니다.`}</div>
-              </Link>
+              <div className={style.alarmList}>
+                <Link to={`/detail/${items.capId}`} key={items.capId} id='link' className={style.title} onClick={closeModal}>
+                  <div>{`${items.teamName}팀의 캡슐이 열렸습니다.`}</div>
+                </Link>
+                <button className={style.deleteButton} id='delete' onClick={() => buttonEvent(items.capId)}>
+                  x
+                </button>
+              </div>
             ))}
           </div>
         </div>
