@@ -11,4 +11,5 @@ public class AlarmDto {
     private String teamName;
     private Boolean capOpen;
     private Integer capId;
+    private Integer alarmId;
 }
