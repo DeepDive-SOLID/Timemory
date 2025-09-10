@@ -2,13 +2,7 @@ export interface AlarmDto {
   teamName: string;
   capOpen: boolean;
   capId: number;
-}
-
-export interface HomeAlarm {
-  teamName: string;
-  capOpen: boolean;
-  capId: number;
-  click?: boolean;
+  alarmId: number;
 }
 
 export interface AlarmModalProps {

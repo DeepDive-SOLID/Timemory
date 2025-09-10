@@ -1,9 +1,10 @@
 // contexts/AlarmContext.tsx
 import { createContext, useContext } from "react";
-import type { HomeAlarm } from "../types/home";
+import type { AlarmDto } from "../types/home";
 
 interface AlarmContextProps {
-  data: HomeAlarm[];
+  data: AlarmDto[];
+  setData: (d: AlarmDto[]) => void;
 }
 
 export const AlarmContext = createContext<AlarmContextProps | null>(null);
