@@ -13,6 +13,10 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  getValidProfileImageUrl,
+  useImageErrorHandler,
+} from "../utils/imageUtils";
 
 const phoneRegex = /^(01[0-9])[-]?\d{3,4}[-]?\d{4}$/;
 
@@ -58,6 +62,7 @@ const EditInfo = () => {
   const [loading, setLoading] = useState(true);
   const [preview, setPreview] = useState<string>(profile_cloud);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { imageErrors, handleImageError } = useImageErrorHandler();
 
   const {
     register,
@@ -79,6 +84,7 @@ const EditInfo = () => {
   });
 
   const watchedFile = watch("memberProfile");
+
   useEffect(() => {
     if (watchedFile instanceof File) {
       const url = URL.createObjectURL(watchedFile);
@@ -103,7 +109,9 @@ const EditInfo = () => {
           memberBirth: (base?.memberBirth ?? "").slice(0, 10),
           memberProfile: null,
         });
-        setPreview(base?.memberImg?.trim() ? base.memberImg : profile_cloud);
+
+        const fixedUrl = getValidProfileImageUrl(base?.memberImg ?? "");
+        setPreview(fixedUrl ?? profile_cloud);
       } catch (e) {
         alert("회원 정보를 불러오지 못했어요.");
         console.error(e);
@@ -185,12 +193,10 @@ const EditInfo = () => {
           <div className={styles.profile}>
             <div className={styles.imgWrapper} onClick={onPickImage}>
               <img
-                src={preview || profile_cloud}
+                src={imageErrors[0] ? profile_cloud : preview}
                 alt="profile"
                 className={styles.profileImg}
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = profile_cloud;
-                }}
+                onError={() => handleImageError(0)}
               />
               <img src={camera} alt="camera" className={styles.camera} />
             </div>

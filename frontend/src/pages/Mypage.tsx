@@ -6,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { getMemberDto } from "../api/mypageApi";
 import type { MypageDto } from "../types/mypage";
 import { AuthContext } from "../contexts/AuthContext";
+import {
+  getValidProfileImageUrl,
+  useImageErrorHandler,
+} from "../utils/imageUtils";
 
 // JWT 토큰에서 memberId 추출
 function getMemberIdFromToken(): string | null {
@@ -39,6 +43,8 @@ const Mypage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [err, setErr] = useState<string>("");
 
+  const { handleImageError } = useImageErrorHandler();
+
   useEffect(() => {
     let mounted = true;
 
@@ -67,7 +73,7 @@ const Mypage = () => {
 
   const profileSrc =
     data?.memberImg && data.memberImg.trim().length > 0
-      ? data.memberImg
+      ? getValidProfileImageUrl(data.memberImg) ?? profile_cloud
       : profile_cloud;
 
   if (loading) {
@@ -115,9 +121,7 @@ const Mypage = () => {
               src={profileSrc}
               alt="profile"
               className={styles.profileImg}
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = profile_cloud;
-              }}
+              onError={() => handleImageError(0)}
             />
 
             <div className={styles.nicknameWrapper}>
