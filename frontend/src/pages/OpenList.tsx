@@ -54,6 +54,7 @@ const OpenList = () => {
       capsules.map((c, idx) => {
         const isOpen = c.capEt ? new Date(c.capEt) <= new Date() : false;
         return {
+          capId: c.capId,
           title: c.capText,
           date: fmt(c.capUt),
           user: c.memberNickname,
@@ -72,8 +73,9 @@ const OpenList = () => {
 
   return (
     <div className={styles.container}>
-      <StatusBar to={"/group"} />
-
+      <div className={styles.statusBar}>
+        <StatusBar to={"/group"} />
+      </div>
       <div className={styles.stickySection}>
         <div className={styles.title}>{eventData.title}</div>
         <p className={styles.date}>{eventData.date}</p>

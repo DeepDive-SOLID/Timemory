@@ -10,6 +10,7 @@ import Home from "./pages/Home.tsx";
 import LocationCapsule from "./pages/LocationCapsule.tsx";
 import SearchLocation from "./pages/SearchLocation.tsx";
 import NickName from "./pages/NickName.tsx";
+import MyCapsule from "./pages/MyCapsule.tsx";
 import Mypage from "./pages/Mypage.tsx";
 import EditInfo from "./pages/EditInfo.tsx";
 import GroupList from "./pages/GroupList.tsx";
@@ -20,6 +21,8 @@ import OpenList from "./pages/OpenList.tsx";
 import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
 import GroupCapsule from "./pages/GroupCapsule.tsx";
 import Splash from "./pages/Splash.tsx";
+import CapsuleDetail from "./pages/CapsuleDetail.tsx";
+import MyCapsuleMap from "./pages/MyCapsuleMap.tsx";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "capsuleMap/:groupId",
         element: <LocationCapsule />,
+      },
+      {
+        path: "myCapsuleMap",
+        element: <MyCapsuleMap />,
       },
       {
         path: "map",
@@ -89,6 +96,14 @@ const router = createBrowserRouter([
       {
         path: "group/:groupId",
         element: <GroupCapsule />,
+      },
+      {
+        path: "detail/:capId",
+        element: <CapsuleDetail />,
+      },
+      {
+        path: "mycapsule",
+        element: <MyCapsule />,
       },
     ],
   },

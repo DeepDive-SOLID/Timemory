@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getValidProfileImageUrl } from "../../utils/imageUtils";
 
 export interface StatusBarProps {
-  to: string;
+  to: string | number;
   title?: string;
   subtitle?: string;
   members?: string[];
@@ -20,7 +20,20 @@ const StatusBar = ({ to, title, subtitle, members }: StatusBarProps) => {
   return (
     <div className={styles.statusBarWrapper}>
       <div className={styles.leftGroup}>
-        <img src={back_arrow} alt='Back' className={styles.backArrow} onClick={() => navigate(to)} />
+        <img
+            src={back_arrow}
+            alt="Back"
+            className={styles.backArrow}
+            onClick={() => {
+                // 바로 전 화면
+                if (to === -1) {
+                    navigate(-1);
+                // 특정 경로
+                } else if (typeof to === "string") {
+                    navigate(to);
+                }
+            }}
+        />
         <div className={styles.statusText}>
           <h1 className={styles.title}>{title}</h1>
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}

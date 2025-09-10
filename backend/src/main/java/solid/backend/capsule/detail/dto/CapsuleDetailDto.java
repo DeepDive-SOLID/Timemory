@@ -1,19 +1,21 @@
-package solid.backend.open.dto;
+package solid.backend.capsule.detail.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OpenCapsuleListDto {
+public class CapsuleDetailDto {
 
-    private Number capId;
     private String capText;
     private LocalDateTime capUt;
-    private String memberNickname;
-    private LocalDateTime capEt;
+    private String capTag;
+    private String capImg;
+    private String teamName;
+    private List<String> memberProfiles;
 }
