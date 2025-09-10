@@ -20,6 +20,7 @@ const AlarmModal = ({ modalOpen, setModalOpen }: AlarmModalProps) => {
       console.error(e);
     }
   };
+  console.log(data);
   return (
     <>
       {modalOpen && (
@@ -32,7 +33,7 @@ const AlarmModal = ({ modalOpen, setModalOpen }: AlarmModalProps) => {
           </div>
           <div className={style.titlebox}>
             {data.map((items) => (
-              <div className={style.alarmList} key={items.capId}>
+              <div className={style.alarmList} key={items.alarmId}>
                 <Link to={`/detail/${items.capId}`} id='link' className={style.title} onClick={closeModal}>
                   <div>{`${items.teamName}팀의 캡슐이 열렸습니다.`}</div>
                 </Link>
