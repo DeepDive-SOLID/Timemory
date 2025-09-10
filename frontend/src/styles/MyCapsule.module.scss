@@ -1,0 +1,536 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #fffdf8;
+  font-family: "Pretendard";
+}
+
+.scrollArea {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Chrome, Safari, Opera */
+.scrollArea::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #5497ff;
+  text-align: left;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.38rem;
+  font-weight: 600;
+  text-align: center;
+
+  p {
+    color: #333;
+    margin: 0;
+    line-height: 1.2;
+  }
+}
+
+.highlight {
+  color: #5497ff;
+}
+
+.sectionTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2f2a1e;
+  text-align: left;
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
+}
+
+.loadingContainer,
+.errorContainer,
+.emptyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 200px;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.errorContainer {
+  color: #e74c3c;
+}
+
+.emptyContainer {
+  color: #999;
+}
+
+.capsuleSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.capsuleSlider {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  perspective: 1500px;
+  overflow: visible;
+}
+
+.cardsContainer {
+  flex: 1;
+  position: relative;
+  overflow: visible;
+  height: 433px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.capsuleCard {
+  background: #5497ff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  color: white;
+  position: absolute;
+  width: 320px;
+  max-height: 433px;
+  min-height: 40px;
+  overflow-y: auto;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &.active {
+    opacity: 1;
+    z-index: 3;
+    transform: translateX(0) rotateY(0deg) scale(1);
+    box-shadow: 0 20px 40px rgba(84, 151, 255, 0.4),
+      0 8px 16px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  &.inactive {
+    opacity: 0.4;
+    z-index: 1;
+    transform: translateX(0) rotateY(0deg) scale(0.85);
+    box-shadow: 0 10px 20px rgba(84, 151, 255, 0.2),
+      0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  // 스크롤바 스타일링
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  // 잠금 상태 스타일
+  &.locked {
+    // 카드 내용만 블러 처리
+    .cardHeader {
+      filter: blur(6px);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .cardImage {
+      filter: blur(6px);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .cardFooter {
+      filter: blur(6px);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  h3 {
+    font-size: 1.45rem;
+    font-weight: 500;
+    margin: 0;
+    padding-right: 0.1rem;
+  }
+
+  .closeBtn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.3rem;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #ff4757;
+    }
+  }
+}
+
+.cardImage {
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+}
+
+.cardFooter {
+  margin-top: 0.8rem;
+}
+
+.hashtags {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.hashtag {
+  background: #f4faff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  color: #5497ff;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.messageCardsSection {
+  .hashtag {
+    margin-top: 0.8rem;
+    background: #ffffff;
+    color: #4a4a4a;
+    font-weight: 500;
+  }
+}
+
+.dates {
+  .dateRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.2rem 0.8rem;
+    font-size: 1.2rem;
+    opacity: 0.9;
+
+    span:first-child {
+      text-align: left;
+    }
+
+    span:last-child {
+      text-align: right;
+    }
+  }
+}
+
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+  transition: background-color 0.3s ease;
+
+  &.active {
+    background-color: #5497ff;
+  }
+}
+
+// 메시지 카드 섹션 스타일
+.messageCardsSection {
+  padding: 0rem 1.5rem;
+  margin-top: 1.1rem;
+}
+
+.messageCardsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 450px;
+  overflow-y: auto;
+  padding-bottom: 10px;
+}
+
+.messageCard {
+  background: #f0f0f0;
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+
+.messageContent {
+  margin-bottom: 1rem;
+}
+
+.messageText {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.8rem 0;
+  line-height: 1.4;
+}
+
+.messageImage {
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+}
+
+.messageDivider {
+  height: 1px;
+  background-color: #ccc;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.messageFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #ff4757;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.messageInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.messageDate {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 400;
+}
+
+.messageAuthor {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 400;
+}
+
+// 잠금 상태 스타일
+.messageCard.locked {
+  position: relative;
+  pointer-events: none;
+
+  // 메시지 내용과 푸터만 블러 처리
+  .messageContent {
+    filter: blur(6px);
+    opacity: 0.7;
+  }
+
+  .messageFooter {
+    filter: blur(6px);
+    opacity: 0.7;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: auto;
+  filter: none !important;
+
+  img {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.lockOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: none;
+  filter: none !important;
+}
+
+.lockIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 36px;
+    height: 36px;
+    filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%)
+      hue-rotate(199deg) brightness(118%) contrast(119%);
+  }
+}
+
+.capsuleLockIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 36px;
+    height: 36px;
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
+      hue-rotate(0deg) brightness(100%) contrast(100%);
+  }
+}
+
+.daysRemaining {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+// 지도 섹션
+.mapCtaSection {
+  position: relative;
+  margin: 1rem 1.5rem 0.6rem 1.5rem;
+}
+
+.mapBackground {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  display: block;
+}
+
+.mapCtaButton {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #5497ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 1rem 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 3.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(100, 156, 255, 0.35);
+  min-width: 280px;
+  cursor: pointer;
+}
+
+.mapCtaButton img {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) saturate(100%) invert(99%) sepia(0%) saturate(601%)
+    hue-rotate(188deg) brightness(112%) contrast(100%);
+}

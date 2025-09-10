@@ -9,6 +9,7 @@ import SearchLocation from "./pages/SearchLocation.tsx";
 import { Provider } from "react-redux";
 import index from "./store/index.ts";
 import NickName from "./pages/NickName.tsx";
+import MyCapsule from "./pages/MyCapsule.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
 import GroupList from "./pages/GroupList.tsx";
 import QuizDate from "./pages/Quiz/QuizDate.tsx";
@@ -17,6 +18,8 @@ import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
 import OpenList from "./pages/OpenList.tsx";
 import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
 import GroupCapsule from "./pages/GroupCapsule.tsx";
+import CapsuleDetail from "./pages/CapsuleDetail.tsx";
+import MyCapsuleMap from "./pages/MyCapsuleMap.tsx";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "capsuleMap/:groupId",
         element: <LocationCapsule />,
+      },
+      {
+        path: "myCapsuleMap",
+        element: <MyCapsuleMap />,
       },
       {
         path: "map",
@@ -74,6 +81,14 @@ const router = createBrowserRouter([
       {
         path: "group/:groupId",
         element: <GroupCapsule />,
+      },
+      {
+        path: "detail/:capId",
+        element: <CapsuleDetail />,
+      },
+      {
+        path: "mycapsule",
+        element: <MyCapsule />,
       },
     ],
   },
