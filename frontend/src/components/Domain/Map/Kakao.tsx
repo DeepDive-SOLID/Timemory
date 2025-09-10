@@ -66,6 +66,7 @@ const Kakao = ({ customProps, showDeleteButton = false }: KakaoProps) => {
           // 100미터 이내이고 아직 API를 호출하지 않은 경우
           if (distance <= 100 && !calledApiIds.includes(item.capId)) {
             try {
+              if (data) return () => clearInterval(intervalId);
               // 거리가 같아지면 api 요청을 하여 open 을 TRUE 로 만듬
               const res = await getCapsuleLtListApi(item.capId);
               setData(res[0]);
