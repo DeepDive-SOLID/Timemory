@@ -79,6 +79,15 @@ export interface CapsuleDateDto {
   capTag: string;
 }
 
+// 상세 정보
+export interface CapsuleDetailDto {
+  capText: string;
+  capUt: string;
+  capImg: string;
+  capTag: string;
+  teamName: string;
+  memberProfiles: string[]
+}
 // useMyCapsuleData 훅 props
 export interface useMyCapsuleDataProps {
   groupId: string | undefined;

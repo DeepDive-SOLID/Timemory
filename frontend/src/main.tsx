@@ -18,6 +18,7 @@ import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
 import OpenList from "./pages/OpenList.tsx";
 import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
 import GroupCapsule from "./pages/GroupCapsule.tsx";
+import CapsuleDetail from "./pages/CapsuleDetail.tsx";
 import MyCapsuleMap from "./pages/MyCapsuleMap.tsx";
 
 const router = createBrowserRouter([
@@ -82,12 +83,12 @@ const router = createBrowserRouter([
         element: <GroupCapsule />,
       },
       {
-        path: "mycapsule",
-        element: <MyCapsule />,
+        path: "detail/:capId",
+        element: <CapsuleDetail />,
       },
       {
-        path: "detail/:capId",
-        element: <div>캡슐 상세 페이지</div>,
+        path: "mycapsule",
+        element: <MyCapsule />,
       },
     ],
   },
