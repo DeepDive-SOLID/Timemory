@@ -473,7 +473,22 @@
       hue-rotate(199deg) brightness(118%) contrast(119%);
   }
 }
-
+.capsuleOpenButton {
+  position: absolute;
+  cursor: pointer;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 1rem);
+  border: none;
+  background-color: #5497ff;
+  color: white;
+  margin-top: 0.25rem;
+  border-radius: 0.5rem;
+  padding: 0.45rem 3rem;
+  z-index: 10;
+  pointer-events: auto;
+  filter: none !important;
+}
 .capsuleLockIcon {
   display: flex;
   align-items: center;
