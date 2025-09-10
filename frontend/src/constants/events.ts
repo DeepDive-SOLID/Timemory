@@ -11,6 +11,8 @@ import {
   new_year2,
   christmas,
   christmas2,
+  graduate,
+  graduate2,
 } from "../assets";
 
 export interface EventData {
@@ -74,6 +76,18 @@ export const events: EventData[] = [
     image: april_fools_day,
     image2: april_fools_day2,
     buttonText: "만우절 이벤트 참여하기",
+  },
+  {
+    annName: "수료식",
+    annDt: "2025-09-17",
+    id: "graduation",
+    title: "딥다이브 수료를 진심으로 축하드립니다! 🎓",
+    date: "9월 17일",
+    message: "이 날을 기억하세요, 여러분의 또 다른 출발점입니다 🚀",
+    quiz: "여정의 끝은 또 다른 시작, 지금의 감정을 간직해보세요 🎉",
+    image: graduate,
+    image2: graduate2,
+    buttonText: "졸업식 이벤트 참여하기",
   },
   {
     annName: "빼빼로데이",

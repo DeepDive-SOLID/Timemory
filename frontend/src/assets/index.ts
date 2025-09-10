@@ -52,6 +52,9 @@ export { default as new_year2 } from "./images/new_year_img2.svg";
 export { default as new_year3 } from "./images/new_year_img3.svg";
 export { default as christmas } from "./images/christmas_img.svg";
 export { default as christmas2 } from "./images/christmas_img2.svg";
+export { default as graduate } from "./images/graduate_img.svg";
+export { default as graduate2 } from "./images/graduate_img2.svg";
+export { default as graduate3 } from "./images/graduate_img3.svg";
 
 // Tab bar Icons
 export { default as group_tab } from "./icons/group_tab.svg";
