@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import solid.backend.common.FileManager;
 import solid.backend.entity.Member;
-import solid.backend.jpaRepository.MemberRepository;
+import solid.backend.jpaRepository.*;
 import solid.backend.mypage.dto.MypageDto;
 import solid.backend.mypage.dto.MypageUpdDto;
 
@@ -14,6 +14,9 @@ import solid.backend.mypage.dto.MypageUpdDto;
 public class MypageServiceImpl implements MypageService {
 
     private final MemberRepository memberRepository;
+    private final TeamMemberRepository teamMemberRepository;
+    private final AlarmRepository alarmRepository;
+    private final CapsuleRepository capsuleRepository;
     private final FileManager fileManager;
 
     /**
@@ -76,6 +79,9 @@ public class MypageServiceImpl implements MypageService {
             fileManager.deleteFile(member.getMemberProfile());
         }
 
+        teamMemberRepository.deleteByMember(member);
+        capsuleRepository.deleteByMember(member);
+        alarmRepository.deleteByMember(member);
         memberRepository.deleteById(memberId);
     }
 }
