@@ -15,20 +15,21 @@ const CapsuleAnimation = ({ data }: CapsuleAnimationProps) => {
   useEffect(() => {
     if (animationState !== "closed") return;
 
-    setAnimationState("opening");
-
+    const timer = requestAnimationFrame(() => setAnimationState("opening"));
     // 캡슐이 완전히 열린 후 2초 뒤에 페이지 이동
     setTimeout(() => {
-      setAnimationState("open");
+      // requestAnimationFrame을 써서 렌더링 한 프레임 뒤에 상태 변경
 
+      setAnimationState("open");
       // 페이지 이동 (1초 후)
       setTimeout(() => {
-        navigate(`/detail/${data.capId}`);
+        // navigate(`/detail/${data.capId}`);
       }, 2000);
-    }, 800);
+    }, 1000);
+    return () => cancelAnimationFrame(timer);
   }, [animationState, navigate, data]);
 
-  if (!data) return null;
+  // if (!data) return null;
   return (
     <div className='capsule-container'>
       <div className='capsule-content'>

@@ -19,7 +19,6 @@ const HasCapsule = () => {
 
     try {
       const filter = data.filter((item) => item.capOpen === false);
-      // 조건이 열리는 조건이 애매해 날짜만 해놓음
       const res = await getCapsuleDateListApi(filter[0].capId);
       setOpenData(res[0]);
     } catch (e) {

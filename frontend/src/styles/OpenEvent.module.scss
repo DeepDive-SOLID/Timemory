@@ -24,6 +24,7 @@
     align-items: center;
     justify-content: center;
     background-color: #f0f0f0;
+    animation: modalSlideIn 0.7s ease-out;
 }
 
 .button {
@@ -39,4 +40,15 @@
     background-color: #5497ff;
     color: white;
     cursor: pointer;
+}
+// 모달 애니메이션
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
