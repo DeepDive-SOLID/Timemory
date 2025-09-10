@@ -19,7 +19,7 @@ public class AlarmServiceImpl implements AlarmService {
     /**
      * 설명: 알림 리스트 조회
      * @param memberId
-     * @return
+     * @return List<AlarmDto>
      */
     @Override
     @Transactional

@@ -22,7 +22,7 @@ public class AlarmController {
     /**
      * 설명: 알림 리스트 조회
      * @param memberId
-     * @return
+     * @return List<AlarmDto>
      */
     @ResponseBody
     @PostMapping("/list")
@@ -33,7 +33,7 @@ public class AlarmController {
     /**
      * 설명: 알림 삭제
      * @param alarmId
-     * @return
+     * @return ResponseEntity<String>
      */
     @ResponseBody
     @PostMapping("/del")
