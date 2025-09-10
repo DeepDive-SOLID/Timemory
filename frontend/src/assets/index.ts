@@ -70,3 +70,7 @@ export { default as inputbox_sm } from "./images/input_box_sm.svg";
 
 // Input Box Line
 export { default as input_box_line } from "./images/input_box_line.svg";
+
+// Splash Images
+export { default as splash_up } from "./images/splash_up.svg";
+export { default as splash_down } from "./images/splash_down.svg";
