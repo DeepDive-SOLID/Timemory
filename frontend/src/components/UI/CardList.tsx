@@ -3,6 +3,7 @@ import styles from "../../styles/Card.module.scss";
 import { useNavigate } from "react-router-dom";
 
 export interface CardItem {
+  capId: number;
   title: string;
   date: string;
   user: string;
@@ -30,7 +31,7 @@ const CardList = ({ items }: CardListProps) => {
             key={idx}
             {...card}
             onClick={
-              card.isOpen ? () => navigate(`/capsule/${idx}`) : undefined
+              card.isOpen ? () => navigate(`/detail/${card.capId}`) : undefined
             }
           />
         ))}

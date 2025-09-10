@@ -31,9 +31,10 @@ const DateCapsule = ({ capsuleDate }: DateCapsuleProps) => {
     return daysDifference;
   };
 
-  const clickEvent = () => {
-    // 세부창 만들면 연동
-    navigate("/");
+  const clickEvent = (isLocked: boolean, capId: number) => {
+    if (!isLocked) {
+      navigate(`/detail/${capId}`);
+    }
   };
 
   return (
@@ -43,8 +44,9 @@ const DateCapsule = ({ capsuleDate }: DateCapsuleProps) => {
         <div ref={scrollRef} className={style.capsuleList}>
           {sortCapsuleDate?.map((items) => {
             const dDay = getRemainingDays(items.capEt);
+            const isLocked = dDay > 0;
             return (
-              <div className={style.capsuleBox} key={items.capId} onClick={() => clickEvent()}>
+              <div className={style.capsuleBox} key={items.capId} onClick={() => clickEvent(isLocked, items.capId)}>
                 {dDay > 0 && (
                   <div className={style.screen}>
                     <img src={lock} alt='잠김' />
