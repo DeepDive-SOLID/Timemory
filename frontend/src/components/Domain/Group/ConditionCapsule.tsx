@@ -44,6 +44,7 @@ const ConditionCapsule = ({ capsuleCndt, handleDeleteCndt }: ConditionCapsulePro
       try {
         setIsOpening(true);
         await getCapsuleCndtListApi(selectedCardId);
+        // 성공하면 상위 컴포넌트에 알림
         if (handleDeleteCndt) {
           handleDeleteCndt();
         }
@@ -70,6 +71,7 @@ const ConditionCapsule = ({ capsuleCndt, handleDeleteCndt }: ConditionCapsulePro
                     <img src={lock} alt='잠김' />
                   </div>
                 )}
+                {/* 캡슐의 아이디와 로그인한 아이디가 같으면 캡슐 열기 버튼생성 */}
                 {isLocked && userInfo?.memberId === items.memberId && (
                   <button
                     className={style.capsuleOpenButton}
