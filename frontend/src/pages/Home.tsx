@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import TabBar from "../components/APP/TabBar";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (

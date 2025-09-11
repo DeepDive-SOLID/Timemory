@@ -1,0 +1,56 @@
+.container {
+  padding: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.capsuleImage {
+  width: 80%;
+  max-width: 320px;
+  border-radius: 2px;
+  margin-top: 10px;
+}
+
+.date {
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.tagBox {
+  width: 100%;
+  margin: 8px 0 30px;
+}
+
+.inputContainer {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.inputImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.inputText {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  right: 20px;
+  bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-y: auto;
+}
+
