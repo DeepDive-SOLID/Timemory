@@ -2,6 +2,7 @@ package solid.backend.jpaRepository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import solid.backend.entity.Member;
 import solid.backend.entity.TeamMember;
 import solid.backend.entity.TeamMemberId;
 
@@ -17,4 +18,10 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, TeamMemb
      */
     List<TeamMember> findByTeamTeamId(Integer teamId);
     List<TeamMember> findByTeam_TeamId(Integer teamIds);
+
+    /**
+     * 설명 : 회원 ID로 팀 멤버 삭제
+     * @param member
+     */
+    void deleteByMember(Member member);
 }

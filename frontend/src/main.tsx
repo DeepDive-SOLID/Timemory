@@ -4,13 +4,22 @@ import "./styles/index.scss";
 import App from "./App.tsx";
 import Login from "./pages/Login.tsx";
 import Home from "./pages/Home.tsx";
-import GroupList from "./pages/GroupList.tsx";
+import LocationCapsule from "./pages/LocationCapsule.tsx";
+import SearchLocation from "./pages/SearchLocation.tsx";
+import { Provider } from "react-redux";
+import index from "./store/index.ts";
 import NickName from "./pages/NickName.tsx";
+import MyCapsule from "./pages/MyCapsule.tsx";
 import { AuthProvider } from "./contexts/AuthProvider.tsx";
+import GroupList from "./pages/GroupList.tsx";
 import QuizDate from "./pages/Quiz/QuizDate.tsx";
 import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
 import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
+import OpenList from "./pages/OpenList.tsx";
+import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
 import GroupCapsule from "./pages/GroupCapsule.tsx";
+import CapsuleDetail from "./pages/CapsuleDetail.tsx";
+import MyCapsuleMap from "./pages/MyCapsuleMap.tsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +43,18 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "capsuleMap/:groupId",
+        element: <LocationCapsule />,
+      },
+      {
+        path: "myCapsuleMap",
+        element: <MyCapsuleMap />,
+      },
+      {
+        path: "map",
+        element: <SearchLocation />,
+      },
+      {
         path: "date/:teamId",
         element: <QuizDate />,
       },
@@ -50,8 +71,24 @@ const router = createBrowserRouter([
         element: <GroupList />,
       },
       {
+        path: "openlist/:eventId",
+        element: <OpenList />,
+      },
+      {
+        path: "quiz/:eventId",
+        element: <QuizOpen />,
+      },
+      {
         path: "group/:groupId",
         element: <GroupCapsule />,
+      },
+      {
+        path: "detail/:capId",
+        element: <CapsuleDetail />,
+      },
+      {
+        path: "mycapsule",
+        element: <MyCapsule />,
       },
     ],
   },
@@ -59,6 +96,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <AuthProvider>
-    <RouterProvider router={router} />
+    <Provider store={index}>
+      <RouterProvider router={router} />
+    </Provider>
   </AuthProvider>
 );

@@ -82,6 +82,7 @@ const QuizCondition = () => {
   const [file, setFile] = useState<File | null>(null);
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
   const navigate = useNavigate();
+  const [isAiBlocked, setIsAiBlocked] = useState(false);
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
   const current = quizData[step];
@@ -105,6 +106,11 @@ const QuizCondition = () => {
 
   const handleNext = async () => {
     if (step < quizData.length - 1) {
+      if (isAiBlocked) {
+        alert("금지된 내용이 포함되어 있습니다. 수정 후 진행해주세요.");
+        return;
+      }
+
       const msg = validateCurrent();
       if (msg) {
         setForceWarnStep(step);
@@ -118,7 +124,7 @@ const QuizCondition = () => {
       const dto: CapsuleCndtDto = {
         teamId: Number(teamId),
         memberId: memberId ?? "",
-        capText: `${reason}\n${momentText}`.trim(),
+        capText: `${momentText}`.trim(),
         capEt: toLocalDateTimeString(new Date()),
         capImg: file as File,
         capTag: tags.join(","),
@@ -174,6 +180,7 @@ const QuizCondition = () => {
               value={step === 0 ? reason : momentText}
               onChangeText={handleTextChange}
               forceShowWarning={forceWarnStep === step}
+              onAiCheck={setIsAiBlocked}
             />
           )
         }

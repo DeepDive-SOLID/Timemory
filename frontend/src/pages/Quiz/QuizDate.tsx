@@ -75,6 +75,7 @@ const QuizDate = () => {
   const [tagText, setTagText] = useState("");
   const [forceWarnStep, setForceWarnStep] = useState<number | null>(null);
   const navigate = useNavigate();
+  const [isAiBlocked, setIsAiBlocked] = useState(false);
 
   const addTag = (t: string) => setTags((prev) => [...prev, t]);
   const current = quizData[step];
@@ -93,6 +94,11 @@ const QuizDate = () => {
 
   const handleNext = async () => {
     if (step < quizData.length - 1) {
+      if (isAiBlocked) {
+        alert("금지된 내용이 포함되어 있습니다. 수정 후 진행해주세요.");
+        return;
+      }
+
       const msg = validateCurrent();
       if (msg) {
         setForceWarnStep(step);
@@ -182,6 +188,7 @@ const QuizDate = () => {
               value={momentText}
               onChangeText={setMomentText}
               forceShowWarning={forceWarnStep === step}
+              onAiCheck={setIsAiBlocked}
             />
           )
         }

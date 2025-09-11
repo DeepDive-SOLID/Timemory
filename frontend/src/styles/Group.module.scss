@@ -63,18 +63,17 @@
 
 .inputContainer {
   position: relative;
-  flex: 1;
+  width: 100%;
+  max-width: 100%;
 }
 
 .inputBackground {
-  // width: 300px;
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
   inset: 0;
-  height: 55px;
-  background-size: 100% auto;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  z-index: 1;
 }
 
 .inviteInputWrapper {
@@ -116,7 +115,7 @@
 
 .inviteInput {
   width: 100%;
-  padding: 12px 50px 12px 15px;
+  padding: 12px 15px;
   border: none;
   font-size: 14px;
   background-color: transparent;
@@ -135,18 +134,17 @@
 
 .addButton {
   position: absolute;
-  right: 34px;
+  right: 15px;
   width: 30px;
   height: 30px;
-  background-color: #fffdf7;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   z-index: 3;
-  margin-top: 7px;
+  margin-top: auto;
+  background: none;
 }
 
 .membersSection {
@@ -168,24 +166,24 @@
 
 .membersContainer {
   position: relative;
-  width: 430px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .membersBackground {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
+  object-fit: contain;
   z-index: 1;
 }
 
 .membersContent {
   position: relative;
   z-index: 2;
-  padding-top: 20px;
-  padding-left: 22px;
-  padding-right: 18px;
+
+  padding: 20px 22px 0 22px;
 }
 
 .membersList {
