@@ -29,6 +29,7 @@ public class CacheConfig {
      * - memberTeams: 멤버가 속한 팀 목록 캐싱 (멤버 ID가 키)
      * - anniversaries: 기념일/오픈 그룹 리스트 캐싱 
      * - memberInfo: 멤버 상세 정보 캐싱 (멤버 ID가 키)
+     * - mypageInfo: 마이페이지 회원 정보 캐싱 (멤버 ID가 키)
      * 
      * @return CacheManager 인스턴스
      */
@@ -38,7 +39,8 @@ public class CacheConfig {
             "teams",            // TeamService.getTeamMembers()에서 사용
             "memberTeams",      // MemberService.getMemberTeams()에서 사용
             "anniversaries",    // OpenService.getOpenList()에서 사용
-            "memberInfo"        // MemberService.getMember()에서 사용
+            "memberInfo",       // MemberService.getMember()에서 사용
+            "mypageInfo"        // MypageService.getMemberDto()에서 사용
         );
     }
     
