@@ -23,7 +23,7 @@ const CapsuleAnimation = ({ data }: CapsuleAnimationProps) => {
       setAnimationState("open");
       // 페이지 이동 (1초 후)
       setTimeout(() => {
-        // navigate(`/detail/${data.capId}`);
+        navigate(`/detail/${data.capId}`);
       }, 2000);
     }, 1000);
     return () => cancelAnimationFrame(timer);

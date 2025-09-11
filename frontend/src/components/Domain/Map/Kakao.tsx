@@ -7,17 +7,18 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import useMyLocation from "../../../hooks/useMyLocation";
 import ImgBox from "./ImgBox";
 import { map_pin_blue, lock, mini_logo } from "../../../assets/index";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getDistance } from "./getDistance";
 import { getCapsuleLtListApi } from "../../../api/open";
 import CapsuleAnimation from "../Home/CapsuleAnimation";
 import type { CapsuleLtOpenDto } from "../../../types/openCapsule";
 import OpenEvent from "./OpenEvent";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const Kakao = ({ customProps, showDeleteButton = false }: KakaoProps) => {
   // 현재 내 위치를 가져옴 - 커스텀 훅
   const location = useMyLocation(true);
-
+  const { userInfo } = useContext(AuthContext)!;
   // redux를 통한 상태관리
   const check = useAppSelector((state) => state.location.check);
   const lng = useAppSelector((state) => state.location.x);
@@ -52,6 +53,7 @@ const Kakao = ({ customProps, showDeleteButton = false }: KakaoProps) => {
 
     const checkAndCallApi = () => {
       customProps.forEach(async (item) => {
+        if (item.memberId !== userInfo?.memberId) return;
         if (item.capOpen) return;
         if (item.lat && item.lng) {
           setDistance(
