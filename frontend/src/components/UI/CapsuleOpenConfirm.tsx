@@ -21,7 +21,7 @@ const CapsuleOpenConfirm: React.FC<CapsuleOpenConfirmProps> = ({ isOpen, onClose
           <button className={styles.cancelButton} onClick={onClose} disabled={isOpening}>
             취소
           </button>
-          <button className={styles.confirmButton} onClick={onConfirm} disabled={isOpening}>
+          <button className={styles.openButton} onClick={onConfirm} disabled={isOpening}>
             {isOpening ? "열리는 중..." : "열기"}
           </button>
         </div>
