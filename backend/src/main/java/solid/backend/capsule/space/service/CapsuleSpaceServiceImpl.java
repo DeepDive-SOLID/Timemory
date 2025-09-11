@@ -12,6 +12,7 @@ import solid.backend.capsule.cndt.service.CapsuleCndtService;
 import solid.backend.common.FileManager;
 import solid.backend.entity.Capsule;
 import solid.backend.entity.Member;
+import solid.backend.jpaRepository.AlarmRepository;
 import solid.backend.jpaRepository.CapsuleRepository;
 import solid.backend.jpaRepository.MemberRepository;
 import solid.backend.exception.CustomException;
@@ -32,6 +33,7 @@ public class CapsuleSpaceServiceImpl implements CapsuleSpaceService {
     private final CapsuleDateService capsuleDateService;
     private final CapsuleCndtService capsuleCndtService;
     private final FileManager fileManager;
+    private final AlarmRepository alarmRepository;
     
     @Override
     public CapsuleSpaceResponseDto getCapsuleSpace(String memberId) {
@@ -77,10 +79,15 @@ public class CapsuleSpaceServiceImpl implements CapsuleSpaceService {
         log.info("캡슐 삭제 시작 - capsuleId: {}, teamId: {}, memberId: {}", 
                 capsuleId, capsule.getTeam().getTeamId(), memberId);
         
+        // 모든 캡슐 타입에 대해 관련 알람 먼저 삭제 (외래키 제약 조건 해결)
+        alarmRepository.deleteByCapsule(capsule);
+        log.debug("캡슐 관련 알람 삭제 완료 - capsuleId: {}", capsuleId);
+        
         // 캡슐 타입에 따른 삭제 처리
         if (capsule.getCapsuleLocation() != null) {
             // 위치 캡슐인 경우 - 파일 삭제 후 캡슐 삭제
             log.debug("위치 캡슐 삭제 - capsuleId: {}", capsuleId);
+            
             if (capsule.getCapImg() != null) {
                 fileManager.deleteFile(capsule.getCapImg());
                 log.debug("캡슐 이미지 파일 삭제 완료 - file: {}", capsule.getCapImg());
