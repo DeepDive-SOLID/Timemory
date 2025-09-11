@@ -19,6 +19,7 @@ const GroupCapsule = () => {
   const [team, setTeam] = useState<TeamResponseDto | null>(null);
   const [capsuleDate, setCapsuleDate] = useState<CapsuleDateListDto[] | undefined>();
   const [capsuleCndt, setCapsuleCndt] = useState<CapsuleCndtListDto[] | undefined>();
+
   useEffect(() => {
     const fetchTeam = async () => {
       if (!groupId) return;
@@ -59,7 +60,6 @@ const GroupCapsule = () => {
     <div className={`${style.wrapper}`}>
       {isModalOpen && <div className={style.screen}></div>}
       {team && <StatusBar to='/group' title={`${team.teamName} (${team.members.length})`} members={team.members.map((m) => m.profileImg ?? profile_img)} />}
-
       <DateCapsule capsuleDate={capsuleDate} />
       <MapCapsule groupId={groupId} />
       <ConditionCapsule capsuleCndt={capsuleCndt} />

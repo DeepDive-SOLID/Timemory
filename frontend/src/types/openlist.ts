@@ -8,6 +8,7 @@ export interface OpenCapsuleAddDto {
 }
 
 export interface OpenCapsuleListDto {
+  capId: number;
   capText: string;
   capUt: string;
   memberNickname: string;
