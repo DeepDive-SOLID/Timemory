@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import solid.backend.login.dto.LoginDto;
 import solid.backend.login.service.LoginService;
+import solid.backend.util.TokenStore;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ import solid.backend.login.service.LoginService;
 public class LoginController {
 
     private final LoginService loginService;
+    private final TokenStore tokenStore;
 
     /**
      * 설명 : 카카오 로그인
@@ -77,15 +79,11 @@ public class LoginController {
 
     /**
      * 설명: 로그아웃 (세션에 저장된 refresh token 삭제)
-     * @param request
      * @return ResponseEntity<String>
      */
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.removeAttribute("refreshToken");
-        }
+    public ResponseEntity<String> logout() {
+        tokenStore.saveRefreshToken(null);
         return ResponseEntity.ok("로그아웃되었습니다.");
     }
 

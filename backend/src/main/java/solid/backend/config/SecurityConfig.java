@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login/**").permitAll()
                         .requestMatchers("/solid/**").permitAll()
+                        .requestMatchers("/api/token/refresh").permitAll()
 
                         .requestMatchers("/api/mypage/**").hasRole("USER")
                         .requestMatchers("/api/capsule/**").hasRole("USER")
