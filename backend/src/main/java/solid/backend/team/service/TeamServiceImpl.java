@@ -55,7 +55,7 @@ public class TeamServiceImpl implements TeamService {
      */
     @Override
     @Transactional
-    @CacheEvict(value = "memberTeams", key = "#creatorId")
+    @CacheEvict(value = "memberTeams", key = "#p1")
     public TeamResponseDto createTeam(TeamCreateRequestDto requestDto, String creatorId) {
         // 생성자 확인
         Member creator = memberRepository.findById(creatorId)
@@ -120,7 +120,7 @@ public class TeamServiceImpl implements TeamService {
      * @throws CustomException 팀이 존재하지 않을 경우
      */
     @Override
-    @Cacheable(value = "teams", key = "#teamId")  // 캐시명: teams, 키: teamId
+    @Cacheable(value = "teams", key = "#p0")  // 캐시명: teams, 키: teamId
     public List<TeamMemberDto> getTeamMembers(Integer teamId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TEAM_NOT_FOUND));
@@ -152,8 +152,8 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional
     @Caching(evict = {
-        @CacheEvict(value = "teams", key = "#teamId"),        // 팀 멤버 목록 캐시 삭제
-        @CacheEvict(value = "memberTeams", key = "#memberId")  // 멤버의 팀 목록 캐시 삭제
+        @CacheEvict(value = "teams", key = "#p0"),        // 팀 멤버 목록 캐시 삭제
+        @CacheEvict(value = "memberTeams", key = "#p1")  // 멤버의 팀 목록 캐시 삭제
     })
     public void leaveTeam(Integer teamId, String memberId, String requesterId) {
         // 본인 확인 (보안 검증)
@@ -201,7 +201,7 @@ public class TeamServiceImpl implements TeamService {
      */
     @Override
     @Transactional
-    @CacheEvict(value = "teams", key = "#teamId")  // 팀 멤버 목록 캐시 삭제
+    @CacheEvict(value = "teams", key = "#p0")  // 팀 멤버 목록 캐시 삭제
     public MemberProfileDto addTeamMemberByNickname(Integer teamId, String nickname) {
         // 팀 존재 확인
         Team team = teamRepository.findById(teamId)

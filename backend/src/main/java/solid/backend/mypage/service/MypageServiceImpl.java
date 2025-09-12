@@ -28,7 +28,7 @@ public class MypageServiceImpl implements MypageService {
      * @return MypageDto 회원 정보
      */
     @Override
-    @Cacheable(value = "mypageInfo", key = "#memberId")
+    @Cacheable(value = "mypageInfo", key = "#p0")
     public MypageDto getMemberDto(String memberId) {
         return memberRepository.findById(memberId)
                 .map(member -> new MypageDto(
@@ -49,8 +49,8 @@ public class MypageServiceImpl implements MypageService {
     @Override
     @Transactional
     @Caching(evict = {
-        @CacheEvict(value = "mypageInfo", key = "#memberDto.memberId"),
-        @CacheEvict(value = "memberInfo", key = "#memberDto.memberId", condition = "#memberDto.memberId != null")
+        @CacheEvict(value = "mypageInfo", key = "#p0.memberId"),
+        @CacheEvict(value = "memberInfo", key = "#p0.memberId", condition = "#p0.memberId != null")
     })
     public void updateMemberDto(MypageUpdDto memberDto) {
         Member member = memberRepository.findById(memberDto.getMemberId())
@@ -79,9 +79,9 @@ public class MypageServiceImpl implements MypageService {
     @Override
     @Transactional
     @Caching(evict = {
-        @CacheEvict(value = "mypageInfo", key = "#memberId"),
-        @CacheEvict(value = "memberInfo", key = "#memberId", condition = "#memberId != null"),
-        @CacheEvict(value = "memberTeams", key = "#memberId", condition = "#memberId != null"),
+        @CacheEvict(value = "mypageInfo", key = "#p0"),
+        @CacheEvict(value = "memberInfo", key = "#p0", condition = "#p0 != null"),
+        @CacheEvict(value = "memberTeams", key = "#p0", condition = "#p0 != null"),
         @CacheEvict(value = "teams", allEntries = true)  // 팀 캐시도 무효화 (해당 회원이 포함된 팀들)
     })
     public void deleteMemberDto(String memberId) {
