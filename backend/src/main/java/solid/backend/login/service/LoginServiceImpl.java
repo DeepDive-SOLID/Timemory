@@ -53,7 +53,7 @@ public class LoginServiceImpl implements LoginService {
         MultiValueMap<String, String> tokenParams = new LinkedMultiValueMap<>();
         tokenParams.add("grant_type", "authorization_code");
         tokenParams.add("client_id", loginApiDto.getKakao().getClientId());
-        tokenParams.add("redirect_uri", "http://localhost:5173/login/kakao/callback");
+        tokenParams.add("redirect_uri", "http://timemory.kro.kr/login/kakao/callback");
         tokenParams.add("code", code);
         tokenParams.add("client_secret", loginApiDto.getKakao().getClientSecret());
 
