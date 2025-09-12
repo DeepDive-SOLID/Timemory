@@ -1,0 +1,95 @@
+@mixin box($justify, $align) {
+    display: flex;
+    align-items: $align;
+    justify-content: $justify;
+}
+
+.wrapper {
+    @include box(center, none);
+    flex-direction: column;
+    padding: 20px;
+    height: calc(100vh - 123px);
+    flex: 1;
+    p {
+        align-items: flex-start;
+        margin-bottom: 0;
+    }
+}
+
+.statusBar {
+    height: 44px; /* iOS 상태바 높이 */
+    background-color: #fffdf7;
+}
+
+.titleBox {
+    @include box(space-between, center);
+    position: relative;
+    width: 100%;
+    padding-top: 3rem;
+    h1 {
+        margin: 0;
+    }
+    img {
+        padding: 10px;
+        cursor: pointer;
+    }
+}
+
+.imgBox {
+    @include box(center, center);
+    img {
+        width: 100%;
+    }
+}
+
+.capsuleBox {
+    @include box(center, center);
+    flex-grow: 1;
+    flex-shrink: 0;
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.buttonBox {
+    @include box(center, center);
+}
+.button {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    border: none;
+    background-color: #5497ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+.NoCapsuleBox {
+    @include box(center, center);
+    flex-grow: 1;
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.noCapsuleImg {
+    img {
+        cursor: pointer;
+        transition: all 0.2s linear;
+    }
+    img:hover {
+        transform: scale(1.1);
+    }
+}
+
+@media (max-height: 668px) {
+    .NoCapsuleBox {
+        height: 300px;
+        img {
+            margin-top: 5rem;
+            object-fit: cover;
+        }
+    }
+}

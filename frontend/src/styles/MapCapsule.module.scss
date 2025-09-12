@@ -23,15 +23,17 @@
 
 .mapButton {
     position: absolute;
-    top: 40%;
     left: 50%;
-    transform: translate(-50%, 20%);
+    top: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 75%;
-    height: 50px;
+    padding: 1rem 1.4rem;
+    min-width: 280px;
+    font-weight: 700;
     border: none;
+    box-shadow: 0 8px 20px rgba(100, 156, 255, 0.35);
     border-radius: 8px;
     background-color: #5497ff;
     color: white;
@@ -49,10 +51,5 @@
         .img {
             object-fit: cover;
         }
-    }
-
-    .mapButton {
-        top: 25%;
-        width: 45%;
     }
 }
