@@ -15,6 +15,7 @@
     overflow-y: hidden;
     gap: 1rem;
     flex-grow: 1;
+    scrollbar-width: none;
     &::-webkit-scrollbar {
         display: none;
     }
@@ -30,10 +31,10 @@
     position: relative;
     flex-direction: column;
     flex-shrink: 0;
-    flex-grow: 1;
+    // flex-grow: 1;
     border-radius: 8px;
-    width: 200px;
-    background-color: #bbbbbbb7;
+    width: 176px;
+    background-color: #f0f0f0;
     padding: 0.5rem;
     scroll-snap-align: start;
     cursor: pointer;
@@ -64,6 +65,10 @@
         background: rgba(255, 255, 255, 0.5); /* 살짝 반투명 흰색 덮기 */
         pointer-events: none; /* 클릭 방지 */
     }
+
+    &.lock {
+        pointer-events: none;
+    }
 }
 
 .capsuleContent {
@@ -87,4 +92,21 @@
             object-fit: fill;
         }
     }
+}
+
+.capsuleOpenButton {
+    position: absolute;
+    cursor: pointer;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 1rem);
+    border: none;
+    background-color: #5497ff;
+    color: white;
+    margin-top: 0.25rem;
+    border-radius: 0.5rem;
+    padding: 0.45rem 1rem;
+    z-index: 99;
+    pointer-events: auto;
+    filter: none !important;
 }
