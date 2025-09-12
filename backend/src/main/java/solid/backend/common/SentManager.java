@@ -3,8 +3,11 @@ package solid.backend.common;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import solid.backend.entity.Alarm;
 import solid.backend.entity.Capsule;
+import solid.backend.entity.Member;
 import solid.backend.entity.TeamMember;
+import solid.backend.jpaRepository.AlarmRepository;
 import solid.backend.jpaRepository.CapsuleRepository;
 import solid.backend.jpaRepository.TeamMemberRepository;
 import solid.backend.util.TokenStore;
@@ -20,6 +23,7 @@ public class SentManager {
     private final TeamMemberRepository teamMemberRepository;
     private final TokenStore tokenStore;
     private final MailManager mailManager;
+    private final AlarmRepository alarmRepository;
 
     // 만료시간 체크 후 메시지 전송
     public void checkTimeSentMessage() {
@@ -79,6 +83,18 @@ public class SentManager {
             if (kakaoOk || mailOk) {
                 c.setCapSent(true);
                 capsuleRepository.save(c);
+
+                List<TeamMember> teamMembers = teamMemberRepository.findByTeam_TeamId(c.getTeam().getTeamId());
+                for (TeamMember tm : teamMembers) {
+                    Member member = tm.getMember();
+                    if (member != null) {
+                        Alarm alarm = new Alarm();
+                        alarm.setMember(member);
+                        alarm.setCapsule(c);
+                        alarm.setAlarmDelete(false);
+                        alarmRepository.save(alarm);
+                    }
+                }
             }
         }
     }
@@ -138,6 +154,18 @@ public class SentManager {
             if (kakaoOk || mailOk) {
                 c.setCapSent(true);
                 capsuleRepository.save(c);
+
+                List<TeamMember> teamMembers = teamMemberRepository.findByTeam_TeamId(c.getTeam().getTeamId());
+                for (TeamMember tm : teamMembers) {
+                    Member member = tm.getMember();
+                    if (member != null) {
+                        Alarm alarm = new Alarm();
+                        alarm.setMember(member);
+                        alarm.setCapsule(c);
+                        alarm.setAlarmDelete(false);
+                        alarmRepository.save(alarm);
+                    }
+                }
             }
         }
     }

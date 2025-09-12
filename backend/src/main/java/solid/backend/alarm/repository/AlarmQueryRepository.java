@@ -5,10 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import solid.backend.alarm.dto.AlarmDto;
-import solid.backend.entity.QCapsule;
-import solid.backend.entity.QMember;
-import solid.backend.entity.QTeam;
-import solid.backend.entity.QTeamMember;
+import solid.backend.entity.*;
 
 import java.util.List;
 
@@ -23,22 +20,24 @@ public class AlarmQueryRepository {
     public List<AlarmDto> findAlarmsByMemberId(String memberId) {
         QCapsule c = QCapsule.capsule;
         QTeam t = QTeam.team;
-        QTeamMember tm = QTeamMember.teamMember;
         QMember m = QMember.member;
+        QAlarm a = QAlarm.alarm;
 
         return queryFactory
                 .select(Projections.constructor(
                         AlarmDto.class,
                         t.teamName,
                         c.capOpen,
-                        c.capId
+                        c.capId,
+                        a.alarmId
                 ))
-                .from(c)
+                .from(a)
+                .join(a.capsule, c)
                 .join(c.team, t)
-                .join(t.teamMembers, tm)
-                .join(tm.member, m)
+                .join(a.member, m)
                 .where(
                         c.capSent.isTrue(),
+                        a.alarmDelete.isFalse(),
                         m.memberId.eq(memberId)
                 )
                 .fetch();
