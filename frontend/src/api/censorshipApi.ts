@@ -1,12 +1,12 @@
-import axios from "axios";
+import api from "./axios";
 
 export const checkCensorship = async (content: string): Promise<boolean> => {
   try {
-    const res = await axios.post<boolean>(
-      "/api/censorship/checkContent",
+    const res = await api.post<boolean>(
+      "/censorship/checkContent",
       content,
       {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
       }
     );
     return res.data;
