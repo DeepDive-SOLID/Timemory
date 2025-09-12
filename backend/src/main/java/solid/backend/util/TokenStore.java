@@ -19,6 +19,14 @@ public class TokenStore {
         return accessToken != null;
     }
 
+    public void saveRefreshToken(String refreshToken) {
+        this.accessToken = refreshToken;
+    }
+
+    public String getRefreshToken() {
+        return accessToken;
+    }
+
     public void saveMemberId(String memberId) {
         this.memberId = memberId;
     }

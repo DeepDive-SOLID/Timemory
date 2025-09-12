@@ -170,10 +170,7 @@ public class LoginServiceImpl implements LoginService {
         System.out.println("accessToken: " + accessToken);
         System.out.println("refreshToken: " + refreshToken);
 
-
-        // 세션에 refreshToken 저장
-        HttpSession session = request.getSession(true);
-        session.setAttribute("refreshToken", refreshToken);
+        tokenStore.saveRefreshToken(refreshToken);
 
         // 5. access token 반환
         return accessToken;

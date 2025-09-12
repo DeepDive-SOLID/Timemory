@@ -19,7 +19,18 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/api/login/**").permitAll()
+                        .requestMatchers("/solid/**").permitAll()
+                        .requestMatchers("/api/token/refresh").permitAll()
+
+                        .requestMatchers("/api/mypage/**").hasRole("USER")
+                        .requestMatchers("/api/capsule/**").hasRole("USER")
+                        .requestMatchers("/api/capsule-space/**").hasRole("USER")
+                        .requestMatchers("/api/member/**").hasRole("USER")
+                        .requestMatchers("/api/teams/**").hasRole("USER")
+                        .requestMatchers("/api/open/**").hasRole("USER")
+                        .requestMatchers("/api/censorship/**").hasRole("USER")
+                        .requestMatchers("/api/alarm/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFiler, UsernamePasswordAuthenticationFilter.class)

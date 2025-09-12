@@ -46,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
      * @throws CustomException 회원이 존재하지 않을 경우
      */
     @Override
-    @Cacheable(value = "memberInfo", key = "#memberId")  // 캐시명: memberInfo, 키: memberId
+    @Cacheable(value = "memberInfo", key = "#p0")  // 캐시명: memberInfo, 키: memberId
     public MemberResponseDto getMember(String memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
      * @throws CustomException 회원이 존재하지 않을 경우
      */
     @Override
-    @Cacheable(value = "memberTeams", key = "#memberId")  // 캐시명: memberTeams, 키: memberId
+    @Cacheable(value = "memberTeams", key = "#p0")  // 캐시명: memberTeams, 키: memberId
     public List<TeamResponseDto> getMemberTeams(String memberId) {
         if (!memberRepository.existsById(memberId)) {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
