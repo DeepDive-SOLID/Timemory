@@ -36,6 +36,9 @@ export { default as map_img } from "./images/map_img.svg";
 export { default as map } from "./images/map.svg";
 export { default as profile_img } from "./images/profile_img.svg";
 export { default as profile_img2 } from "./images/profile_img2.svg";
+export { default as capsule_top } from "./images/capsule_top.svg";
+export { default as capsule_bottom } from "./images/capsule_bottom.svg";
+export { default as profile_cloud } from "./images/profile_cloud.svg";
 
 // Event Day
 export { default as april_fools_day } from "./images/april_fools_day.svg";
@@ -52,6 +55,9 @@ export { default as new_year2 } from "./images/new_year_img2.svg";
 export { default as new_year3 } from "./images/new_year_img3.svg";
 export { default as christmas } from "./images/christmas_img.svg";
 export { default as christmas2 } from "./images/christmas_img2.svg";
+export { default as graduate } from "./images/graduate_img.svg";
+export { default as graduate2 } from "./images/graduate_img2.svg";
+export { default as graduate3 } from "./images/graduate_img3.svg";
 
 // Tab bar Icons
 export { default as group_tab } from "./icons/group_tab.svg";
@@ -69,3 +75,7 @@ export { default as inputbox_sm } from "./images/input_box_sm.svg";
 
 // Input Box Line
 export { default as input_box_line } from "./images/input_box_line.svg";
+
+// Splash Images
+export { default as splash_up } from "./images/splash_up.svg";
+export { default as splash_down } from "./images/splash_down.svg";

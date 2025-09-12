@@ -2,10 +2,13 @@ package solid.backend.mypage.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import solid.backend.common.FileManager;
 import solid.backend.entity.Member;
-import solid.backend.jpaRepository.MemberRepository;
+import solid.backend.jpaRepository.*;
 import solid.backend.mypage.dto.MypageDto;
 import solid.backend.mypage.dto.MypageUpdDto;
 
@@ -14,14 +17,18 @@ import solid.backend.mypage.dto.MypageUpdDto;
 public class MypageServiceImpl implements MypageService {
 
     private final MemberRepository memberRepository;
+    private final TeamMemberRepository teamMemberRepository;
+    private final AlarmRepository alarmRepository;
+    private final CapsuleRepository capsuleRepository;
     private final FileManager fileManager;
 
     /**
-     * 설명 : 회원 정보 조회
-     * @param memberId
-     * @return MypageDto
+     * 설명 : 회원 정보 조회 - 캐시 적용
+     * @param memberId 조회할 회원 ID
+     * @return MypageDto 회원 정보
      */
     @Override
+    @Cacheable(value = "mypageInfo", key = "#memberId")
     public MypageDto getMemberDto(String memberId) {
         return memberRepository.findById(memberId)
                 .map(member -> new MypageDto(
@@ -36,11 +43,15 @@ public class MypageServiceImpl implements MypageService {
     }
 
     /**
-     * 설명 : 회원 정보 수정
-     * @param memberDto
+     * 설명 : 회원 정보 수정 - 캐시 무효화
+     * @param memberDto 수정할 회원 정보
      */
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "mypageInfo", key = "#memberDto.memberId"),
+        @CacheEvict(value = "memberInfo", key = "#memberDto.memberId", condition = "#memberDto.memberId != null")
+    })
     public void updateMemberDto(MypageUpdDto memberDto) {
         Member member = memberRepository.findById(memberDto.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. " + memberDto.getMemberId()));
@@ -62,11 +73,17 @@ public class MypageServiceImpl implements MypageService {
     }
 
     /**
-     * 설명 : 회원 정보 삭제
-     * @param memberId
+     * 설명 : 회원 정보 삭제 - 모든 관련 캐시 무효화
+     * @param memberId 삭제할 회원 ID
      */
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "mypageInfo", key = "#memberId"),
+        @CacheEvict(value = "memberInfo", key = "#memberId", condition = "#memberId != null"),
+        @CacheEvict(value = "memberTeams", key = "#memberId", condition = "#memberId != null"),
+        @CacheEvict(value = "teams", allEntries = true)  // 팀 캐시도 무효화 (해당 회원이 포함된 팀들)
+    })
     public void deleteMemberDto(String memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. " + memberId));
@@ -76,6 +93,9 @@ public class MypageServiceImpl implements MypageService {
             fileManager.deleteFile(member.getMemberProfile());
         }
 
+        teamMemberRepository.deleteByMember(member);
+        capsuleRepository.deleteByMember(member);
+        alarmRepository.deleteByMember(member);
         memberRepository.deleteById(memberId);
     }
 }

@@ -9,6 +9,7 @@ import solid.backend.common.FileManager;
 import solid.backend.entity.Capsule;
 import solid.backend.entity.TeamMember;
 import solid.backend.entity.TeamMemberId;
+import solid.backend.jpaRepository.AlarmRepository;
 import solid.backend.jpaRepository.CapsuleRepository;
 import solid.backend.jpaRepository.TeamMemberRepository;
 
@@ -22,6 +23,7 @@ public class CapsuleDateServiceImpl implements CapsuleDateService {
     private final CapsuleRepository capsuleRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final FileManager fileManager;
+    private final AlarmRepository alarmRepository;
 
     /**
      * 설명: 캡슐 조회
@@ -91,6 +93,9 @@ public class CapsuleDateServiceImpl implements CapsuleDateService {
         Capsule capsule = capsuleRepository.findById(capId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 캡슐이 없습니다."));
 
+        // 관련 알람 먼저 삭제 (외래키 제약 조건 해결)
+        alarmRepository.deleteByCapsule(capsule);
+        
         fileManager.deleteFile(capsule.getCapImg());
         capsuleRepository.deleteById(capId);
     }

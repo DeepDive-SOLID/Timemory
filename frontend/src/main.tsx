@@ -2,15 +2,17 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./styles/index.scss";
 import App from "./App.tsx";
+import { Provider } from "react-redux";
+import { AuthProvider } from "./contexts/AuthProvider.tsx";
+import index from "./store/index.ts";
 import Login from "./pages/Login.tsx";
 import Home from "./pages/Home.tsx";
 import LocationCapsule from "./pages/LocationCapsule.tsx";
 import SearchLocation from "./pages/SearchLocation.tsx";
-import { Provider } from "react-redux";
-import index from "./store/index.ts";
 import NickName from "./pages/NickName.tsx";
 import MyCapsule from "./pages/MyCapsule.tsx";
-import { AuthProvider } from "./contexts/AuthProvider.tsx";
+import Mypage from "./pages/Mypage.tsx";
+import EditInfo from "./pages/EditInfo.tsx";
 import GroupList from "./pages/GroupList.tsx";
 import QuizDate from "./pages/Quiz/QuizDate.tsx";
 import QuizLocation from "./pages/Quiz/QuizLocation.tsx";
@@ -18,6 +20,8 @@ import QuizCondition from "./pages/Quiz/QuizCondition.tsx";
 import OpenList from "./pages/OpenList.tsx";
 import QuizOpen from "./pages/Quiz/QuizOpen.tsx";
 import GroupCapsule from "./pages/GroupCapsule.tsx";
+import Splash from "./pages/Splash.tsx";
+import CapsuleDetail from "./pages/CapsuleDetail.tsx";
 import MyCapsuleMap from "./pages/MyCapsuleMap.tsx";
 
 const router = createBrowserRouter([
@@ -27,6 +31,10 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <Splash />,
+      },
+      {
+        path: "login",
         element: <Login />,
       },
       {
@@ -78,16 +86,24 @@ const router = createBrowserRouter([
         element: <QuizOpen />,
       },
       {
+        path: "mypage",
+        element: <Mypage />,
+      },
+      {
+        path: "editinfo",
+        element: <EditInfo />,
+      },
+      {
         path: "group/:groupId",
         element: <GroupCapsule />,
       },
       {
-        path: "mycapsule",
-        element: <MyCapsule />,
+        path: "detail/:capId",
+        element: <CapsuleDetail />,
       },
       {
-        path: "detail/:capId",
-        element: <div>캡슐 상세 페이지</div>,
+        path: "mycapsule",
+        element: <MyCapsule />,
       },
     ],
   },

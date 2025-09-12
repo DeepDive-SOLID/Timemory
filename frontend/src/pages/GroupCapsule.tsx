@@ -19,50 +19,45 @@ const GroupCapsule = () => {
   const [team, setTeam] = useState<TeamResponseDto | null>(null);
   const [capsuleDate, setCapsuleDate] = useState<CapsuleDateListDto[] | undefined>();
   const [capsuleCndt, setCapsuleCndt] = useState<CapsuleCndtListDto[] | undefined>();
-  useEffect(() => {
-    const fetchTeam = async () => {
-      if (!groupId) return;
-      try {
-        const data = await getTeamById(Number(groupId));
-        setTeam(data);
-      } catch (e) {
-        console.error("팀 상세 조회 실패:", e);
-      }
-    };
 
-    const fetchDateCapsule = async () => {
-      if (!groupId) return;
-      try {
-        const data = await CapsuleDateListApi(Number(groupId));
-        console.log(data);
-        setCapsuleDate(data);
-      } catch (e) {
-        console.error("날짜 캡슐 조회 실패:", e);
-      }
-    };
-    const fetchCndtCapsule = async () => {
-      if (!groupId) return;
-      try {
-        const data = await CapsuleCndtListApi(Number(groupId));
-        console.log(data);
-        setCapsuleCndt(data);
-      } catch (e) {
-        console.error("조건 캡슐 조회 실패:", e);
-      }
-    };
-    fetchTeam();
-    fetchDateCapsule();
-    fetchCndtCapsule();
-  }, [groupId]);
+  const fetchList = async () => {
+    if (!groupId) return;
+    try {
+      const data = await getTeamById(Number(groupId));
+      setTeam(data);
+    } catch (e) {
+      console.error("팀 상세 조회 실패:", e);
+    }
+    try {
+      const data = await CapsuleDateListApi(Number(groupId));
+      console.log(data);
+      setCapsuleDate(data);
+    } catch (e) {
+      console.error("날짜 캡슐 조회 실패:", e);
+    }
+    try {
+      const data = await CapsuleCndtListApi(Number(groupId));
+      console.log(data);
+      setCapsuleCndt(data);
+    } catch (e) {
+      console.error("조건 캡슐 조회 실패:", e);
+    }
+  };
+  useEffect(() => {
+    fetchList();
+  }, []);
+
+  const handleDeleteCndt = () => {
+    fetchList();
+  };
 
   return (
     <div className={`${style.wrapper}`}>
       {isModalOpen && <div className={style.screen}></div>}
       {team && <StatusBar to='/group' title={`${team.teamName} (${team.members.length})`} members={team.members.map((m) => m.profileImg ?? profile_img)} />}
-
       <DateCapsule capsuleDate={capsuleDate} />
       <MapCapsule groupId={groupId} />
-      <ConditionCapsule capsuleCndt={capsuleCndt} />
+      <ConditionCapsule capsuleCndt={capsuleCndt} handleDeleteCndt={handleDeleteCndt} />
       <PlusButton setIsModalOpen={setIsModalOpen} />
       <CategoryModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} teamId={groupId ? Number(groupId) : undefined} />
     </div>
