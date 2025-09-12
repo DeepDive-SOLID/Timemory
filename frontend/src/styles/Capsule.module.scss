@@ -54,6 +54,7 @@
 
 .buttonBox {
     @include box(center, center);
+    padding-bottom: 0.75rem;
 }
 .button {
     width: 100%;

@@ -41,7 +41,7 @@
 
     h4 {
         margin: 0;
-        padding: 5px 0 10px 0;
+        padding: 0 0 5px 0;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -109,4 +109,63 @@
     z-index: 99;
     pointer-events: auto;
     filter: none !important;
+}
+
+@media (max-height: 1024px) {
+    .capsuleBox {
+        padding: 0.5rem 0.5rem 1rem 0.5rem;
+    }
+    .capsuleList {
+        height: 270px;
+    }
+    .capsuleContent {
+        height: 230px;
+        img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+        }
+    }
+    .imgBox {
+        height: 150px;
+        padding-top: 0.75rem;
+    }
+}
+
+@media (max-height: 740px) {
+    .capsuleList {
+        height: 200px;
+    }
+    .capsuleContent {
+        height: 150px;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .imgBox {
+        height: 150px;
+        padding-top: 0.75rem;
+    }
+}
+@media (max-height: 668px) {
+    .capsuleBox {
+        padding: 0.5rem 0.5rem 1rem 0.5rem;
+    }
+    .capsuleList {
+        height: 240px;
+    }
+    .capsuleContent {
+        height: 180px;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .imgBox {
+        height: 150px;
+        padding-top: 0.75rem;
+    }
 }
