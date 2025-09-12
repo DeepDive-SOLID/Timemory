@@ -5,7 +5,7 @@ import type { MypageDto, MypageUpdDto } from "../types/mypage";
 export const getMemberDto = async (memberId: string): Promise<MypageDto> => {
   try {
     const res = await api.post<MypageDto>(
-      "/api/mypage/getMemberDto",
+      "/mypage/getMemberDto",
       memberId,
       {
         headers: {"Content-Type": "text/plain",},
@@ -31,7 +31,7 @@ export const updateMemberDto = async (dto: MypageUpdDto): Promise<string> => {
       formData.append("memberProfile", dto.memberProfile);
     }
 
-    const res = await api.put<string>("/api/mypage/updateMemberDto", formData, {
+    const res = await api.put<string>("/mypage/updateMemberDto", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return res.data;
@@ -45,7 +45,7 @@ export const updateMemberDto = async (dto: MypageUpdDto): Promise<string> => {
 export const deleteMemberDto = async (memberId: string): Promise<string> => {
   try {
     const res = await api.request<string>({
-      url: "/api/mypage/deleteMemberDto",
+      url: "/mypage/deleteMemberDto",
       method: "DELETE",
       data: memberId,
       headers: { "Content-Type": "text/plain" },
