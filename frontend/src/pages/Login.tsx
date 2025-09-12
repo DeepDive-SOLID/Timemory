@@ -8,7 +8,7 @@ import { setToken } from "../utils/auth.ts";
 
 const Login = () => {
   const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
-  const REDIRECT_URI = "http://localhost:5173/login/kakao/callback";
+  const REDIRECT_URI = "http://timemory.kro.kr/login/kakao/callback";
   const { login } = useContext(AuthContext)!;
   const navigate = useNavigate();
 
