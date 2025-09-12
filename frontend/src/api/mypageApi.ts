@@ -1,4 +1,4 @@
-import api from "axios";
+import api from "./axios.ts";
 import type { MypageDto, MypageUpdDto } from "../types/mypage";
 
 /* 회원 정보 조회 */
