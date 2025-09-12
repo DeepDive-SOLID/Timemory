@@ -8,9 +8,7 @@ export const getMemberDto = async (memberId: string): Promise<MypageDto> => {
       "/api/mypage/getMemberDto",
       memberId,
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: {"Content-Type": "text/plain",},
       }
     );
     return res.data;
@@ -50,7 +48,7 @@ export const deleteMemberDto = async (memberId: string): Promise<string> => {
       url: "/api/mypage/deleteMemberDto",
       method: "DELETE",
       data: memberId,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain" },
     });
     return res.data;
   } catch (error) {
