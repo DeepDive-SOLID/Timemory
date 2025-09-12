@@ -1,0 +1,200 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 83px);
+}
+
+.mainContent {
+  flex: 1;
+  padding: 20px;
+}
+
+.header {
+  color: #5497ff;
+  font-family: "Pretendard Variable";
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.5rem;
+  letter-spacing: -0.04rem;
+}
+
+.profile {
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+}
+
+.imgWrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 9999px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(24, 116, 245, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  isolation: isolate;
+}
+.imgWrapper:hover {
+  transform: translateY(-1px);
+}
+
+.profileImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.camera {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border-radius: 9999px;
+  padding: 6px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.nickname {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #2f2a1e;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2f2a1e;
+  letter-spacing: 0.2px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e7e7ea;
+  border-radius: 5px;
+  background: #fff;
+  font-size: 14px;
+  color: #2f2a1e;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  outline: none;
+  font-family: "Pretendard Variable";
+}
+.input::placeholder {
+  color: #b9b9c2;
+}
+.input:focus {
+  border-color: #1874f5;
+}
+
+.error {
+  color: #e5484d;
+  font-size: 12px;
+  margin-top: -2px;
+}
+
+.saveButton {
+  width: 100%;
+  margin-top: 8px;
+  border: none;
+  padding: 12px 14px;
+  border-radius: 5px;
+  background: #1874f5;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+  box-shadow: 0 6px 16px rgba(24, 116, 245, 0.24);
+}
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 14px 0 12px;
+}
+
+.logoutButton,
+.deleteButton {
+  padding: 11px 12px;
+  border-radius: 5px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid #e7e7ea;
+  background: #fff;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.logoutButton:hover {
+  background: #f7f9ff;
+}
+.deleteButton {
+  color: #e5484d;
+  border-color: #ffd9dc;
+}
+.deleteButton:hover {
+  background: #edeffe;
+}
+
+.pageSkeleton {
+  padding: 16px;
+}
+.skeletonAvatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #f1f1f1, #f7f7f7, #f1f1f1);
+  animation: shine 1.2s linear infinite;
+}
+.skeletonTextSm {
+  width: 80px;
+  height: 14px;
+  margin-top: 8px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f1f1f1, #f7f7f7, #f1f1f1);
+  animation: shine 1.2s linear infinite;
+}
+.formSkeleton {
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+}
+.skeletonRow {
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f1f1f1, #f7f7f7, #f1f1f1);
+  animation: shine 1.2s linear infinite;
+}
+
+@keyframes shine {
+  0% {
+    background-position: -100px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
