@@ -50,9 +50,9 @@ public class CapsuleSpaceServiceImpl implements CapsuleSpaceService {
         List<Capsule> capsules = capsuleSpaceQueryRepository.findCapsulesByMemberId(memberId);
         log.debug("조회된 캡슐 개수: {}", capsules.size());
         
-        // DTO 변환
+        // DTO 변환 - FileManager를 사용하여 이미지 URL 완전한 형태로 변환
         List<CapsuleSummaryDto> capsuleSummaries = capsules.stream()
-                .map(CapsuleSummaryDto::from)
+                .map(capsule -> CapsuleSummaryDto.from(capsule, fileManager))
                 .collect(Collectors.toList());
         
         return CapsuleSpaceResponseDto.builder()
