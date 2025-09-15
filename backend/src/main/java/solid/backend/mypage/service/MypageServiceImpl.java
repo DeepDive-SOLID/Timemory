@@ -94,8 +94,8 @@ public class MypageServiceImpl implements MypageService {
         }
 
         teamMemberRepository.deleteByMember(member);
-        capsuleRepository.deleteByMember(member);
         alarmRepository.deleteByMember(member);
+        capsuleRepository.deleteByMember(member);
         memberRepository.deleteById(memberId);
     }
 }
