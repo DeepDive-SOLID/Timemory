@@ -1,6 +1,8 @@
 package solid.backend.alarm.repository;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
@@ -26,7 +28,10 @@ public class AlarmQueryRepository {
         return queryFactory
                 .select(Projections.constructor(
                         AlarmDto.class,
-                        t.teamName,
+                        new CaseBuilder()
+                                .when(t.teamName.startsWith("TIME_CAPSULE_"))
+                                .then(Expressions.stringTemplate("SUBSTR({0}, 14)", t.teamName))
+                                .otherwise(t.teamName),
                         c.capOpen,
                         c.capId,
                         a.alarmId

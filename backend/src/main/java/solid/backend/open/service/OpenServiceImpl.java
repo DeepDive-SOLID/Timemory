@@ -2,6 +2,7 @@ package solid.backend.open.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import solid.backend.common.FileManager;
@@ -60,10 +61,12 @@ public class OpenServiceImpl implements OpenService {
 
     /**
      * 설명 : 오픈 그룹 캡슐 추가
+     * 캡슐 추가 후 오픈 리스트 캐시를 무효화하여 최신 데이터가 반영되도록 함
      * @param capsuleDto
      */
     @Override
     @Transactional
+    @CacheEvict(value = "anniversaries", key = "'openList'")  // 특정 캐시 키만 삭제
     public void addOpenCapsuleDto(OpenCapsuleAddDto capsuleDto) {
 
         Team team = teamRepository.findById(capsuleDto.getTeamId())
