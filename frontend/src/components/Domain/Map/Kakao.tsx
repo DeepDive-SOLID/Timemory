@@ -77,27 +77,34 @@ const Kakao = ({ customProps, showDeleteButton = false }: KakaoProps) => {
   // distance가 업데이트될 때 API 호출
   useEffect(() => {
     if (!customProps) return;
+    if (openModal) return;
 
-    customProps.forEach(async (item) => {
-      if (item.memberId !== userInfo?.memberId) return;
-      if (item.capOpen) return;
+    // 100m 안의 캡슐만 필터링
+    const nearbyCapsules = customProps.filter((item) => {
+      if (item.memberId !== userInfo?.memberId) return false;
+      if (item.capOpen) return false;
 
       const d = distances[item.capId];
-      if (d === undefined) return;
-
-      if (d <= 100 && !calledApiIds.includes(item.capId)) {
-        try {
-          const res = await getCapsuleLtListApi(item.capId);
-          setData(res[0]);
-          setOpenModal(true);
-          // 해당하는 캡슐의 위치를 업데이트
-          setDistance(d);
-          setCalledApiIds((prevIds) => [...prevIds, item.capId]);
-        } catch (e) {
-          console.error(e);
-        }
-      }
+      return d !== undefined && d <= 100 && !calledApiIds.includes(item.capId);
     });
+
+    if (nearbyCapsules.length === 0) return;
+
+    // 거리순 정렬 후 가장 가까운 것만 선택
+    const nearest = nearbyCapsules.sort((a, b) => distances[a.capId] - distances[b.capId])[0];
+
+    (async () => {
+      try {
+        const res = await getCapsuleLtListApi(nearest.capId);
+        setData(res[0]);
+        setOpenModal(true);
+        setDistance(distances[nearest.capId]);
+        setCalledApiIds((prev) => [...prev, nearest.capId]);
+        return;
+      } catch (e) {
+        console.error(e);
+      }
+    })();
   }, [distances, customProps, calledApiIds, userInfo]);
 
   return (
