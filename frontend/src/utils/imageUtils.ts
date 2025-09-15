@@ -16,6 +16,22 @@ export const getValidProfileImageUrl = (url: string): string | null => {
     }
   }
 
+  // 로컬호스트 경로를 서비스 도메인으로 변환
+  // 예: http://localhost:8080/solid/... -> http://timemory.kro.kr/solid/...
+  try {
+    const parsed = new URL(url, window?.location?.origin || "http://localhost");
+    const isLocalHost =
+      parsed.hostname === "localhost" || parsed.hostname === "127.0.0.1";
+
+    if (isLocalHost && (parsed.port === "8080" || parsed.port === "")) {
+      parsed.protocol = "http:";
+      parsed.host = "timemory.kro.kr"; // 포트 없음
+      return parsed.toString();
+    }
+  } catch {
+    // URL 생성 실패 시 아래 일반 규칙으로 처리
+  }
+
   // 일반적인 외부 URL인 경우
   if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
