@@ -28,7 +28,7 @@ const Kakao = ({ customProps, showDeleteButton = false }: KakaoProps) => {
   const [data, setData] = useState<CapsuleLtOpenDto | null>(null);
   const [animation, setAnimation] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  // 현재 내 위치와 캡슐의 거리를 구하는 스테이트
+  // 모달에 사용할 distance 스테이트
   const [distance, setDistance] = useState<number>(0);
   // 맵 중심 (center를 구함)
   const center = !check ? { lat: location.lat, lng: location.lng } : { lat, lng };
@@ -45,51 +45,60 @@ const Kakao = ({ customProps, showDeleteButton = false }: KakaoProps) => {
     }
   };
   const [calledApiIds, setCalledApiIds] = useState<number[]>([]);
+  // 모든 캡슐의 거리를 저장하는 스테이트
+  const [distances, setDistances] = useState<Record<number, number>>({});
 
+  // 해당하는 캡슐의 거리를 찾는 effect 훅
   useEffect(() => {
-    if (!customProps || customProps.length === 0 || !location.lat) {
-      return;
-    }
+    if (!customProps || customProps.length === 0 || !location.lat) return;
 
-    const checkAndCallApi = () => {
-      customProps.forEach(async (item) => {
-        if (item.memberId !== userInfo?.memberId) return;
-        if (item.capOpen) return;
+    const checkDistances = () => {
+      const newDistances: Record<number, number> = {};
+
+      customProps.forEach((item) => {
         if (item.lat && item.lng) {
-          setDistance(
-            getDistance({
-              lat1: location.lat,
-              lon1: location.lng,
-              lat2: item.lat,
-              lon2: item.lng,
-            })
-          );
-
-          // 100미터 이내이고 아직 API를 호출하지 않은 경우
-          if (distance <= 100 && !calledApiIds.includes(item.capId)) {
-            try {
-              if (data) return () => clearInterval(intervalId);
-              // 거리가 같아지면 api 요청을 하여 open 을 TRUE 로 만듬
-              const res = await getCapsuleLtListApi(item.capId);
-              setData(res[0]);
-              setOpenModal((prev) => !prev);
-            } catch (e) {
-              console.error(e);
-            }
-
-            // API 호출 후 다시 호출되지 않도록 ID를 상태에 추가
-            setCalledApiIds((prevIds) => [...prevIds, item.capId]);
-          }
+          const d = getDistance({
+            lat1: location.lat,
+            lon1: location.lng,
+            lat2: item.lat,
+            lon2: item.lng,
+          });
+          newDistances[item.capId] = d;
         }
       });
+
+      setDistances(newDistances);
     };
 
-    // 위치가 업데이트될 때마다 검사 실행
-    const intervalId = setInterval(checkAndCallApi, 5000); // 5초마다 위치 확인
-
-    // 컴포넌트 언마운트 시 인터벌 정리
+    const intervalId = setInterval(checkDistances, 3000);
     return () => clearInterval(intervalId);
-  }, [location, customProps, calledApiIds]);
+  }, [location, customProps]);
+
+  // distance가 업데이트될 때 API 호출
+  useEffect(() => {
+    if (!customProps) return;
+
+    customProps.forEach(async (item) => {
+      if (item.memberId !== userInfo?.memberId) return;
+      if (item.capOpen) return;
+
+      const d = distances[item.capId];
+      if (d === undefined) return;
+
+      if (d <= 100 && !calledApiIds.includes(item.capId)) {
+        try {
+          const res = await getCapsuleLtListApi(item.capId);
+          setData(res[0]);
+          setOpenModal(true);
+          // 해당하는 캡슐의 위치를 업데이트
+          setDistance(d);
+          setCalledApiIds((prevIds) => [...prevIds, item.capId]);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    });
+  }, [distances, customProps, calledApiIds, userInfo]);
 
   return (
     <>
