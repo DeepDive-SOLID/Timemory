@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import solid.backend.entity.Capsule;
+import solid.backend.common.FileManager;
 
 import java.time.LocalDateTime;
 
@@ -28,7 +29,7 @@ public class CapsuleSummaryDto {
     private String locationAddress;  // 위치 주소
     private String locationDetail;  // 상세 주소
     
-    public static CapsuleSummaryDto from(Capsule capsule) {
+    public static CapsuleSummaryDto from(Capsule capsule, FileManager fileManager) {
         // 캡슐 타입 먼저 판별
         String capsuleType = determineCapsuleType(capsule);
         
@@ -51,7 +52,7 @@ public class CapsuleSummaryDto {
         return CapsuleSummaryDto.builder()
                 .capsuleId(capsule.getCapId())
                 .content(capsule.getCapText())
-                .imageUrl(capsule.getCapImg())
+                .imageUrl(fileManager.getFileUrl(capsule.getCapImg()))
                 .tag(capsule.getCapTag())
                 .openDate(capsule.getCapEt())
                 .createdAt(capsule.getCapUt())
