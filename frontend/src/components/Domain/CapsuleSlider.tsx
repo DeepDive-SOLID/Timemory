@@ -5,6 +5,7 @@ import { lock, x_circle } from "../../assets/index.ts";
 import type { Capsule } from "../../types/capsule";
 import DeleteConfirm from "../UI/DeleteConfirm";
 import { deleteCapsuleApi } from "../../api/MyCapsuleApi";
+import { getValidProfileImageUrl } from "../../utils/imageUtils";
 
 interface CapsuleSliderProps {
   capsules: Capsule[];
@@ -220,7 +221,10 @@ const CapsuleSlider: React.FC<CapsuleSliderProps> = ({
                 {capsule.imageUrl && (
                   <div className={styles.cardImage}>
                     <img
-                      src={capsule.imageUrl}
+                      src={
+                        getValidProfileImageUrl(capsule.imageUrl ?? "") ||
+                        undefined
+                      }
                       alt={capsule.content}
                       className={styles.cardImage}
                     />
