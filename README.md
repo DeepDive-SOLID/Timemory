@@ -223,3 +223,7 @@ ERD
 
 <img width="1259" height="700" alt="image" src="https://github.com/user-attachments/assets/28b05f2a-1bd1-4498-9d49-022c588f68df" />
 
+### 시연 영상
+
+https://github.com/user-attachments/assets/1044dfdb-7841-4725-b255-0c18e6d875e6
+
